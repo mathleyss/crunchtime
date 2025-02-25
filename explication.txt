@@ -1,0 +1,6 @@
+page index.php dans le dossier = page Mon Profil
+renommer la page index.php en profile.php (adapter la config dans les autres pages)
+
+On y accède uniquement si un utilisateur est connecté, sinon redirection sur login.php
+
+Pour créer un compte, aller sur register.php
