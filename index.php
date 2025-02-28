@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Connexion à SQLite
 $db = new SQLite3('crunchtime.db');
 
@@ -112,11 +113,11 @@ $topRatedSeries = json_decode($responseTopRatedSeries, true);
             </div>
             <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
             <div class="searchBar">
-                <form action="search.php" method="GET">
+                <form action="/crunchtime/pages/search.php" method="GET">
 
                     <img src="assets/images/icon/search.svg" alt="Search">
 
-                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput">
+                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
                 </form>
             </div>
             <div class="menuRight">
