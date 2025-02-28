@@ -26,7 +26,7 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="/assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
-    <title>Watchlist</title>
+    <title>Recherche</title>
 </head>
 
 <body>

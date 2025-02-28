@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <title>Connexion - CrunchTime</title>
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body id="loginPage">
     <div class="loginContainer">
         <div class="logoContainer">
-            <img src="/assets/images/logo.png" alt="CrunchTime">
+            <img src="../assets/images/logo.png" alt="CrunchTime">
             <h1>CrunchTime</h1>
         </div>
 

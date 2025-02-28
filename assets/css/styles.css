@@ -23,8 +23,9 @@
 #homePage{
     background-color: var(--white-color);
 }
-/* header */
-header {
+/* header de la page d'accueil et de la page crunchswipe */
+#homePage header,
+#swipePage header {
     margin: 0;
     padding: 0;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(253, 246, 246, 0.8)), url('/assets/images/header.png') no-repeat center center/cover;
@@ -34,7 +35,6 @@ header {
 /* Menu */
 /* Menu général */
 .menu {
-    position: fixed;
     padding: 10px 20px;
     transition: background 0.3s ease;
     display: flex;
@@ -98,6 +98,14 @@ header {
     color: var(--blue-color);
 }
 
+/* Menu pour les autres pages */
+.menuOther{
+    background-color: var(--darkblue-color);
+}
+
+.menuOther:hover{
+    background-color: var(--darkblue-color);
+}
 
 
 /* Barre de recherche ENCORE DU TAFF DESSUS*/
@@ -287,14 +295,18 @@ color: var(--darkblue-color);
 
 
 /* Ligne de films sortis récemment */
+
+h3{
+    margin-left: 2rem;
+}
 .carousel-container {
     position: relative;
-    max-width: 90%;
+    max-width: 100%;
     margin: auto;
     overflow: hidden;
 }
 
-.trending-movies {
+.carousel {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
@@ -303,7 +315,7 @@ color: var(--darkblue-color);
     scrollbar-width: none;
 }
 
-.trending-movies::-webkit-scrollbar {
+.carousel::-webkit-scrollbar {
     display: none;
 }
 
@@ -327,23 +339,22 @@ color: var(--darkblue-color);
 
 .movie-poster {
     position: relative;
+    overflow: hidden;
+    border-radius: 15px;
 }
 
 .movie-card h4, .movie-card p {
     margin-top: 10px;
     text-align: left;
 }
-.catFilmsRecents {
+.navTitleArrow {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
 }
 
-.buttonNav{
-    display: flex;
-    gap: 5px;
-}
+
 
 /* Boutons de navigation */
 
@@ -352,7 +363,11 @@ color: var(--darkblue-color);
     width: 50px; /* Réduire la taille de l'image à l'intérieur du bouton */
     height: auto;
 }
-
+.buttonNav{
+    margin-right: 2rem;
+    display: flex;
+    gap: 5px;
+}
 .prev {
     left: 10px;
 }
@@ -362,42 +377,140 @@ color: var(--darkblue-color);
 }
 
 /* Informations supplémentaires */
+/* Par défaut, more-info est caché en bas */
 .more-info {
-    display: none;
-    background: var(--blue-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
     padding: 10px;
     border-radius: 15px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    z-index: 1;
+    text-align: left;
+    transform: translateY(100%); /* Caché en bas */
+    transition: transform 0.3s ease-in-out;
+    opacity: 0;
 }
 
+/* Quand more-info est actif, il monte */
+/* More-info caché par défaut */
+.more-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 0 0 0 15px;
+    text-align: left;
+    transform: translateY(100%);
+    transition: transform 0.4s ease-in-out, opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+
+/* Quand more-info est actif, il monte */
+.more-info.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Positionnement de la flèche */
 .toggle-info {
     background: none;
     border: none;
     cursor: pointer;
-    transition: transform 0.3s ease;
     position: absolute;
-    bottom: 10px;
     left: 50%;
-    transform-origin: center;
+    bottom: 10px;
     transform: translateX(-50%);
-    transform-origin: center;
+    transition: transform 0.4s ease-in-out, bottom 0.4s ease-in-out;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background-color: var(--darkblue-color);
 }
 
-.toggle-info.active {
+
+/* Quand more-info est actif, la flèche suit doucement */
+.more-info.active + .toggle-info {
+    bottom: calc(100% - 170px); /* Elle monte mais reste bien visible */
     transform: translateX(-50%) rotate(180deg);
 }
 
+/* CSS de la section Call to action */
+.cta{
+    background: linear-gradient(to right, #DDEBF6 5%, var(--blue-color) 95%);
+    color: var(--white-color);
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cta p{
+    color: var(--darkblue-color);
+    text-align: left;
+    font-weight: bold;
+}
+
+.cta p:nth-of-type(1){
+font-size: 1.5rem;
+}
+
+.cta p:nth-of-type(2){
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.cta a{
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 40px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cta a:hover{
+    background-color: var(--secondary-color);
+}
+
+.cta a:active{
+    transform: scale(0.95);
+}
+
+/* CCS de la page de détails d'un film */
+
+.details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.details-container img {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.details-container img {
+    width: 100%;
+}
 
 
-/* CSS des pages de connexion et de profil */
+/* CSS des pages autres comme profil, connexion, details.... */
 #registerPage,
 #loginPage,
-#profilePage {
+#profilePage{
     background-color: var(--blue-color);
 }
 
@@ -425,7 +538,8 @@ color: var(--darkblue-color);
 
 #registerPage img,
 #loginPage img,
-#profilePage img {
+#profilePage .avatarContainer img,
+#profilePage .logoContainer img {
     width: 5rem;
 }
 

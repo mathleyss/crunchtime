@@ -4,7 +4,7 @@ $successMessage = ""; // Variable pour afficher les messages de succès
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connexion à SQLite
-    $db = new SQLite3('crunchtime.db');
+    $db = new SQLite3('../crunchtime.db');
 
     // Vérification que toutes les données existent avant de les utiliser
     $prenom = isset($_POST['firstname']) ? trim($_POST['firstname']) : null;
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
     <title>Inscription - CrunchTime</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body id="registerPage">
     <div class="loginContainer">
         <div class="logoContainer">
-            <img src="/assets/images/logo.png" alt="CrunchTime">
+            <img src="../assets/images/logo.png" alt="CrunchTime">
             <h1>CrunchTime</h1>
         </div>
 

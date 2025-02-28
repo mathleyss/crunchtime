@@ -31,14 +31,55 @@ $date = date("d-m-Y", strtotime($user['date']));
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <title>CrunchTime</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <title>Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
 </head>
 <body id="profilePage">
+<header>
+    <nav class="menu menuOther">
+        <div class="menuLeft">
+            <a href="../index.php" class="logoAccueil"> <img src="/assets/images/logo.png" alt=""></a>
+            <a href="../index.php">Accueil</a>
+            <a href="swipe.php">CrunchSwipe</a>
+        </div>
+        <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
+        <div class="searchBar">
+            <form action="search.php" method="GET">
+
+                <img src="/assets/images/icon/search.svg" alt="Search">
+
+                <input type="text" name="query" placeholder="Rechercher..." class="searchInput">
+            </form>
+        </div>
+        <div class="menuRight">
+
+            <!-- Si un utilisateur est connecté, alors ... -->
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="profile">
+                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile"
+                        class="profile-img">
+                    <div class="dropdown-menu">
+                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <p><?= htmlspecialchars($user['username']) ?></p>
+                        <a href="profile.php">Profil</a>
+                        <a href="watchlist.php">Ma watchlist</a>
+                        <a href="logout.php" id="logout">Déconnexion</a>
+                    </div>
+                </div>
+                <!-- ... Sinon ... -->
+            <?php else: ?>
+                <a href="login.php" class="btnLogin">
+                    Connexion
+                </a>
+            <?php endif; ?>
+        </div>
+    </nav>
+</header>
+<main>
     <div class="logoContainer">
-        <img src="/assets/images/logo.png" alt="CrunchTime">
+        <img src="../assets/images/logo.png" alt="CrunchTime">
         <h1>CrunchTime - Mon profil</h1>
     </div>
 
@@ -65,7 +106,7 @@ $date = date("d-m-Y", strtotime($user['date']));
             <p>Inscrit depuis le <?= htmlspecialchars($date) ?></p>
         </div>
     </div>
-
+    </main>
     
 </body>
 </html>
