@@ -59,12 +59,13 @@ $topRatedSeries = getCachedApiResponse($urls['top_rated_series'], $cacheDirector
 // Récupération des médias dans la watchlist de l'utilisateur actuellement connecté
 $watchlistMediaIds = [];
 if (isset($_SESSION['user_id'])) {
-    $stmt = $db->prepare("SELECT media_id FROM watchlist WHERE user_id = :user_id");
+    $stmt = $db->prepare("SELECT media_id, media_type FROM watchlist WHERE user_id = :user_id");
     $stmt->bindValue(':user_id', $_SESSION['user_id'], SQLITE3_INTEGER);
     $result = $stmt->execute();
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $watchlistMediaIds[] = $row['media_id'];
+        // Créer une clé unique qui combine l'ID et le type
+        $watchlistMediaIds[$row['media_id'] . '_' . $row['media_type']] = true;
     }
 }
 ?>
@@ -211,7 +212,7 @@ if (isset($_SESSION['user_id'])) {
 
                         <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <?php if (in_array($movieId, $watchlistMediaIds)): ?>
+                            <?php if (isset($watchlistMediaIds[$movieId . '_movie'])): ?>
                                 <!-- Bouton qui valide la présence du média dans la watchlist -->
                                 <div class="watchlist-added-indicator">
                                     <button class="success-check" disabled data-id="<?= htmlspecialchars($movieId); ?>">
@@ -319,7 +320,7 @@ if (isset($_SESSION['user_id'])) {
 
                         <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <?php if (in_array($movieId, $watchlistMediaIds)): ?>
+                            <?php if (isset($watchlistMediaIds[$movieId . '_movie'])): ?>
                                 <!-- Bouton qui valide la présence du média dans la watchlist -->
                                 <div class="watchlist-added-indicator">
                                     <button class="success-check" disabled data-id="<?= htmlspecialchars($movieId); ?>">
@@ -420,7 +421,7 @@ if (isset($_SESSION['user_id'])) {
 
                         <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <?php if (in_array($serieId, $watchlistMediaIds)): ?>
+                            <?php if (isset($watchlistMediaIds[$serieId . '_tv'])): ?>
                                 <!-- Bouton qui valide la présence du média dans la watchlist -->
                                 <div class="watchlist-added-indicator">
                                     <button class="success-check" disabled data-id="<?= htmlspecialchars($serieId); ?>">
@@ -512,7 +513,7 @@ if (isset($_SESSION['user_id'])) {
 
                         <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                         <?php if (isset($_SESSION['user_id'])): ?>
-                            <?php if (in_array($serieId, $watchlistMediaIds)): ?>
+                            <?php if (isset($watchlistMediaIds[$serieId . '_tv'])): ?>
                                 <!-- Bouton qui valide la présence du média dans la watchlist -->
                                 <div class="watchlist-added-indicator">
                                     <button class="success-check" disabled data-id="<?= htmlspecialchars($serieId); ?>">
