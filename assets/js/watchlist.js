@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const action = this.dataset.action; // Récupère l'action (add/remove)
             const mediaType = this.dataset.type || 'movie'; // Récupère le type (movie ou tv)
 
+            console.log(`Action: ${action}, Media ID: ${mediaId}, Type: ${mediaType}`); // Débogage
+            
             // Choisir l'URL du script PHP en fonction de l'action (ajout ou suppression)
             const url = action === "add" ? "ajout_watchlist.php" : "suppression_watchlist.php";
 

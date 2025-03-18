@@ -9,6 +9,9 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Journaliser les variables reçues
+error_log('POST data: ' . print_r($_POST, true)); // Débogage
+
 // Connexion à la base de données SQLite
 $db = new SQLite3('../database/crunchtime.db');
 
@@ -26,6 +29,7 @@ $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result->fetchArray()) {
+    error_log("Le média est déjà dans la watchlist"); // Débogage
     echo json_encode(['success' => false, 'message' => 'Ce contenu est déjà dans votre watchlist.']);
 } else {
     // Ajouter le média à la watchlist avec son type
@@ -35,9 +39,11 @@ if ($result->fetchArray()) {
     $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
     
     if ($stmt->execute()) {
+        error_log("Média ajouté avec succès"); // Débogage
         echo json_encode(['success' => true, 'message' => 'Le contenu a été ajouté à votre watchlist.']);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist.']);
+        error_log("Erreur lors de l'ajout du média: " . $db->lastErrorMsg()); // Débogage
+        echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist: ' . $db->lastErrorMsg()]);
     }
 }
 ?>
