@@ -339,6 +339,14 @@ body {
     position: relative;
 }
 
+/* Style pour la date d'ajout */
+.movie-card .added-date {
+    font-size: 0.7rem;
+    color: var(--gray-color);
+    margin-top: 5px;
+    font-style: italic;
+}
+
 .movie-card img {
     width: 100%;
     border-radius: 15px;
@@ -983,8 +991,8 @@ label {
 
 /* Variante du bouton sur la page de la watchlist */
 .btnWatchlistDel {
-    top: 10px;
-    right: 10px;
+    top: 20px;
+    right: 20px;
 }
 
 .btnWatchlistDel .button::before {
