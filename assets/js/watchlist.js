@@ -65,14 +65,34 @@ document.addEventListener("DOMContentLoaded", function () {
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
             const mediaId = this.dataset.id;
-
+            const mediaType = this.dataset.type; // Récupérer le type de média du bouton
+    
+            console.log(`Suppression: Media ID: ${mediaId}, Type: ${mediaType}`); // Débogage
+            
             fetch("suppression_watchlist.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: "media_id=" + encodeURIComponent(mediaId)
+                body: "media_id=" + encodeURIComponent(mediaId) + 
+                      "&media_type=" + encodeURIComponent(mediaType)
             })
-            .then(response => response.json())
+            .then(response => {
+                // Vérifier d'abord si la réponse est réussie
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
+                }
+                
+                // Essayer de parser en JSON, mais gérer les erreurs de format
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error("Erreur de parsing JSON:", text);
+                        throw new Error("La réponse n'est pas au format JSON valide");
+                    }
+                });
+            })
             .then(data => {
+                console.log("Réponse du serveur:", data); // Débogage
                 if (data.success) {
                     // Supprimer la carte du film de l'affichage
                     const movieCard = this.closest(".movie-card");
@@ -83,7 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(data.message);
                 }
             })
-            .catch(error => console.error("Erreur:", error));
+            .catch(error => {
+                console.error("Erreur:", error);
+                alert("Une erreur est survenue lors de la communication avec le serveur.");
+            });
         });
     });
 

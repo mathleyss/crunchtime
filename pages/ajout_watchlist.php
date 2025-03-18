@@ -1,6 +1,4 @@
 <?php
-// filepath: c:\laragon\www\pages\ajout_watchlist.php
-// Désactiver l'affichage des erreurs dans la sortie
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 error_reporting(E_ALL);
@@ -9,7 +7,6 @@ session_start();
 
 header("Content-Type: application/json");
 
-// Capturer toutes les erreurs PHP
 function exception_error_handler($severity, $message, $file, $line) {
     error_log("PHP Error in $file:$line - $message");
     throw new ErrorException($message, 0, $severity, $file, $line);
@@ -34,7 +31,7 @@ try {
 
     error_log("User ID: $user_id, Media ID: $media_id, Media Type: $media_type"); // Débogage
 
-    // Vérifiez si le média est déjà dans la watchlist
+    // Vérifiez si le média est déjà dans la watchlist avec le même type
     $stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id AND media_type = :media_type");
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
@@ -55,8 +52,15 @@ try {
             error_log("Média ajouté avec succès"); // Débogage
             echo json_encode(['success' => true, 'message' => 'Le contenu a été ajouté à votre watchlist.']);
         } else {
-            error_log("Erreur lors de l'ajout du média: " . $db->lastErrorMsg()); // Débogage
-            echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist: ' . $db->lastErrorMsg()]);
+            $error = $db->lastErrorMsg();
+            error_log("Erreur lors de l'ajout du média: " . $error); // Débogage
+            
+            // Si c'est une erreur de contrainte unique, donner un message plus clair
+            if (strpos($error, 'UNIQUE constraint failed') !== false) {
+                echo json_encode(['success' => false, 'message' => 'Ce contenu est déjà dans votre watchlist.']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist: ' . $error]);
+            }
         }
     }
 } catch (Exception $e) {

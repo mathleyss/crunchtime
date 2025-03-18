@@ -97,6 +97,27 @@ function getDirector($details) {
     }
     return 'Inconnu';
 }
+
+// Fonction pour afficher une date relative (il y a X jours/heures...)
+function timeAgo($timestamp) {
+    $time_diff = time() - strtotime($timestamp);
+    
+    if ($time_diff < 60) {
+        return 'il y a quelques secondes';
+    } elseif ($time_diff < 3600) {
+        return 'il y a ' . floor($time_diff / 60) . ' minute' . (floor($time_diff / 60) > 1 ? 's' : '');
+    } elseif ($time_diff < 86400) {
+        return 'il y a ' . floor($time_diff / 3600) . ' heure' . (floor($time_diff / 3600) > 1 ? 's' : '');
+    } elseif ($time_diff < 604800) {
+        return 'il y a ' . floor($time_diff / 86400) . ' jour' . (floor($time_diff / 86400) > 1 ? 's' : '');
+    } elseif ($time_diff < 2592000) {
+        return 'il y a ' . floor($time_diff / 604800) . ' semaine' . (floor($time_diff / 604800) > 1 ? 's' : '');
+    } elseif ($time_diff < 31536000) {
+        return 'il y a ' . floor($time_diff / 2592000) . ' mois';
+    } else {
+        return 'il y a ' . floor($time_diff / 31536000) . ' an' . (floor($time_diff / 31536000) > 1 ? 's' : '');
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -189,18 +210,22 @@ function getDirector($details) {
                             <a href="details.php?id=<?= $media['id'] ?>&type=<?= $media['media_type'] ?>">
                                 <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title']) ?>">
                             </a>
+                        </div>
                             <h4><?= htmlspecialchars($media['title']) ?></h4>
                             <p><?= date('Y', strtotime($media['release_date'])) ?></p>
 
+                            <!-- Affichage de la date d'ajout -->
+                            <p class="added-date">Ajouté <?= timeAgo($media['added_at']) ?></p>
+
                             <!-- Bouton de suppression -->
                             <div class="btnWatchlist btnWatchlistDel">
-                                <button class="button delete-btn" data-id="<?= $media['id'] ?>">
+                                <button class="button delete-btn" data-id="<?= $media['id'] ?>"  data-type="<?= $media['media_type'] ?>">
                                     <svg viewBox="0 0 448 512" class="svgIconBtn">
                                         <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
                                     </svg>
                                 </button>
                             </div>
-                        </div>
+
 
                     </div>
                     <?php endforeach; ?>
