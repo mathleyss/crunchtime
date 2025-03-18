@@ -1,0 +1,19 @@
+{
+  "name": "CrunchTime",
+  "short_name": "CrunchTime",
+  "icons": [
+    {
+      "src": "assets/images/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#fef7f7",
+  "background_color": "#fef7f7",
+  "display": "standalone"
+}

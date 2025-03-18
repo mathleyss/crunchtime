@@ -1,0 +1,1224 @@
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family)
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    --primary-color: #c1121f;
+    --secondary-color: #780000;
+    --black-color: #000000;
+    --gray-color: #121212;
+    --white-color: #fdf6f6;
+    --darkblue-color: #003049;
+    --blue-color: #669bbc;
+    --success-color: #28a745;
+    --font-family: 'Space Mono', serif;
+}
+
+body {
+    background-color: var(--white-color);
+}
+
+#homePage {
+    background-color: var(--white-color);
+}
+
+/* header de la page d'accueil et de la page crunchswipe */
+#homePage header,
+#swipePage header {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(253, 246, 246, 0.8)), url('../images/header.png') no-repeat center center/cover;
+    height: 80vh;
+}
+
+/* Menu */
+/* Menu général */
+.menu {
+    padding: 10px 20px;
+    transition: background 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.logoAccueil img {
+    width: 50px;
+    height: 50px;
+    transition: all 0.3s ease;
+}
+
+.logoAccueil:hover img {
+    transform: scale(1.1);
+}
+
+.menuLeft a {
+    text-decoration: none;
+    color: var(--white-color);
+    font-size: 18px;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.menuLeft a:not(.logoAccueil)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    /* Ajuste la position du soulignement */
+    width: 100%;
+    height: 2px;
+    background-color: var(--blue-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+}
+
+.menuLeft a:not(.logoAccueil):hover::after {
+    transform: scaleX(1);
+}
+
+#active {
+    color: var(--blue-color);
+    font-weight: bold;
+}
+
+#active:hover {
+    color: var(--white-color);
+}
+
+.menuLeft a:hover {
+    color: var(--blue-color);
+}
+
+/* Menu pour les autres pages */
+.menuOther {
+    background-color: var(--darkblue-color);
+}
+
+.menuOther:hover {
+    background-color: var(--darkblue-color);
+}
+
+
+/* Barre de recherche */
+.searchBar {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background: var(--white-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    width: 400px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: text;
+
+}
+
+.searchInput {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    color: var(--darkblue-color);
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: var(--gray-color);
+}
+
+.searchBar img {
+    width: 25px;
+    height: auto;
+    vertical-align: middle;
+    object-fit: contain;
+}
+
+/* Menu à gauche */
+.menuLeft {
+    display: flex;
+    align-items: center;
+}
+
+.menuLeft a {
+    margin-right: 20px;
+}
+
+/* Menu à droite (profil) */
+.menuRight {
+    position: relative;
+}
+
+/* bouton de connexion */
+
+.btnLogin {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btnLogin:hover {
+    background-color: var(--secondary-color);
+    transform: scale(1.1);
+
+}
+
+/* menu du profil */
+.profile {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.2);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    text-align: center;
+    align-items: center;
+    right: 0;
+    background-color: var(--blue-color);
+    padding: 40px 50px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-menu img {
+    width: 100px;
+    height: 100px;
+}
+
+.dropdown-menu p {
+    margin: 0;
+    color: var(--white-color);
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.dropdown-menu a {
+    color: var(--white-color);
+    padding-bottom: 10px;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+}
+
+.dropdown-menu a:not(#logout)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--darkblue-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+}
+
+.dropdown-menu a:hover {
+    color: var(--darkblue-color);
+}
+
+.dropdown-menu a:not(#logout):hover::after {
+    transform: scaleX(1);
+}
+
+.dropdown-menu #logout {
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    color: var(--white-color);
+    text-align: center;
+    padding: 10px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+
+}
+
+.dropdown-menu #logout:active {
+    transform: scale(0.95);
+}
+
+.dropdown-menu #logout:hover {
+    background-color: var(--secondary-color);
+}
+
+.profile:hover .dropdown-menu {
+    display: block;
+}
+
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--darkblue-color);
+}
+
+.headerContent h1 {
+    font-size: 5rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0, 5rem;
+}
+
+.headerContent p {
+    font-size: 2rem;
+}
+
+
+
+/* Ligne de films sortis récemment */
+
+.catTitle {
+    margin-left: 2rem;
+    font-size: 1.5rem;
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px;
+    scrollbar-width: none;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-card {
+    flex: 0 0 auto;
+    width: 250px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    position: relative;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-poster {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.movie-card h4,
+.movie-card p {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.navTitleArrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+
+/* Boutons de navigation */
+
+
+.next,
+.prev {
+    width: 60px;
+    height: auto;
+    border-radius: 50%;
+    transition-duration: .3s; 
+}
+
+.next path,
+.prev path {
+    fill: var(--blue-color);
+}
+
+
+.next:hover path,
+.prev:hover path {
+    fill: var(--primary-color);
+    transition-duration: .3s;
+}
+
+.next:hover,
+.prev:hover {
+transform: scale(1.1);
+}
+
+
+.buttonNav {
+    margin-right: 2rem;
+    display: flex;
+    gap: 5px;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
+/* button pour la navigation de la page de recherche */
+.buttonNavSearch {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+/* CSS de la section Call to action */
+.cta {
+    background: linear-gradient(to right, #DDEBF6 5%, var(--blue-color) 95%);
+    color: var(--white-color);
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cta p {
+    color: var(--darkblue-color);
+    text-align: left;
+    font-weight: bold;
+}
+
+.cta p:nth-of-type(1) {
+    font-size: 1.5rem;
+}
+
+.cta p:nth-of-type(2) {
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.cta a {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 40px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cta a:hover {
+    background-color: var(--secondary-color);
+}
+
+.cta a:active {
+    transform: scale(0.95);
+}
+
+
+
+/* CSS des pages autres comme profil, connexion.... */
+#registerPage,
+#loginPage,
+#profilePage {
+    background-color: var(--blue-color);
+}
+
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white-color);
+    padding: 5rem;
+    border-radius: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.logoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#registerPage img,
+#loginPage img {
+    width: 5rem;
+}
+
+.formInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.formInput input {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid var(--gray-color);
+    border-radius: 5px;
+    font-size: 0.8rem;
+    background-color: var(--white-color);
+}
+
+.submitButton {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0 2rem 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.submitButton:hover {
+    background-color: var(--secondary-color);
+}
+
+.submitButton:active {
+    transform: scale(0.95);
+}
+
+label {
+    font-weight: bold;
+}
+
+.registerLink {
+    position: relative;
+    color: var(--blue-color);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.registerLink::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+}
+
+.registerLink:hover::after {
+    transform: scaleX(1);
+}
+
+.registerLink:hover {
+    color: var(--primary-color);
+}
+
+/* Styles pour le message de déconnexion */
+.logout-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: var(--blue-color);
+}
+
+.logout-message h1 {
+    font-size: 3rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.logout-message p {
+    font-size: 1.5rem;
+    color: var(--white-color);
+}
+
+
+/* Gestion des messages d'erreurs et de succès */
+.errorMessage {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.successMessage {
+    color: var(--blue-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.successMessage a {
+    color: var(--blue-color);
+    text-decoration: none;
+}
+
+
+/* ------ 
+    Page de details d'un film ou d'une série
+        ------ */
+.details-container {
+    display: flex;
+    color: var(--darkblue-color);
+    margin: 3rem;
+}
+
+.details-poster {
+    width: 30%;
+}
+
+.details-content {
+    padding: 0 3rem;
+    width: 70%;
+}
+
+.details-poster>img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.details-content h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--blue-color);
+}
+
+.details-content .stars {
+    color: gold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.details-content p {
+    font-size: 1.2rem;
+    line-height: 2;
+}
+
+.details-resume {
+    margin: 3rem 0;
+    width: 70%;
+}
+
+.details-content strong {
+    color: var(--blue-color);
+}
+
+.actors-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.actor {
+    width: 200px;
+    text-align: center;
+}
+
+.actor img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.actor p {
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+
+
+/* ------ 
+    Page de profil 
+        ------ */
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white-color);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    margin: 3rem auto;
+    max-width: 600px;
+    transition: transform 0.3s ease;
+}
+
+#profilePage h2 {
+    text-align: center;
+    color: var(--white-color);
+    margin: 2rem 0;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.avatarContainer img {
+    width: 6rem;
+    transition: all 0.3s ease;
+}
+
+.avatarContainer img:hover {
+    transform: scale(1.05);
+    border-color: var(--primary-color);
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.userInfo p {
+    margin: 0.7rem 0;
+    font-size: 1.1rem;
+    color: var(--gray-color);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding-bottom: 0.7rem;
+    width: 100%;
+}
+
+.userRegisterDate {
+    border-bottom: none;
+    color: var(--blue-color);
+    font-style: italic;
+    margin-top: 1.5rem;
+}
+
+.userInfo p:first-child,
+.userInfo p:nth-child(2) {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--darkblue-color);
+    border-bottom: none;
+}
+
+.userInfo p strong {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+
+/* ------ 
+    Page de recherche
+        ------ */
+.titleSearch {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: var(--darkblue-color);
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    background: var(--white-color);
+    padding: 15px;
+}
+
+.filters select,
+.filters input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    transition-duration: .3s;
+}
+
+.filters input:hover,
+.filters input:active,
+.filters select:hover {
+    border: 1px solid var(--darkblue-color);
+    transition-duration: .3s;
+}
+
+.yearInput {
+    width: 100px;
+}
+
+.searchPageBtn {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition-duration: .3s;
+}
+
+.searchPageBtn:hover {
+    background-color: var(--primary-color);
+    transition-duration: .3s;
+}
+
+.rating-filter {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.rating-filter input {
+    display: none;
+}
+
+.rating-filter label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: gray;
+    transition: color 0.2s;
+}
+
+.rating-filter label:hover,
+.rating-filter label:hover~label,
+.rating-filter input:checked~label {
+    color: gold;
+}
+
+.movie-genres span {
+    background: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.star-rating {
+    color: gold;
+    font-size: 1.2rem;
+}
+
+.noResultsMessage {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+
+
+/* ------ 
+    WATCHLIST 
+        ------ */
+.watchlistTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.watchlist h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: var(--darkblue-color);
+}
+
+.erreurWatchlist {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+
+/* ------ 
+    Bouton ajout / suppression de la watchlist
+    Crédits bouton : from Uiverse.io by vinodjangid07
+        ------ */
+.btnWatchlist {
+    position: absolute;
+}
+
+.btnWatchlistAdd,
+.btnWatchlistDelIndex {
+    top: 20px;
+    right: 20px;
+}
+
+.btnWatchlist .button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--gray-color);
+    border: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.534);
+    cursor: pointer;
+    transition-duration: .3s;
+    overflow: hidden;
+    position: relative;
+}
+
+.btnWatchlist .button:hover {
+    width: 140px;
+    border-radius: 50px;
+    transition-duration: .3s;
+    background-color: var(--secondary-color);
+    align-items: center;
+}
+
+.btnWatchlist .button:hover .svgIconBtn {
+    opacity: 0;
+}
+
+.btnWatchlist .button:hover::before {
+    font-size: 13px;
+    opacity: 1;
+    transform: translateY(30px);
+    transition-duration: .3s;
+}
+
+.btnWatchlist .button::before {
+    position: absolute;
+    top: -25px;
+    text-transform: uppercase;
+    color: var(--white-color);
+    transition-duration: .3s;
+    font-size: 2px;
+    font-weight: normal;
+    content: var(--button-text, "Ajouter");
+}
+
+.btnWatchlistAddDetails {
+    position: relative;
+}
+
+/* Style pour le conteneur de la coche verte */
+.watchlist-added-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Style pour le bouton avec la coche */
+.watchlist-added-indicator .success-check {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--success-color);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.534);
+    cursor: default;
+}
+
+.watchlist-added-indicator .checkIcon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+/* Variante du bouton sur la page de la watchlist */
+.btnWatchlistDel {
+    top: 10px;
+    right: 10px;
+}
+
+.btnWatchlistDel .button::before {
+    content: "Supprimer";
+}
+
+/* Variante du bouton sur la page de détails */
+.watchlist-btn {
+    min-width: 200px;
+    padding: 1rem;
+    width: auto;
+    height: 30px;
+    border-radius: 50px;
+    background-color: var(--secondary-color);
+    border: none;
+    display: flex;
+    align-items: center;
+    color: var(--white-color);
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: .3s;
+    margin-bottom: 3rem;
+    white-space: nowrap;
+}
+
+.watchlist-btn:hover {
+    background-color: var(--primary-color);
+    transition-duration: .3s;
+}
+
+.watchlist-btn:active {
+    transform: scale(0.95);
+    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.534);
+    transition-duration: .3s;
+}
+
+/* Icone du bouton de la watchlist */
+.svgIconBtn {
+    width: 10px;
+    transition-duration: .3s;
+}
+
+.svgIconBtn path {
+    fill: var(--white-color);
+}
+
+
+/* ------ 
+    MESSAGE WATCHLIST 
+        ------ */
+.messagewatchlist {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+/* Classe pour la disparition */
+.masque {
+    opacity: 0;
+}
+
+.supprime {
+    display: none;
+}
+
+
+/* ------ 
+    CRUNCHSWIPE
+        ------ */
+.mainSwipe {
+    overflow: hidden;
+    padding-top: 5rem;
+    display: flex;
+    color: var(--darkblue-color);
+    margin: 0 1rem ;
+    padding-bottom: 3rem;
+}
+
+/* Infos du films  */
+
+#swipeInfo{
+    width: 33.33%;
+}
+#swipeInfo h2 {
+font-size: 2.5rem;
+}
+#swipeInfo .date {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+
+}
+
+#swipeInfo h3 {
+    font-size: 1.5rem;
+    margin: 2rem  0 1rem 0;
+}
+#swipeInfo .note {
+    margin-top: 0.5rem;
+}
+#swipeInfo .resume {
+    margin-top: 1rem;
+    line-height: 1.2;
+    text-align: justify;
+}
+#swipeInfo .actors {
+display: flex;
+justify-content: space-between ;
+}
+
+#swipeInfo .actors img {
+    width: 90%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+#swipeInfo .actors p {
+    font-size: 0.7rem;
+}
+
+
+/* Fonction pour le swipe */
+
+#swipeFeature {
+    width: 33.33%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#swiper {
+    height: 55vh;
+    aspect-ratio: 2 / 3;
+    perspective: 1000px;
+    perspective-origin: center 50%;
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.swipeButtons{
+    margin-top: 2rem;
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.card.dismissing {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#like,
+#dislike {
+    font-size: 5vh;
+    border-radius: 50%;
+    padding: 15px;
+    position: relative;
+    z-index: 1;
+    animation-name: animation1;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+}
+
+#like.trigger,
+#dislike.trigger {
+    animation-name: animation2;
+}
+
+#like {
+    color: var(--primary-color); 
+    background-color: var(--blue-color);
+}
+
+#dislike {
+    color: var(--gray-color);
+    background-color: var(--blue-color);
+}
+
+@keyframes animation1 {
+
+    0%,
+    100% {
+        background-color: var(--blue-color);
+    }
+
+    50% {
+        background-color: var(--darkblue-color);
+    }
+}
+
+@keyframes animation2 {
+
+    0%,
+    100% {
+        background-color: var(--blue-color);
+    }
+
+    50% {
+        background-color: var(--darkblue-color);
+    }
+}
+
+/* Info de la watchlist */
+#swipeWatchlist {
+    width: 33.33%;
+
+}
