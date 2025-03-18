@@ -73,7 +73,8 @@ if (isset($_SESSION['user_id'])) {
     $result = $stmt->execute();
 
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-        $watchlistMediaIds[$row['media_id']] = $row['media_type'];
+        // Créer une clé unique qui combine l'ID et le type
+        $watchlistMediaIds[$row['media_id'] . '_' . $row['media_type']] = true;
     }
 }
 ?>
@@ -151,7 +152,7 @@ if (isset($_SESSION['user_id'])) {
                     Gestion de la watchlist si l'utilisateur est connecté
                         ------>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <?php if (isset($watchlistMediaIds[$id]) && $watchlistMediaIds[$id] === $type): ?>
+                    <?php if (isset($watchlistMediaIds[$id . '_' . $type])): ?>
                     <!-- Bouton pour supprimer le média -->
                         <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="remove" data-type="<?= htmlspecialchars($type); ?>">
                             Supprimer de la watchlist
