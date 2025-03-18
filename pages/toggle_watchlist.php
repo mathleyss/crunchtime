@@ -23,9 +23,10 @@ $media_type = isset($input['media_type']) ? $input['media_type'] : 'movie';
 // Vérifiez l'action (ajouter ou retirer)
 if ($action === 'add') {
     // Vérifier si le média est déjà dans la watchlist
-    $stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id");
+    $stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id AND media_type = :media_type");
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
     $result = $stmt->execute();
 
     if ($result->fetchArray()) {
