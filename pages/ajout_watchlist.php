@@ -1,49 +1,66 @@
 <?php
+// filepath: c:\laragon\www\pages\ajout_watchlist.php
+// Désactiver l'affichage des erreurs dans la sortie
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
 header("Content-Type: application/json");
 
-// Si l'utilisateur n'est pas connecté...
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Veuillez vous connecter pour ajouter à la watchlist.']);
-    exit();
+// Capturer toutes les erreurs PHP
+function exception_error_handler($severity, $message, $file, $line) {
+    error_log("PHP Error in $file:$line - $message");
+    throw new ErrorException($message, 0, $severity, $file, $line);
 }
+set_error_handler("exception_error_handler");
 
-// Journaliser les variables reçues
-error_log('POST data: ' . print_r($_POST, true)); // Débogage
+try {
+    // Si l'utilisateur n'est pas connecté...
+    if (!isset($_SESSION['user_id'])) {
+        echo json_encode(['success' => false, 'message' => 'Veuillez vous connecter pour ajouter à la watchlist.']);
+        exit();
+    }
 
-// Connexion à la base de données SQLite
-$db = new SQLite3('../database/crunchtime.db');
+    // Connexion à la base de données SQLite
+    $db = new SQLite3('../database/crunchtime.db');
 
-$user_id = $_SESSION['user_id'];
-$media_id = isset($_POST['media_id']) ? intval($_POST['media_id']) : 0; // Sécurisation des données
+    $user_id = $_SESSION['user_id'];
+    $media_id = isset($_POST['media_id']) ? intval($_POST['media_id']) : 0; // Sécurisation des données
 
-// Récupérer le type de média
-$media_type = isset($_POST['media_type']) ? $_POST['media_type'] : 'movie';
+    // Récupérer le type de média
+    $media_type = isset($_POST['media_type']) ? $_POST['media_type'] : 'movie';
 
-// Vérifiez si le média est déjà dans la watchlist
-$stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id AND media_type = :media_type");
-$stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-$stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
-$stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
-$result = $stmt->execute();
+    error_log("User ID: $user_id, Media ID: $media_id, Media Type: $media_type"); // Débogage
 
-if ($result->fetchArray()) {
-    error_log("Le média est déjà dans la watchlist"); // Débogage
-    echo json_encode(['success' => false, 'message' => 'Ce contenu est déjà dans votre watchlist.']);
-} else {
-    // Ajouter le média à la watchlist avec son type
-    $stmt = $db->prepare("INSERT INTO watchlist (user_id, media_id, media_type, added_at) VALUES (:user_id, :media_id, :media_type, CURRENT_TIMESTAMP)");
+    // Vérifiez si le média est déjà dans la watchlist
+    $stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id AND media_type = :media_type");
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
     $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
-    
-    if ($stmt->execute()) {
-        error_log("Média ajouté avec succès"); // Débogage
-        echo json_encode(['success' => true, 'message' => 'Le contenu a été ajouté à votre watchlist.']);
+    $result = $stmt->execute();
+
+    if ($result->fetchArray()) {
+        error_log("Le média est déjà dans la watchlist"); // Débogage
+        echo json_encode(['success' => false, 'message' => 'Ce contenu est déjà dans votre watchlist.']);
     } else {
-        error_log("Erreur lors de l'ajout du média: " . $db->lastErrorMsg()); // Débogage
-        echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist: ' . $db->lastErrorMsg()]);
+        // Ajouter le média à la watchlist avec son type
+        $stmt = $db->prepare("INSERT INTO watchlist (user_id, media_id, media_type, added_at) VALUES (:user_id, :media_id, :media_type, CURRENT_TIMESTAMP)");
+        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
+        $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
+        
+        if ($stmt->execute()) {
+            error_log("Média ajouté avec succès"); // Débogage
+            echo json_encode(['success' => true, 'message' => 'Le contenu a été ajouté à votre watchlist.']);
+        } else {
+            error_log("Erreur lors de l'ajout du média: " . $db->lastErrorMsg()); // Débogage
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de l\'ajout à la watchlist: ' . $db->lastErrorMsg()]);
+        }
     }
+} catch (Exception $e) {
+    error_log("Exception: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => 'Erreur serveur: ' . $e->getMessage()]);
 }
 ?>

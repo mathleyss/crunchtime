@@ -14,15 +14,31 @@ document.addEventListener("DOMContentLoaded", function () {
             const url = action === "add" ? "ajout_watchlist.php" : "suppression_watchlist.php";
 
             // Effectuer la requête AJAX
-        fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "media_id=" + encodeURIComponent(mediaId) + 
-                  "&media_type=" + encodeURIComponent(mediaType) + 
-                  "&previousPage=" + encodeURIComponent(window.location.href)
-        })
-            .then(response => response.json())
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "media_id=" + encodeURIComponent(mediaId) + 
+                      "&media_type=" + encodeURIComponent(mediaType) + 
+                      "&previousPage=" + encodeURIComponent(window.location.href)
+            })
+            .then(response => {
+                // Vérifier d'abord si la réponse est réussie
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
+                }
+                
+                // Essayer de parser en JSON, mais gérer les erreurs de format
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error("Erreur de parsing JSON:", text);
+                        throw new Error("La réponse n'est pas au format JSON valide");
+                    }
+                });
+            })
             .then(data => {
+                console.log("Réponse du serveur:", data); // Débogage
                 if (data.success) {
                     // Mettre à jour l'interface utilisateur (changer le texte et l'action du bouton)
                     if (action === "add") {
@@ -36,7 +52,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     alert(data.message); // Afficher un message en cas d'erreur
                 }
             })
-            .catch(error => console.error("Erreur:", error));
+            .catch(error => {
+                console.error("Erreur:", error);
+                alert("Une erreur est survenue lors de la communication avec le serveur.");
+            });
         });
     });
 
