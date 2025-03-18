@@ -19,9 +19,10 @@ $media_id = isset($_POST['media_id']) ? intval($_POST['media_id']) : 0; // Sécu
 $media_type = isset($_POST['media_type']) ? $_POST['media_type'] : 'movie';
 
 // Vérifiez si le média est déjà dans la watchlist
-$stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id");
+$stmt = $db->prepare("SELECT * FROM watchlist WHERE user_id = :user_id AND media_id = :media_id AND media_type = :media_type");
 $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
+$stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
 $result = $stmt->execute();
 
 if ($result->fetchArray()) {
