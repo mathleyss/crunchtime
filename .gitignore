@@ -1,6 +1,3 @@
 # Ignore cache directory
 /cache/
 cache/
-
-
-database/crunchtime.db
