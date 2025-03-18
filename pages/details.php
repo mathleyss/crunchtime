@@ -76,10 +76,6 @@ if (isset($_SESSION['user_id'])) {
         // Créer une clé unique qui combine l'ID et le type
         $watchlistMediaIds[$row['media_id'] . '_' . $row['media_type']] = true;
     }
-    
-    // Débogage
-    error_log("Médias dans la watchlist: " . print_r($watchlistMediaIds, true));
-    error_log("Vérification du média actuel: " . $id . '_' . $type);
 }
 ?>
 

@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Ajout ou suppression d'un média dans la watchlist (pour la page details.php)
+    
+    /* 
+     * Gestion ajout ou suppression d'un média dans la watchlist
+     * (pour la page details.php)
+     */
     const watchlistButtons = document.querySelectorAll(".watchlist-btn");
 
     watchlistButtons.forEach(button => {
@@ -7,8 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const mediaId = this.dataset.id; // Récupère l'ID du média
             const action = this.dataset.action; // Récupère l'action (add/remove)
             const mediaType = this.dataset.type || 'movie'; // Récupère le type (movie ou tv)
-
-            console.log(`Action: ${action}, Media ID: ${mediaId}, Type: ${mediaType}`); // Débogage
             
             // Choisir l'URL du script PHP en fonction de l'action (ajout ou suppression)
             const url = action === "add" ? "ajout_watchlist.php" : "suppression_watchlist.php";
@@ -27,18 +29,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     throw new Error(`Erreur HTTP ${response.status}`);
                 }
                 
-                // Essayer de parser en JSON, mais gérer les erreurs de format
+                // Essayer de parser en JSON
                 return response.text().then(text => {
                     try {
                         return JSON.parse(text);
                     } catch (e) {
-                        console.error("Erreur de parsing JSON:", text);
                         throw new Error("La réponse n'est pas au format JSON valide");
                     }
                 });
             })
             .then(data => {
-                console.log("Réponse du serveur:", data); // Débogage
                 if (data.success) {
                     // Mettre à jour l'interface utilisateur (changer le texte et l'action du bouton)
                     if (action === "add") {
@@ -53,21 +53,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .catch(error => {
-                console.error("Erreur:", error);
                 alert("Une erreur est survenue lors de la communication avec le serveur.");
             });
         });
     });
 
-    // Suppression d'un média de la watchlist (depuis watchlist.php)
+    /* 
+     * Gestion de la suppression d'un média de la watchlist
+     * (depuis watchlist.php)
+     */
     const deleteButtons = document.querySelectorAll(".delete-btn");
 
     deleteButtons.forEach(button => {
         button.addEventListener("click", function () {
             const mediaId = this.dataset.id;
             const mediaType = this.dataset.type; // Récupérer le type de média du bouton
-    
-            console.log(`Suppression: Media ID: ${mediaId}, Type: ${mediaType}`); // Débogage
             
             fetch("suppression_watchlist.php", {
                 method: "POST",
@@ -81,18 +81,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     throw new Error(`Erreur HTTP ${response.status}`);
                 }
                 
-                // Essayer de parser en JSON, mais gérer les erreurs de format
+                // Essayer de parser en JSON
                 return response.text().then(text => {
                     try {
                         return JSON.parse(text);
                     } catch (e) {
-                        console.error("Erreur de parsing JSON:", text);
                         throw new Error("La réponse n'est pas au format JSON valide");
                     }
                 });
             })
             .then(data => {
-                console.log("Réponse du serveur:", data); // Débogage
                 if (data.success) {
                     // Supprimer la carte du film de l'affichage
                     const movieCard = this.closest(".movie-card");
@@ -104,13 +102,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             })
             .catch(error => {
-                console.error("Erreur:", error);
                 alert("Une erreur est survenue lors de la communication avec le serveur.");
             });
         });
     });
 
-    // Ajout d'un média dans la watchlist (pour la page index.php)
+    /* 
+     * Gestion de l'ajout d'un média dans la watchlist
+     * (pour la page index.php)
+     */
     document.querySelectorAll(".toggle-watchlist").forEach(button => {
         button.addEventListener("click", function () {
             let movieId = this.dataset.id;
@@ -160,7 +160,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         alert("Erreur : " + data.message); // Affichage de l'erreur si l'ajout échoue
                     }
                 })
-                .catch(error => console.error("Erreur :", error)); // Gestion des erreurs de requête
+                .catch(error => {
+                    alert("Une erreur est survenue lors de la communication avec le serveur.");
+                });
             }
         });
     });
