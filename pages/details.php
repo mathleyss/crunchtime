@@ -151,18 +151,34 @@ if (isset($_SESSION['user_id'])) {
                 <!------
                     Gestion de la watchlist si l'utilisateur est connecté
                         ------>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <?php if (isset($watchlistMediaIds[$id . '_' . $type])): ?>
-                    <!-- Bouton pour supprimer le média -->
-                        <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="remove" data-type="<?= htmlspecialchars($type); ?>">
-                            Supprimer de la watchlist
-                        </button>
-                    <?php else: ?>
-                    <!-- Bouton pour ajouter le média -->
-                        <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="add" data-type="<?= htmlspecialchars($type); ?>">
-                            Ajouter à la watchlist
-                        </button>
-                    <?php endif; ?>
+                        <?php if (isset($_SESSION['user_id'])): ?>
+                    <div class="watchlist-action-container">
+                        <!-- Icône du type de média -->
+                        <div class="media-type-icon inline">
+                            <?php if ($type === 'movie'): ?>
+                                <!-- Icône de bobine pour les films -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416z"/>
+                                </svg>
+                            <?php else: ?>
+                                <!-- Icône de TV pour les séries -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                    <path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
+                                </svg>
+                            <?php endif; ?>
+                        </div>
+                        <?php if (isset($watchlistMediaIds[$id . '_' . $type])): ?>
+                        <!-- Bouton pour supprimer le média -->
+                            <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="remove" data-type="<?= htmlspecialchars($type); ?>">
+                                Supprimer de la watchlist
+                            </button>
+                        <?php else: ?>
+                        <!-- Bouton pour ajouter le média -->
+                            <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="add" data-type="<?= htmlspecialchars($type); ?>">
+                                Ajouter à la watchlist
+                            </button>
+                        <?php endif; ?>
+                    </div>
                 <?php endif; ?>
 
                 <p><strong>Date de sortie :</strong> <?= date('d M Y', strtotime($details['release_date'] ?? $details['first_air_date'])) ?></p>

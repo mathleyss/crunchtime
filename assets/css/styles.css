@@ -347,6 +347,43 @@ body {
     font-style: italic;
 }
 
+/* Style pour l'icône en ligne à côté du titre */
+.media-type-icon.inline {
+    position: static; /* Annule le positionnement absolu */
+    width: 16px;
+    height: 16px;
+    min-width: 16px; /* Empêche l'icône de rétrécir */
+    background-color: transparent;
+    border-radius: 0;
+    margin-right: 3px;
+    display: inline-flex;
+    align-items: center; /* Aligne verticalement l'icône */
+    vertical-align: middle; /* Aide à l'alignement avec le texte */
+    transform: translateY(-1px); /* Ajustement fin pour aligner parfaitement */
+}
+
+/* Pour que le titre reste à la bonne taille */
+.media-title-container {
+    display: flex;
+    align-items: center; /* Aligne verticalement tous les éléments */
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.media-title-container h4 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    line-height: 1.2; /* Assure un espacement vertical cohérent */
+}
+
+.media-type-icon.inline svg {
+    width: 100%;
+    height: 100%;
+    margin-top: 0.7rem;
+    fill: var(--primary-color); /* Utiliser la couleur primaire de votre site */
+}
+
 .movie-card img {
     width: 100%;
     border-radius: 15px;
@@ -690,6 +727,43 @@ label {
 .actor p {
     font-size: 1rem;
     margin: 5px 0;
+}
+
+/* Conteneur pour aligner l'icône et le bouton de la watchlist */
+.watchlist-action-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3rem;
+}
+
+/* Style pour l'icône dans la page de détails */
+.watchlist-action-container .media-type-icon.inline {
+    position: static;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.watchlist-action-container .media-type-icon.inline svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    transition-duration: .3s;
+}
+
+.watchlist-action-container .media-type-icon.inline:hover svg {
+    fill: var(--primary-color);
+    transition-duration: .3s;
+}
+
+/* Ajustement pour le bouton watchlist */
+.watchlist-action-container .watchlist-btn {
+    margin-bottom: 0;
 }
 
 
