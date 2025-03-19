@@ -14,6 +14,24 @@ $genres = [
 $movies = null;
 $apiKey = "ad3586245e96a667f42a02c1b8708569";
 
+// Générer les étoiles de notation des médias
+function generateStars($rating) {
+    // Convertir la note sur 10 en note sur 5
+    $rating = $rating / 2;
+    
+    $fullStars = floor($rating);
+    $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+    $emptyStars = 5 - $fullStars - $halfStar;
+
+    $stars = str_repeat('★', $fullStars);
+    if ($halfStar) {
+        $stars .= '★'; // Utiliser une étoile pleine pour les demi-étoiles aussi
+    }
+    $stars .= str_repeat('☆', $emptyStars);
+
+    return $stars;
+}
+
 if (isset($_GET['query']) || isset($_GET['genre']) || isset($_GET['year'])) {
     $searchQuery = isset($_GET['query']) ? trim($_GET['query']) : '';
     $searchQuery = urlencode(strtolower($searchQuery));
@@ -145,14 +163,7 @@ if (isset($_SESSION['user_id'])) {
                                 <span><?= $genres[$id] ?? "" ?></span>
                             <?php endforeach; ?>
                         </p>
-                        <p class="star-rating">
-                            <?php 
-                            $rating = round($movie['vote_average'] / 2); 
-                            for ($i = 0; $i < 5; $i++) {
-                                echo $i < $rating ? "★" : "☆";
-                            }
-                            ?>
-                        </p>
+                        <p class="note"><span class="star-rating"><?= generateStars($movie['vote_average']) ?></span></p>
                     </div>
                 <?php endforeach; ?>
             </div>

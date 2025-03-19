@@ -68,13 +68,16 @@ if (isset($providersData['results']['FR'])) {
 
 // Fonction pour générer les étoiles
 function generateStars($rating) {
+    // Convertir la note sur 10 en note sur 5
+    $rating = $rating / 2;
+    
     $fullStars = floor($rating);
     $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
     $emptyStars = 5 - $fullStars - $halfStar;
 
     $stars = str_repeat('★', $fullStars);
     if ($halfStar) {
-        $stars .= '☆';
+        $stars .= '★'; // Utiliser une étoile pleine pour les demi-étoiles aussi
     }
     $stars .= str_repeat('☆', $emptyStars);
 
@@ -209,7 +212,7 @@ if (isset($_SESSION['user_id'])) {
                 </p>
             <?php endif; ?>
             <p><strong>Note :</strong>
-                <?= generateStars($details['vote_average'] / 2) ?>
+                <span class="star-rating"><?= generateStars($details['vote_average']) ?></span>
             </p>
             <p><strong>Genres :</strong>
                 <?= implode(', ', array_map(function($genre) { return htmlspecialchars($genre['name']); }, $details['genres'])) ?>
