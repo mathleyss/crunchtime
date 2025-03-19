@@ -155,9 +155,13 @@ if (isset($_SESSION['user_id'])) {
     <main>
         <div class="details-container">
             <?php if ($details): ?>
-            <div class="details-poster">
-                <img src="https://image.tmdb.org/t/p/w500<?= $details['poster_path'] ?>" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>">
-            </div>
+                <div class="details-poster">
+                    <?php if (!empty($details['poster_path'])): ?>
+                        <img src="https://image.tmdb.org/t/p/w500<?= $details['poster_path'] ?>" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>">
+                    <?php else: ?>
+                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>" class="placeholder-poster">
+                    <?php endif; ?>
+                </div>
             <div class="details-content">
                 <h1><?= htmlspecialchars($details['title'] ?? $details['name']) ?></h1>
 

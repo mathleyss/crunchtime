@@ -204,7 +204,11 @@ if (isset($_SESSION['user_id'])) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="pages/details.php?id=<?= $movieId ?>&type=movie">
-                                <img src="<?= $moviePoster ?>" alt="<?= $movieTitle ?>" loading="lazy">
+                                <?php if (!empty($movie['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= $movieTitle ?>" loading="lazy">
+                                <?php else: ?>
+                                    <img src="assets/images/placeholder.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <h4><?= $movieTitle ?></h4>
@@ -312,7 +316,11 @@ if (isset($_SESSION['user_id'])) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="pages/details.php?id=<?= $movieId ?>&type=movie">
-                                <img src="<?= $moviePoster ?>" alt="<?= $movieTitle ?>" loading="lazy">
+                                <?php if (!empty($movie['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= $movieTitle ?>" loading="lazy">
+                                <?php else: ?>
+                                    <img src="assets/images/placeholder.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <h4><?= $movieTitle ?></h4>
@@ -413,7 +421,11 @@ if (isset($_SESSION['user_id'])) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="pages/details.php?id=<?= $serieId ?>&type=tv">
-                                <img src="<?= $seriePoster ?>" alt="<?= $serieTitle ?>" loading="lazy">
+                                <?php if (!empty($serie['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>" alt="<?= $serieTitle ?>" loading="lazy">
+                                <?php else: ?>
+                                    <img src="assets/images/placeholder.jpg" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <h4><?= $serieTitle ?></h4>
@@ -505,7 +517,11 @@ if (isset($_SESSION['user_id'])) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="pages/details.php?id=<?= $serieId ?>&type=tv">
-                                <img src="<?= $seriePoster ?>" alt="<?= $serieTitle ?>" loading="lazy">
+                                <?php if (!empty($serie['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>" alt="<?= $serieTitle ?>" loading="lazy">
+                                <?php else: ?>
+                                    <img src="assets/images/placeholder.jpg" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <h4><?= $serieTitle ?></h4>

@@ -208,7 +208,11 @@ function timeAgo($timestamp) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="details.php?id=<?= $media['id'] ?>&type=<?= $media['media_type'] ?>">
-                                <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title']) ?>">
+                                <?php if (!empty($media['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title']) ?>">
+                                <?php else: ?>
+                                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($media['title']) ?>" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <!-- Titre avec icône à gauche -->

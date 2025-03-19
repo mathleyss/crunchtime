@@ -1353,3 +1353,20 @@ justify-content: space-between ;
     height: 100%;
     object-fit: cover;
 }
+
+.placeholder-poster {
+    background-color: #253340;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.placeholder-poster::before {
+    content: "Pas d'affiche";
+    color: #ffffff;
+    font-size: 1rem;
+    text-align: center;
+}

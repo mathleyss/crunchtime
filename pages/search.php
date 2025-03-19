@@ -153,7 +153,11 @@ if (isset($_SESSION['user_id'])) {
                     <div class="movie-card">
                         <div class="movie-poster">
                             <a href="details.php?id=<?= $movie['id'] ?>&type=movie">
-                                <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= htmlspecialchars($movie['title']) ?>">
+                                <?php if (!empty($movie['poster_path'])): ?>
+                                    <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= htmlspecialchars($movie['title']) ?>">
+                                <?php else: ?>
+                                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($movie['title']) ?>" class="placeholder-poster">
+                                <?php endif; ?>
                             </a>
                         </div>
                         <h4><?= htmlspecialchars($movie['title']) ?> (<?= substr($movie['release_date'], 0, 4) ?>)</h4>
