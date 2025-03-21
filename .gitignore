@@ -1,3 +1,5 @@
-# Ignore cache directory
-/cache/
-cache/
+/cache/*
+!/cache/.gitkeep
+.DS_Store
+*/.DS_Store
+**/.DS_Store
