@@ -62,34 +62,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body id="loginPage">
-    <div class="loginContainer">
-        <div class="logoContainer">
-            <img src="../assets/images/logo.png" alt="CrunchTime">
-            <h1>CrunchTime</h1>
+    <main>
+        <div class="loginContainer">
+            <div class="logoContainer">
+                <a href="../index.php">
+                    <img src="../assets/images/logo.png" alt="CrunchTime">
+                </a>
+                <h1>CrunchTime</h1>
+            </div>
+
+            <?php if (!empty($message)): ?>
+                <p class='errorMessage'><?php echo $message; ?></p>
+            <?php endif; ?>
+            
+            <form action="" method="post" class="loginForm">
+                <div class="formInput">
+                    <label for="username">Nom d'utilisateur :</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="formInput">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <button type="submit" class="submitButton">Connexion</button>
+                </div>
+            </form>
+            <a href="register.php" class="registerLink">Créer un compte</a>
         </div>
-
-        <?php if (!empty($message)): ?>
-        <p class='errorMessage'><?php echo $message; ?></p>
-        <?php endif; ?>
-
-
-        <form action="" method="post" class="loginForm">
-            <div class="formInput">
-                <label for="username">Nom d'utilisateur :</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="formInput">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-                <button type="submit" class="submitButton">Connexion</button>
-            </div>
-        </form>
-        <a href="register.php" class="registerLink">Créer un compte</a>
-    </div>
-
-
+    </main>
 </body>
 
 </html>

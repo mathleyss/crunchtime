@@ -161,11 +161,11 @@ function timeAgo($timestamp) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile" class="profile-img">
+                    <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
-                        <a href="profile.php">Profil</a>
+                        <a href="profile.php">Mon profil</a>
                         <a href="watchlist.php">Ma watchlist</a>
                         <a href="logout.php" id="logout">Déconnexion</a>
                     </div>
@@ -211,7 +211,7 @@ function timeAgo($timestamp) {
                                 <?php if (!empty($media['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title']) ?>">
                                 <?php else: ?>
-                                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($media['title']) ?>" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= htmlspecialchars($media['title']) ?>" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>

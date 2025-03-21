@@ -60,7 +60,7 @@ if (isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
-    <title>CrunchSwipe</title>
+    <title>CrunchSwipe - CrunchTime</title>
 
     <!-- Lien favicons -->
     <link rel="icon" type="image/png" href="../assets/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -79,12 +79,9 @@ if (isset($_SESSION['user_id'])) {
                 <a href="../index.php">Accueil</a>
                 <a href="swipe.php" id="active">CrunchSwipe</a>
             </div>
-            <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
             <div class="searchBar">
                 <form action="search.php" method="GET">
-
                     <img src="../assets/images/icon/search.svg" alt="Search">
-
                     <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
                 </form>
             </div>
@@ -93,12 +90,12 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="profile">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile"
+                        <img src="../assets/images/profile.png" alt="Profil"
                             class="profile-img">
                         <div class="dropdown-menu">
-                            <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                            <img src="../assets/images/profile.png" alt="">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="profile.php">Profil</a>
+                            <a href="profile.php">Mon profil</a>
                             <a href="watchlist.php">Ma watchlist</a>
                             <a href="logout.php" id="logout">Déconnexion</a>
                         </div>
@@ -148,7 +145,7 @@ if (isset($_SESSION['user_id'])) {
                             <?php if (!empty($media['poster_path'])): ?>
                                 <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title'] ?? $media['name']) ?>">
                             <?php else: ?>
-                                <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($media['title'] ?? $media['name']) ?>" class="placeholder-poster">
+                                <img src="../assets/images/placeholder_movie.png" alt="<?= htmlspecialchars($media['title'] ?? $media['name']) ?>" class="placeholder-poster">
                             <?php endif; ?>
                         </a>
                     </div>

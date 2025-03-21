@@ -87,7 +87,15 @@ if (isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <title>Recherche</title>
+    <title>Recherche - CrunchTime</title>
+
+    <!-- Lien favicons -->
+    <link rel="icon" type="image/png" href="../assets/images/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="../assets/images/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/favicon/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="CrunchTime" />
+    <link rel="manifest" href="../assets/images/favicon/site.webmanifest" />
 </head>
 <body>
 <header>
@@ -103,11 +111,11 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile" class="profile-img">
+                    <img src="../assets/images/profile.png" alt="Profile" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
-                        <a href="profile.php">Profil</a>
+                        <a href="profile.php">Mon profil</a>
                         <a href="watchlist.php">Ma watchlist</a>
                         <a href="logout.php" id="logout">Déconnexion</a>
                     </div>
@@ -156,7 +164,7 @@ if (isset($_SESSION['user_id'])) {
                                 <?php if (!empty($movie['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= htmlspecialchars($movie['title']) ?>">
                                 <?php else: ?>
-                                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($movie['title']) ?>" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= htmlspecialchars($movie['title']) ?>" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>

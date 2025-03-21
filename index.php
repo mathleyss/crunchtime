@@ -15,7 +15,7 @@ if (isset($_SESSION['user_id'])) {
     $user = $result->fetchArray(SQLITE3_ASSOC);
 }
 
-// Clé API de TMDB (remplace-la par la tienne)
+// Clé API de TMDB
 $apiKey = 'ad3586245e96a667f42a02c1b8708569';
 $cacheDirectory = 'cache/';
 
@@ -28,7 +28,7 @@ $urls = [
 
 
 
-// MISE EN CACHE ----- EXPERIMENTAL
+// MISE EN CACHE
 function getCachedApiResponse($url, $cacheDirectory, $cacheKey, $cacheDuration = 3600) {
     $cacheFile = $cacheDirectory . $cacheKey . '.json';
 
@@ -112,11 +112,11 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile" class="profile-img">
+                    <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
-                        <a href="pages/profile.php">Profil</a>
+                        <a href="pages/profile.php">Mon profil</a>
                         <a href="pages/watchlist.php">Ma watchlist</a>
                         <a href="pages/logout.php" id="logout">Déconnexion</a>
                     </div>
@@ -207,7 +207,7 @@ if (isset($_SESSION['user_id'])) {
                                 <?php if (!empty($movie['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= $movieTitle ?>" loading="lazy">
                                 <?php else: ?>
-                                    <img src="assets/images/placeholder.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>
@@ -319,7 +319,7 @@ if (isset($_SESSION['user_id'])) {
                                 <?php if (!empty($movie['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>" alt="<?= $movieTitle ?>" loading="lazy">
                                 <?php else: ?>
-                                    <img src="assets/images/placeholder.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= $movieTitle ?>" loading="lazy" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>
@@ -424,7 +424,7 @@ if (isset($_SESSION['user_id'])) {
                                 <?php if (!empty($serie['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>" alt="<?= $serieTitle ?>" loading="lazy">
                                 <?php else: ?>
-                                    <img src="assets/images/placeholder.jpg" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>
@@ -520,7 +520,7 @@ if (isset($_SESSION['user_id'])) {
                                 <?php if (!empty($serie['poster_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>" alt="<?= $serieTitle ?>" loading="lazy">
                                 <?php else: ?>
-                                    <img src="assets/images/placeholder.jpg" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
+                                    <img src="../assets/images/placeholder_movie.png" alt="<?= $serieTitle ?>" loading="lazy" class="placeholder-poster">
                                 <?php endif; ?>
                             </a>
                         </div>

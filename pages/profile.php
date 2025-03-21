@@ -23,7 +23,9 @@ if (!$user) {
     exit;
 }
 
-$date = date("d-m-Y", strtotime($user['date']));
+// Formater la date d'inscription
+$formatter = new IntlDateFormatter('fr_FR', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+$date = $formatter->format(strtotime($user['date']));
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +35,7 @@ $date = date("d-m-Y", strtotime($user['date']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <title>Profil</title>
+    <title>Mon profil - CrunchTime</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- Lien favicons -->
@@ -67,11 +69,11 @@ $date = date("d-m-Y", strtotime($user['date']));
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile" class="profile-img">
+                    <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
-                        <a href="profile.php">Profil</a>
+                        <a href="profile.php">Mon profil</a>
                         <a href="watchlist.php">Ma watchlist</a>
                         <a href="logout.php" id="logout">Déconnexion</a>
                     </div>
@@ -86,10 +88,10 @@ $date = date("d-m-Y", strtotime($user['date']));
         </nav>
     </header>
     <main>
-        <h2>Informations de votre compte :</h2>
+        <h2>Mon profil</h2>
         <div class="profileContainer">
             <div class="avatarContainer">
-                <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" />
+                <img src="../assets/images/profile.png" />
             </div>
             <div class="userInfo">
                 <p class="userIdentity"><?= htmlspecialchars($user['firstname']) ?> <?= htmlspecialchars($user['lastname']) ?></p>
@@ -98,7 +100,7 @@ $date = date("d-m-Y", strtotime($user['date']));
 
                 <p class="userMail"><strong>Email :</strong> <?= htmlspecialchars($user['email']) ?></p>
 
-                <p class="userRegisterDate">Inscrit depuis le <?= htmlspecialchars($date) ?></p>
+                <p class="userRegisterDate">Tu es inscrit depuis le <?= htmlspecialchars($date) ?></p>
             </div>
         </div>
     </main>

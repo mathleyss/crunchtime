@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bindValue(':password', $passwordHash, SQLITE3_TEXT);
 
             if ($stmt->execute()) {
-                $successMessage = "Inscription réussie ! <a href='login.php'>Connectez-vous ici</a>";
+                $successMessage = "Inscription réussie ! <a href='login.php' class='loginLink'>Connectez-vous ici</a>";
             } else {
                 $message = "Erreur lors de l'inscription.";
             }
@@ -68,52 +68,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body id="registerPage">
-    <div class="loginContainer">
-        <div class="logoContainer">
-            <img src="../assets/images/logo.png" alt="CrunchTime">
-            <h1>CrunchTime</h1>
+    <main>
+        <div class="loginContainer">
+            <div class="logoContainer">
+                <a href="../index.php">
+                    <img src="../assets/images/logo.png" alt="CrunchTime">
+                </a>
+                <h1>CrunchTime</h1>
+            </div>
+
+            <!-- Affichage des différents messages d'erreur -->
+            <?php if (!empty($message)): ?>
+                <p class='errorMessage'><?php echo $message; ?></p>
+            <?php endif; ?>
+
+            <!-- Affichage des différents messages de succès -->
+            <?php if (!empty($successMessage)): ?>
+                <p class='successMessage'><?php echo $successMessage; ?></p>
+            <?php endif; ?>
+            
+            <form action="" method="post" class="loginForm">
+                <div class="formInput">
+                    <label for="firstname">Prénom :</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                </div>
+                <div class="formInput">
+                    <label for="lastname">Nom :</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+                <div class="formInput">
+                    <label for="username">Nom d'utilisateur :</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="formInput">
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="formInput">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <button type="submit" class="submitButton">S'inscrire</button>
+                </div>
+            </form>
+            <a href="login.php" class="registerLink">Déjà un compte ? Se connecter</a>
         </div>
-
-        <!-- Affichage des différents messages d'erreur -->
-        <?php if (!empty($message)): ?>
-        <p class='errorMessage'><?php echo $message; ?></p>
-        <?php endif; ?>
-
-        <!-- Affichage des différents messages de succès -->
-        <?php if (!empty($successMessage)): ?>
-        <p class='successMessage'><?php echo $successMessage; ?></p>
-        <?php endif; ?>
-
-        <form action="" method="post" class="loginForm">
-            <h2>Inscription</h2>
-            <div class="formInput">
-                <label for="firstname">Prénom :</label>
-                <input type="text" id="firstname" name="firstname" required>
-            </div>
-            <div class="formInput">
-                <label for="lastname">Nom :</label>
-                <input type="text" id="lastname" name="lastname" required>
-            </div>
-            <div class="formInput">
-                <label for="username">Nom d'utilisateur :</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-
-            <div class="formInput">
-                <label for="email">Email :</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="formInput">
-                <label for="password">Mot de passe :</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-                <button type="submit" class="submitButton">S'inscrire</button>
-            </div>
-        </form>
-    </div>
-
-
+    </main>
 </body>
-
 </html>

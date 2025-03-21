@@ -106,7 +106,7 @@ if (isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <title>Détails</title>
+    <title><?= htmlspecialchars($details['title'] ?? $details['name']) ?> - CrunchTime</title>
 
     <!-- Lien favicons -->
     <link rel="icon" type="image/png" href="../assets/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -135,9 +135,9 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="Profile" class="profile-img">
+                    <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="https://doodleipsum.com/700/avatar-2?i=6197810111afde5fbb243bac8463665e" alt="">
+                        <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
                         <a href="profile.php">Profil</a>
                         <a href="watchlist.php">Ma watchlist</a>
@@ -159,31 +159,37 @@ if (isset($_SESSION['user_id'])) {
                     <?php if (!empty($details['poster_path'])): ?>
                         <img src="https://image.tmdb.org/t/p/w500<?= $details['poster_path'] ?>" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>">
                     <?php else: ?>
-                    <img src="../assets/images/placeholder.png" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>" class="placeholder-poster">
+                    <img src="../assets/images/placeholder_movie.png" alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>" class="placeholder-poster">
                     <?php endif; ?>
                 </div>
             <div class="details-content">
                 <h1><?= htmlspecialchars($details['title'] ?? $details['name']) ?></h1>
 
-
-                <?php if (isset($_SESSION['user_id'])): ?>
-                <div class="watchlist-action-container">
-                    <!-- Icône du type de média -->
-                    <div class="media-type-icon inline">
-                        <?php if ($type === 'movie'): ?>
-                            <!-- Icône pour les films -->
+                <!-- Icône du type de média -->
+                <div class="mediaTypeContainer">
+                    <?php if ($type === 'movie'): ?>
+                        <!-- Icône pour les films -->
+                        <div class="mediaTypeIcon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416z"/>
                             </svg>
-                        <?php else: ?>
-                            <!-- Icône pour les séries -->
+                            <p>Film</p>
+                        </div>
+                    <?php else: ?>
+                        <!-- Icône pour les séries -->
+                        <div class="mediaTypeIcon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                                 <path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
                             </svg>
-                        <?php endif; ?>
-                    </div>
-                    <!-- Fin de l'icône du type de média -->
+                            <p>Série</p>
+                        </div>
 
+                    <?php endif; ?>
+                </div>
+                <!-- Fin de l'icône du type de média -->
+
+                <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="watchlist-action-container">
                     <!------
                         Gestion des ajouts dans la la watchlist
                         Si l'utilisateur est connecté, afficher les boutons pour ajouter ou supprimer le média de la watchlist
@@ -225,68 +231,74 @@ if (isset($_SESSION['user_id'])) {
                 <?= htmlspecialchars($details['credits']['crew'][0]['name'] ?? 'Inconnu') ?>
             </p>
             <!-- Fin de l'affichage des informations du média -->
-                
+        
+            <p class="details-resume"> <?= htmlspecialchars($details['overview']) ?></p>
+        
             <!-- Affichage des plateformes de streaming et/ou achats et/ou location -->
             <?php if (!empty($providers)): ?>
                 <div class="streaming-providers">
-                <p><strong>Où regarder <?= htmlspecialchars($details['title'] ?? $details['name']) ?> :</strong></p>
-
-                    <?php if (isset($providers['abonnement'])): ?>
-                    <div class="providers-section">
-                        <h4>Plateformes de VOD</h4>
-                        <div class="providers-list">
-                        <?php foreach ($providers['abonnement'] as $provider): ?>
-                            <div class="provider">
-                                <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
-                                alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
-                                title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                    <h2>Où regarder <?= htmlspecialchars($details['title'] ?? $details['name']) ?> :</strong></h2>
+                    
+                    <div class="streaming-providers-container">
+                        <?php if (isset($providers['abonnement'])): ?>
+                        <div class="providers-section">
+                            <h4>Plateformes de VOD</h4>
+                            <div class="providers-list">
+                            <?php foreach ($providers['abonnement'] as $provider): ?>
+                                <div class="provider">
+                                    <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
+                                    alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
+                                    title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                                </div>
+                            <?php endforeach; ?>
                             </div>
-                        <?php endforeach; ?>
                         </div>
-                    </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
-                    <?php if (isset($providers['location'])): ?>
-                    <div class="providers-section">
-                        <h4>Location</h4>
-                        <div class="providers-list">
-                        <?php foreach ($providers['location'] as $provider): ?>
-                            <div class="provider">
-                                <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
-                                alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
-                                title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                        <?php if (isset($providers['location'])): ?>
+                        <div class="providers-section">
+                            <h4>Location</h4>
+                            <div class="providers-list">
+                            <?php foreach ($providers['location'] as $provider): ?>
+                                <div class="provider">
+                                    <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
+                                    alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
+                                    title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                                </div>
+                            <?php endforeach; ?>
                             </div>
-                        <?php endforeach; ?>
                         </div>
-                    </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
-                    <?php if (isset($providers['achat'])): ?>
-                    <div class="providers-section">
-                        <h4>Achat</h4>
-                        <div class="providers-list">
-                        <?php foreach ($providers['achat'] as $provider): ?>
-                            <div class="provider">
-                                <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
-                                alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
-                                title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                        <?php if (isset($providers['achat'])): ?>
+                        <div class="providers-section">
+                            <h4>Achat</h4>
+                            <div class="providers-list">
+                            <?php foreach ($providers['achat'] as $provider): ?>
+                                <div class="provider">
+                                    <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>" 
+                                    alt="<?= htmlspecialchars($provider['provider_name']) ?>" 
+                                    title="<?= htmlspecialchars($provider['provider_name']) ?>">
+                                </div>
+                            <?php endforeach; ?>
                             </div>
-                        <?php endforeach; ?>
                         </div>
+                        <?php endif; ?>
                     </div>
-                    <?php endif; ?>
                 </div>
             <?php endif; ?>
             <!-- Fin de l'affichage des plateformes de streaming et/ou achats et/ou location -->
 
-            <p class="details-resume"> <?= htmlspecialchars($details['overview']) ?></p>
-                
             <!-- Affichage des acteurs -->
             <h2>Acteurs</h2>
             <div class="actors-container">
                 <?php foreach (array_slice($details['credits']['cast'], 0, 10) as $actor): ?>
                 <div class="actor">
-                    <img src="https://image.tmdb.org/t/p/w200<?= $actor['profile_path'] ?>" alt="<?= htmlspecialchars($actor['name']) ?>">
+                    <?php if (!empty($actor['profile_path'])): ?>
+                        <img src="https://image.tmdb.org/t/p/w200<?= $actor['profile_path'] ?>" alt="<?= htmlspecialchars($actor['name']) ?>">
+                    <?php else: ?>
+                        <img src="../assets/images/placeholder_actor.png" alt="<?= htmlspecialchars($actor['name']) ?>">
+                    <?php endif; ?>
                     <p><strong><?= htmlspecialchars($actor['name']) ?></strong></p>
                     <p><?= htmlspecialchars($actor['character']) ?></p>
                 </div>
