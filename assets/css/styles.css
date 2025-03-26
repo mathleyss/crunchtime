@@ -990,6 +990,7 @@ transform: scale(1.1);
     color: var(--primary-color);
     font-weight: bold;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
 /* Style pour l'icône en ligne à côté du titre */
@@ -1545,6 +1546,209 @@ gap: 1rem;
 
 
 
+/* ---------- PAGE ACCUEIL ---------- */
+@media screen and (max-width: 992px) {
+    .headerContent {
+        padding: 0 20px;
+    }
+    
+    .headerContent h1 {
+        font-size: 4rem;
+    }
+    
+    .headerContent p {
+        font-size: 1.3rem;
+    }
+
+    .movie-card {
+        width: 180px;
+    }
+    
+    .buttonNav {
+        display: none;
+    }
+    
+    .carousel {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none; 
+        padding: 10px 5px;
+    }
+    
+    .carousel::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .catTitle {
+        font-size: 1.3rem;
+        margin-left: 1rem;
+    }
+    
+    .cta {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .cta p {
+        text-align: center;
+    }
+    
+    .cta a {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .headerContent {
+        height: 60vh;
+    }
+    
+    .headerContent h1 {
+        font-size: 3.2rem;
+        text-align: center;
+    }
+    
+    .headerContent p {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .movie-card {
+        width: 150px;
+        padding: 5px;
+    }
+
+    .movie-card:hover {
+        transform: none;
+    }
+
+    .movie-card h4 {
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .movie-card p {
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+    
+    .btnWatchlist .button {
+        width: 30px;
+        height: 30px;
+    }
+
+    .btnWatchlist .button:hover {
+        width: 30px;
+        border-radius: 50%;
+        background-color: var(--gray-color);
+        transition-duration: 0s;
+    }
+    
+    .btnWatchlist .button:hover .svgIconBtn {
+        opacity: 1;
+    }
+    
+    .btnWatchlist .button:hover::before {
+        opacity: 0;
+        transform: none;
+    }
+    
+    .btnWatchlist .button {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btnWatchlist,
+    .watchlist-added-indicator {
+        top: 10px;
+        right: 10px;
+    }
+
+    .filmsRecents, .seriesTendances, .filmsAction, .seriesTopRated {
+        margin-bottom: 2rem;
+    }
+    
+    .catTitle {
+        font-size: 1.2rem;
+    }
+    
+    .cta p:nth-of-type(2) {
+        font-size: 1.5rem;
+    }
+    
+    .cta a {
+        padding: 8px 20px;
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .headerContent {
+        height: 50vh;
+    }
+    
+    .headerContent h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .headerContent p {
+        font-size: 1rem;
+    }
+    
+    .movie-card {
+        width: 130px;
+    }
+    
+    .movie-card h4 {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .movie-card p {
+        font-size: 0.7rem;
+    }
+    
+    .btnWatchlist .button {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .svgIconBtn {
+        width: 12px;
+    }
+    
+    .catTitle {
+        font-size: 1.1rem;
+    }
+    
+    .cta {
+        padding: 15px 10px;
+    }
+    
+    .cta p:nth-of-type(1) {
+        font-size: 1.1rem;
+    }
+    
+    .cta p:nth-of-type(2) {
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+    
+    .cta a {
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+    
+    main section {
+        margin-bottom: 1.5rem;
+    }
+}
+
+
+
 /* ---------- PAGE PROFIL ---------- */
 @media screen and (max-width: 768px) {
     .profileContainer {
@@ -1596,12 +1800,10 @@ gap: 1rem;
 
 /* ---------- WATCHLIST ---------- */
 @media screen and (max-width: 992px) {
-    /* Masquer les flèches de navigation */
     .buttonNavSearch {
         display: none;
     }
     
-    /* Ajustement du caroussel */
     .watchlist .carousel {
         display: flex;
         flex-wrap: wrap;
@@ -1609,17 +1811,14 @@ gap: 1rem;
         gap: 15px;
     }
     
-    /* Ajuster la taille des cartes médias */
     .watchlist .movie-card {
         width: 210px;
     }
 
-    /* Enleve l'effet de survol des cartes médias */
     .watchlist .movie-card:hover {
         transform: none;
     }
 
-    /* Supprimer les effets du bouton */
     .btnWatchlistDel .button:hover {
         width: 30px;
         border-radius: 50%;
@@ -1636,14 +1835,12 @@ gap: 1rem;
         transform: none;
     }
     
-    /* Réduction de l'ombre du bouton de suppression */
     .btnWatchlistDel .button {
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     }
 }
 
 @media screen and (max-width: 576px) {
-    /* Centrer les éléments sur mobile */
     .watchlist .carousel-container {
         width: 100%;
         display: flex;
@@ -1662,7 +1859,6 @@ gap: 1rem;
         width: 250px;
     }
     
-    /* Ajuster les éléments internes des cartes */
     .watchlist .movie-card .media-title-container {
         margin-top: 5px;
     }
@@ -1676,7 +1872,6 @@ gap: 1rem;
         margin: 3px 0;
     }
     
-    /* Ajuster la position du bouton de suppression */
     .watchlist .btnWatchlistDel {
         top: 20px;
         right: 20px;
@@ -1692,7 +1887,6 @@ gap: 1rem;
     }
 }
 
-/* Ajuster le carrousel pour qu'il soit plus adaptif */
 @media screen and (max-width: 992px) {
     .watchlist .carousel::-webkit-scrollbar {
         display: none;
@@ -1707,8 +1901,173 @@ gap: 1rem;
         padding: 10px 5px;
     }
     
-    /* Ajuster le titre principal */
     .watchlist h2 {
         font-size: 1.8rem;
+    }
+}
+
+
+
+/* ---------- PAGE DETAILS ---------- */
+@media screen and (max-width: 992px) {
+    .details-container {
+        flex-direction: column;
+        align-items: center;
+        margin: 2rem 1rem;
+    }
+    
+    .details-poster {
+        width: 60%;
+        margin-bottom: 1rem;
+    }
+
+    .mediaTypeContainer {
+        margin-top: 1rem;
+    }
+    
+    .details-content {
+        width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .details-resume {
+        width: 100%;
+    }
+    
+    .streaming-providers-container {
+        justify-content: center;
+    }
+    
+    .providers-section {
+        min-width: 150px;
+    }
+
+    .providers-section:hover {
+        border-color: rgba(0, 48, 73, 0.1);
+    }
+
+    .providers-section .provider:hover {
+        transform: none;
+    }
+    
+    .actors-container {
+        justify-content: center;
+    }
+    
+    .actor {
+        width: 180px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .details-container {
+        margin: 1rem 0.5rem;
+    }
+    
+    .details-poster {
+        width: 80%;
+    }
+    
+    .details-content h1 {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .mediaTypeContainer {
+        justify-content: center;
+        display: flex;
+    }
+    
+    .watchlist-action-container {
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .details-content p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .actors-container {
+        gap: 10px;
+    }
+    
+    .actor {
+        width: 140px;
+    }
+    
+    .actor p {
+        font-size: 0.9rem;
+        margin: 3px 0;
+    }
+    
+    .streaming-providers h2 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .providers-section {
+        min-width: 120px;
+    }
+    
+    .providers-section h4 {
+        font-size: 0.9rem;
+    }
+    
+    .provider {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .details-poster {
+        width: 90%;
+    }
+    
+    .details-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .watchlist-btn {
+        min-width: auto;
+        width: 90%;
+        font-size: 0.9rem;
+    }
+    
+    .details-content p {
+        font-size: 0.9rem;
+    }
+    
+    .details-content .star-rating {
+        font-size: 1.2rem;
+    }
+    
+    .streaming-providers-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .providers-section {
+        width: 90%;
+    }
+    
+    .actors-container {
+        justify-content: space-around;
+    }
+    
+    .actor {
+        width: 120px;
+    }
+    
+    .actor p {
+        font-size: 0.8rem;
+    }
+    
+    .details-content h2 {
+        font-size: 1.3rem;
+        text-align: center;
+        margin-top: 1.5rem;
     }
 }

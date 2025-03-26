@@ -140,7 +140,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="dropdown-menu">
                         <img src="../assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
-                        <a href="profile.php">Profil</a>
+                        <a href="profile.php">Mon profil</a>
                         <a href="watchlist.php">Ma watchlist</a>
                         <a href="logout.php" id="logout">Déconnexion</a>
                     </div>
