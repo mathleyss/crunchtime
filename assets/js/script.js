@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
     carousels.forEach(initCarousel);
 
 
-
      // Pop-up de message pour le site
      const message = document.querySelector('.messageWatchlist');
      if (message) {

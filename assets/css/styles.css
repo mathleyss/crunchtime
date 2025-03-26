@@ -695,17 +695,9 @@ transform: scale(1.1);
     justify-content: center;
     align-items: center;
     padding: 3rem;
-    border: 1px solid rgba(0, 48, 73, 0.1);
-    border-radius: 15px;
     width: 100%;
     max-width: 600px;
-    transition-duration: .3s;
     background-color: rgba(253, 246, 246, 0.5);
-}
-
-.profileContainer:hover {
-    border: 1px solid var(--darkblue-color);
-    transition-duration: .3s;
 }
 
 .avatarContainer {
@@ -1541,3 +1533,182 @@ gap: 1rem;
     object-fit: cover;
 }
 
+
+
+/* ------
+
+
+    RESPONSIVE
+        
+    
+    ------ */
+
+
+
+/* ---------- PAGE PROFIL ---------- */
+@media screen and (max-width: 768px) {
+    .profileContainer {
+        padding: 2rem;
+        max-width: 90%;
+    }
+    
+    .userIdentity {
+        font-size: 1.5rem !important;
+    }
+    
+    .userInfo p {
+        font-size: 1rem;
+    }
+
+    .avatarContainer:hover img {
+        transform: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .profileContainer {
+        padding: 1.5rem;
+        margin-top: 10px;
+        border-radius: 10px;
+    }
+    
+    .avatarContainer img {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .userIdentity {
+        font-size: 1.3rem !important;
+    }
+    
+    .userInfo p {
+        font-size: 0.9rem;
+        padding-bottom: 0.7rem;
+    }
+    
+    #profilePage h2 {
+        font-size: 1.6rem;
+        margin-top: 15px;
+    }
+}
+
+
+
+/* ---------- WATCHLIST ---------- */
+@media screen and (max-width: 992px) {
+    /* Masquer les flèches de navigation */
+    .buttonNavSearch {
+        display: none;
+    }
+    
+    /* Ajustement du caroussel */
+    .watchlist .carousel {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    
+    /* Ajuster la taille des cartes médias */
+    .watchlist .movie-card {
+        width: 210px;
+    }
+
+    /* Enleve l'effet de survol des cartes médias */
+    .watchlist .movie-card:hover {
+        transform: none;
+    }
+
+    /* Supprimer les effets du bouton */
+    .btnWatchlistDel .button:hover {
+        width: 30px;
+        border-radius: 50%;
+        background-color: var(--gray-color);
+        transition-duration: 0s;
+    }
+    
+    .btnWatchlistDel .button:hover .svgIconBtn {
+        opacity: 1;
+    }
+    
+    .btnWatchlistDel .button:hover::before {
+        opacity: 0;
+        transform: none;
+    }
+    
+    /* Réduction de l'ombre du bouton de suppression */
+    .btnWatchlistDel .button {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    }
+}
+
+@media screen and (max-width: 576px) {
+    /* Centrer les éléments sur mobile */
+    .watchlist .carousel-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+    
+    .watchlist .carousel {
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .watchlist .movie-card {
+        width: 250px;
+    }
+    
+    /* Ajuster les éléments internes des cartes */
+    .watchlist .movie-card .media-title-container {
+        margin-top: 5px;
+    }
+    
+    .watchlist .movie-card h4 {
+        font-size: 1rem;
+    }
+    
+    .watchlist .movie-card .added-date {
+        font-size: 0.65rem;
+        margin: 3px 0;
+    }
+    
+    /* Ajuster la position du bouton de suppression */
+    .watchlist .btnWatchlistDel {
+        top: 20px;
+        right: 20px;
+    }
+    
+    .watchlist .btnWatchlistDel .button {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .watchlist .btnWatchlistDel .svgIconBtn {
+        width: 12px;
+    }
+}
+
+/* Ajuster le carrousel pour qu'il soit plus adaptif */
+@media screen and (max-width: 992px) {
+    .watchlist .carousel::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .watchlist .carousel {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        overflow-x: scroll;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding: 10px 5px;
+    }
+    
+    /* Ajuster le titre principal */
+    .watchlist h2 {
+        font-size: 1.8rem;
+    }
+}
