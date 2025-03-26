@@ -1200,64 +1200,96 @@ transform: scale(1.1);
     overflow: hidden;
     padding-top: 5rem;
     display: flex;
-    color: var(--darkblue-color);
-    margin: 0 1rem ;
+    color: var(--darkblue-color);;
     padding-bottom: 3rem;
 }
 
 /* Infos du films  */
 
 #swipeInfo{
-    width: 33.33%;
+    width: 27.5%;
+    background-color: #FFF;
+    border-radius: 0 50px 50px 0;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2), 
+                -5px 0 10px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
 }
 #swipeInfo h2 {
-font-size: 2.5rem;
+font-size: 2rem;
 }
-#swipeInfo .date {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-
-}
-
-#swipeInfo h3 {
-    font-size: 1.5rem;
-    margin: 2rem  0 1rem 0;
-}
-#swipeInfo .note {
+#swipeInfo p {
+    font-size: 1.1rem;
     margin-top: 0.5rem;
 }
-#swipeInfo .resume {
-    margin-top: 1rem;
-    line-height: 1.2;
-    text-align: justify;
+
+#swipeInfo .resume{
+    font-size: 1rem;
+    margin: 1rem 0;
 }
+
 #swipeInfo .actors {
+margin-top: 2rem;
 display: flex;
+flex-wrap: wrap;
 justify-content: space-between ;
+gap: 1rem;
+}
+
+#swipeInfo .actor {
+    width: calc(25% - 1rem);
+    text-align: center;
 }
 
 #swipeInfo .actors img {
-    width: 90%;
+    width: 100%;
+    height: auto;
     object-fit: cover;
     object-position: 50% 50%;
+    border-radius: 20px;
 }
 
 #swipeInfo .actors p {
     font-size: 0.7rem;
 }
 
+#swipeInfo .star-rating {
+    font-size: 2rem;
+}
 
-/* Fonction pour le swipe */
+.swipeBtnDetails {
+    display: flex;
+    justify-content: center;
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.swipeBtnDetails:hover {
+    background-color: var(--darkblue-color);
+}
+.swipeBtnDetails:active {
+    transform: scale(0.95);
+}
+
+/* CSS pour le swipe */
+
 
 #swipeFeature {
-    width: 33.33%;
+    margin-top: 10rem;
+    width: 45%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 #swiper {
-    height: 55vh;
+    height: 65vh;
     aspect-ratio: 2 / 3;
     perspective: 1000px;
     perspective-origin: center 50%;
@@ -1267,7 +1299,8 @@ justify-content: space-between ;
 
 .swipeButtons{
     margin-top: 2rem;
-    justify-content: space-around;
+    gap: 10rem;
+    justify-content: center;
     display: flex;
     width: 100%;
 
@@ -1352,9 +1385,80 @@ justify-content: space-between ;
 }
 
 /* Info de la watchlist */
-#swipeWatchlist {
-    width: 33.33%;
+.swipeWatchlist {
+
+    width: 27.5%;
+    background-color: #FFF;
+    border-radius: 50px 0 0 50px ;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2), 
+                -5px 0 10px rgba(0, 0, 0, 0.2);
 }
+
+#watchlist-container{
+    margin-bottom: 3rem;
+}
+
+.swipeWatchlist h2 {
+    margin: 2rem 0 1rem 2rem;
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.swipeWatchlist .star-rating{
+    font-size: 2rem;
+}
+
+#media-container {
+    display: flex;
+    justify-content: center;
+    padding:0.5rem 0 0.5rem 5rem ;
+}
+#media-poster-container{
+    width: 30%;
+    transition: all 0.3s ease;
+}
+
+#media-poster-container:hover {
+    transform: scale(1.05);
+}
+
+#media-poster-container img{
+    width: 80%;
+    border-radius: 1rem;
+    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2), 
+    -5px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#media-title-container {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.swipeBtnWatchlist {
+    display: flex;
+    justify-content: center;
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    margin:0 2rem 4rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.swipeBtnWatchlist:hover {
+    background-color: var(--secondary-color);
+}
+.swipeBtnWatchlist:active {
+    transform: scale(0.95);
+}
+
 
 /*---------
     Fournisseurs de streaming 
@@ -1436,3 +1540,4 @@ justify-content: space-between ;
     width: 100%;
     object-fit: cover;
 }
+

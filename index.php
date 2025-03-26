@@ -96,7 +96,7 @@ if (isset($_SESSION['user_id'])) {
             <div class="menuLeft">
                 <a href="index.php" class="logoAccueil"> <img src="assets/images/logo.png" alt=""></a>
                 <a href="index.php" id="active">Accueil</a>
-                <a href="pages/swipe.php">CrunchSwipe</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'pages/swipe.php' : 'pages/login.php'; ?>">CrunchSwipe</a>
             </div>
             <!-- BARRE DE RECHERCHE -->
             <div class="searchBar">
@@ -112,9 +112,9 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="profile">
-                    <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
+                    <img src="assets/images/profile.png" alt="Profil" class="profile-img">
                     <div class="dropdown-menu">
-                        <img src="../assets/images/profile.png" alt="">
+                        <img src="assets/images/profile.png" alt="">
                         <p><?= htmlspecialchars($user['username']) ?></p>
                         <a href="pages/profile.php">Mon profil</a>
                         <a href="pages/watchlist.php">Ma watchlist</a>
@@ -370,7 +370,7 @@ if (isset($_SESSION['user_id'])) {
                 <p> Vous hésitez ?</p>
                 <p>Swipez !</p>
             </div>
-            <a href="pages/swipe.php" class="btnRegister">Découvrez Crunchswipe</a>
+            <a href="<?php echo isset($_SESSION['user_id']) ? 'pages/swipe.php' : 'pages/login.php'; ?>" class="btnRegister"> Découvrez CrunchSwipe</a>
         </section>
 
 

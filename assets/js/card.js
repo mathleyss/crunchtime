@@ -121,6 +121,7 @@ class Card {
     this.element.style.transition = 'transform 1s';
     this.element.style.transform = `translate(${direction * window.innerWidth}px, ${this.#offsetY}px) rotate(${90 * direction}deg)`;
     this.element.classList.add('dismissing');
+
     
     setTimeout(() => {
         this.element.remove();

@@ -53,7 +53,8 @@ $date = $formatter->format(strtotime($user['date']));
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
                 <a href="../index.php">Accueil</a>
-                <a href="swipe.php">CrunchSwipe</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+
             </div>
             <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
             <div class="searchBar">

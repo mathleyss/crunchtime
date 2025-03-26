@@ -103,7 +103,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
                 <a href="../index.php">Accueil</a>
-                <a href="swipe.php">CrunchSwipe</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+
             </div>
 
             <div class="menuRight">

@@ -118,6 +118,7 @@ function timeAgo($timestamp) {
         return 'il y a ' . floor($time_diff / 31536000) . ' an' . (floor($time_diff / 31536000) > 1 ? 's' : '');
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -145,7 +146,8 @@ function timeAgo($timestamp) {
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
                 <a href="../index.php">Accueil</a>
-                <a href="swipe.php">CrunchSwipe</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+
             </div>
             <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
             <div class="searchBar">

@@ -77,7 +77,8 @@ if (isset($_SESSION['user_id'])) {
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
                 <a href="../index.php">Accueil</a>
-                <a href="swipe.php" id="active">CrunchSwipe</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+
             </div>
             <div class="searchBar">
                 <form action="search.php" method="GET">
@@ -133,29 +134,13 @@ if (isset($_SESSION['user_id'])) {
 
 
         <section class="swipeWatchlist">
-    <h2>Ma Watchlist</h2>
-    <div class="watchlist-container">
-        <?php if (empty($mediaDetails)): ?>
-            <p class="erreurWatchlist">Vous n'avez actuellement aucun film ou série dans votre watchlist.</p>
-        <?php else: ?>
-            <?php foreach ($mediaDetails as $media): ?>
-                <div class="movie-card">
-                    <div class="movie-poster">
-                        <a href="details.php?id=<?= $media['id'] ?>">
-                            <?php if (!empty($media['poster_path'])): ?>
-                                <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>" alt="<?= htmlspecialchars($media['title'] ?? $media['name']) ?>">
-                            <?php else: ?>
-                                <img src="../assets/images/placeholder_movie.png" alt="<?= htmlspecialchars($media['title'] ?? $media['name']) ?>" class="placeholder-poster">
-                            <?php endif; ?>
-                        </a>
-                    </div>
-                    <div class="media-title-container">
-                        <h3><?= htmlspecialchars($media['title'] ?? $media['name']) ?></h3>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+    <h2>Récemment ajouté</h2>
+    <div class="watchlist-container" id="watchlist-container">
+    <?php 
+            include 'get_watchlist.php'; 
+        ?>
     </div>
+    <a href="watchlist.php" class="swipeBtnWatchlist">Voir ma watchlist</a>
 </section>
 
     </main>
