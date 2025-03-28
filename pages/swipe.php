@@ -76,8 +76,9 @@ if (isset($_SESSION['user_id'])) {
         <nav class="menu">
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+                <a href="../index.php" class="linkAccueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?> "
+                    id="active">CrunchSwipe</a>
 
             </div>
             <div class="searchBar">
@@ -91,8 +92,7 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profil"
-                            class="profile-img">
+                        <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
                         <div class="dropdown-menu">
                             <img src="../assets/images/profile.png" alt="">
                             <p><?= htmlspecialchars($user['username']) ?></p>
@@ -123,8 +123,25 @@ if (isset($_SESSION['user_id'])) {
 
             <div id="swiper"></div>
             <div class="swipeButtons">
-            <ion-icon id="dislike" name="heart-dislike"></ion-icon>
-            <ion-icon id="like" name="heart"></ion-icon>
+
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="dislike">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M20 13H4C3.73478 13 3.48043 12.8946 3.29289 12.7071C3.10536 12.5196 3 12.2652 3 12C3 11.7348 3.10536 11.4804 3.29289 11.2929C3.48043 11.1054 3.73478 11 4 11H20C20.2652 11 20.5196 11.1054 20.7071 11.2929C20.8946 11.4804 21 11.7348 21 12C21 12.2652 20.8946 12.5196 20.7071 12.7071C20.5196 12.8946 20.2652 13 20 13Z"
+                            fill="#000000"></path>
+                    </g>
+                </svg>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="like">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M12.75 11.25V5C12.75 4.80109 12.671 4.61032 12.5303 4.46967C12.3897 4.32902 12.1989 4.25 12 4.25C11.8011 4.25 11.6103 4.32902 11.4697 4.46967C11.329 4.61032 11.25 4.80109 11.25 5V11.25H5C4.80109 11.25 4.61032 11.329 4.46967 11.4697C4.32902 11.6103 4.25 11.8011 4.25 12C4.25 12.1989 4.32902 12.3897 4.46967 12.5303C4.61032 12.671 4.80109 12.75 5 12.75H11.25V19C11.2526 19.1981 11.3324 19.3874 11.4725 19.5275C11.6126 19.6676 11.8019 19.7474 12 19.75C12.1989 19.75 12.3897 19.671 12.5303 19.5303C12.671 19.3897 12.75 19.1989 12.75 19V12.75H19C19.1989 12.75 19.3897 12.671 19.5303 12.5303C19.671 12.3897 19.75 12.1989 19.75 12C19.7474 11.8019 19.6676 11.6126 19.5275 11.4725C19.3874 11.3324 19.1981 11.2526 19 11.25H12.75Z"
+                            fill="#000000"></path>
+                    </g>
+                </svg>
             </div>
 
 
@@ -134,19 +151,17 @@ if (isset($_SESSION['user_id'])) {
 
 
         <section class="swipeWatchlist">
-    <h2>Récemment ajouté</h2>
-    <div class="watchlist-container" id="watchlist-container">
-    <?php 
-            include 'get_watchlist.php'; 
-        ?>
-    </div>
-    <a href="watchlist.php" class="swipeBtnWatchlist">Voir ma watchlist</a>
-</section>
+            <h2>Récemment ajouté</h2>
+            <div class="watchlist-container" id="watchlist-container">
+                <?php
+                include 'get_watchlist.php';
+                ?>
+            </div>
+            <a href="watchlist.php" class="swipeBtnWatchlist">Voir ma watchlist</a>
+        </section>
 
     </main>
 
     <script src="../assets/js/card.js"></script>
     <script src="../assets/js/swipe.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>

@@ -7,7 +7,7 @@ const baseURL = '/crunchtime/pages/';
 
 // Variables
 let cardCount = 0;
-let currentMovieId = null;  // Variable pour stocker l'ID du film actuel
+let currentMovieId = null; // Variable pour stocker l'ID du film actuel
 const apiKey = 'ad3586245e96a667f42a02c1b8708569'; // Remplacez par votre clé API TMDb
 let page = 1; // Variable pour changer la page
 let movies = []; // Stocke les films avec leurs infos
@@ -56,7 +56,7 @@ async function fetchMovies() {
             releaseDate: formatYear(movie.release_date), // Utilisation de formatYear pour récupérer l'année
             rating: Math.round(movie.vote_average),
             genres: movie.genre_ids.map(id => genreMap[id] || "Inconnu"),
-            director: movie.director || "Inconnu",  // Ajout du réalisateur
+            director: movie.director || "Inconnu", // Ajout du réalisateur
             overview: movie.overview
         })).filter(movie => movie.posterUrl !== null);
 
@@ -87,15 +87,15 @@ function generateStars(rating) {
     const emptyStars = 5 - fullStars - halfStar;
 
     let starsHTML = '';
-    
+
     // Générer les étoiles pleines
     starsHTML += '★'.repeat(fullStars);
-    
+
     // Ajouter une demi-étoile si nécessaire
     if (halfStar) {
         starsHTML += '★';
     }
-    
+
     // Ajouter les étoiles vides
     starsHTML += '☆'.repeat(emptyStars);
 
@@ -113,10 +113,16 @@ async function fetchCredits(movieId) {
             character: actor.character,
             image: actor.profile_path ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` : 'https://via.placeholder.com/200'
         }));
-        return { director, actors };
+        return {
+            director,
+            actors
+        };
     } catch (error) {
         console.error('Erreur lors de la récupération des crédits :', error);
-        return { director: "Inconnu", actors: [] };
+        return {
+            director: "Inconnu",
+            actors: []
+        };
     }
 }
 
@@ -150,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Ensuite, appeler `updateWatchlist()` pour récupérer les films en base de données
-    updateWatchlist(); 
+    updateWatchlist();
 });
 
 // Modifier la fonction addToWatchlist pour inclure la mise à jour de la watchlist
@@ -170,23 +176,25 @@ function addToWatchlist() {
     const mediaType = "movie";
 
     fetch(`ajout_watchlist.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "media_id=" + encodeURIComponent(currentMovieId) + 
-            "&media_type=" + encodeURIComponent(mediaType)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("Film ajouté à la watchlist :", currentMovie.title);
-            updateWatchlist(); // Mettre à jour la watchlist après ajout
-        } else {
-            console.error("Erreur lors de l'ajout à la watchlist :", data.message);
-        }
-    })
-    .catch(error => {
-        console.error("Erreur lors de la requête AJAX :", error);
-    });
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: "media_id=" + encodeURIComponent(currentMovieId) +
+                "&media_type=" + encodeURIComponent(mediaType)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Film ajouté à la watchlist :", currentMovie.title);
+                updateWatchlist(); // Mettre à jour la watchlist après ajout
+            } else {
+                console.error("Erreur lors de l'ajout à la watchlist :", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Erreur lors de la requête AJAX :", error);
+        });
 }
 
 // Ajouter une nouvelle carte avec une affiche de film
@@ -240,7 +248,10 @@ async function updateDisplayedMovieInfo() {
     const movie = movies.find(m => m.id == movieId);
     if (!movie) return;
 
-    const { director, actors } = await fetchCredits(movie.id);
+    const {
+        director,
+        actors
+    } = await fetchCredits(movie.id);
     const duration = await fetchMovieDuration(movie.id);
     const hours = Math.floor(duration / 60);
     const minutes = duration % 60;

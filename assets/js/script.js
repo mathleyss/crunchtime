@@ -8,11 +8,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (container && prevBtn && nextBtn) {
             prevBtn.addEventListener("click", () => {
-                container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+                container.scrollBy({
+                    left: -scrollAmount,
+                    behavior: "smooth"
+                });
             });
 
             nextBtn.addEventListener("click", () => {
-                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+                container.scrollBy({
+                    left: scrollAmount,
+                    behavior: "smooth"
+                });
             });
         }
     }
@@ -30,14 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
     carousels.forEach(initCarousel);
 
 
-     // Pop-up de message pour le site
-     const message = document.querySelector('.messageWatchlist');
-     if (message) {
-         setTimeout(() => {
-             message.classList.add('masque'); // ajout de la classe masque à l'élément pour faire disparaître progressivement l'écran de démarrage
-             setTimeout(() => { // Déclenchement de la fonction après 0.5s (500ms)
-                 message.classList.add('supprime'); // ajout de la classe supprime à l'élément pour effacer l'élément
-             }, 500);
-         }, 1000);
-     }
+    // Pop-up de message pour le site
+    const message = document.querySelector('.messageWatchlist');
+    if (message) {
+        setTimeout(() => {
+            message.classList.add('masque'); // ajout de la classe masque à l'élément pour faire disparaître progressivement l'écran de démarrage
+            setTimeout(() => { // Déclenchement de la fonction après 0.5s (500ms)
+                message.classList.add('supprime'); // ajout de la classe supprime à l'élément pour effacer l'élément
+            }, 500);
+        }, 1000);
+    }
 });

@@ -35,7 +35,8 @@ $date = $formatter->format(strtotime($user['date']));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
 
     <!-- Lien favicons -->
     <link rel="icon" type="image/png" href="../assets/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -53,7 +54,7 @@ $date = $formatter->format(strtotime($user['date']));
         <nav class="menu menuOther">
             <div class="menuLeft">
                 <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php">Accueil</a>
+                <a href="../index.php" class="linkAccueil">Accueil</a>
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
             </div>
             <div class="searchBar">
@@ -75,7 +76,7 @@ $date = $formatter->format(strtotime($user['date']));
                             <a href="logout.php" id="logout">Déconnexion</a>
                         </div>
                     </div>
-                <!-- ... Sinon ... -->
+                    <!-- ... Sinon ... -->
                 <?php else: ?>
                     <a href="login.php" class="btnLogin">
                         Connexion
@@ -91,7 +92,8 @@ $date = $formatter->format(strtotime($user['date']));
                 <img src="../assets/images/profile.png" />
             </div>
             <div class="userInfo">
-                <p class="userIdentity"><?= htmlspecialchars($user['firstname']) ?> <?= htmlspecialchars($user['lastname']) ?></p>
+                <p class="userIdentity"><?= htmlspecialchars($user['firstname']) ?>
+                    <?= htmlspecialchars($user['lastname']) ?></p>
 
                 <p class="userName"><strong>Nom d'utilisateur :</strong> <?= htmlspecialchars($user['username']) ?></p>
 
@@ -102,4 +104,5 @@ $date = $formatter->format(strtotime($user['date']));
         </div>
     </main>
 </body>
+
 </html>

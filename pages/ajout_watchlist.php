@@ -7,7 +7,8 @@ session_start();
 
 header("Content-Type: application/json");
 
-function exception_error_handler($severity, $message, $file, $line) {
+function exception_error_handler($severity, $message, $file, $line)
+{
     throw new ErrorException($message, 0, $severity, $file, $line);
 }
 set_error_handler("exception_error_handler");
@@ -43,12 +44,12 @@ try {
         $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
         $stmt->bindValue(':media_id', $media_id, SQLITE3_INTEGER);
         $stmt->bindValue(':media_type', $media_type, SQLITE3_TEXT);
-        
+
         if ($stmt->execute()) {
             echo json_encode(['success' => true, 'message' => 'Le contenu a été ajouté à votre watchlist.']);
         } else {
             $error = $db->lastErrorMsg();
-            
+
             // Si c'est une erreur de contrainte unique, donner un message plus clair
             if (strpos($error, 'UNIQUE constraint failed') !== false) {
                 echo json_encode(['success' => false, 'message' => 'Ce contenu est déjà dans votre watchlist.']);
