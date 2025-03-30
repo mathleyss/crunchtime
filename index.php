@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-// Connexion à SQLite
+// ===========================================
+// ======= CONNEXION À LA BASE DONNÉES =======
+// ===========================================
 $db = new SQLite3('database/crunchtime.db');
 $user = null; // Initialiser la variable utilisateur
 
@@ -19,6 +21,7 @@ if (isset($_SESSION['user_id'])) {
 $apiKey = 'ad3586245e96a667f42a02c1b8708569';
 $cacheDirectory = 'cache/';
 
+//Définition des urls pour chaque carrousel
 $urls = [
     'trending_movies' => "https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey&language=fr-FR",
     'trending_series' => "https://api.themoviedb.org/3/trending/tv/week?api_key=$apiKey&language=fr-FR",
@@ -28,7 +31,10 @@ $urls = [
 
 
 
-// MISE EN CACHE
+// ===========================================
+// ============== MISE EN CACHE ==============
+// ===========================================
+
 function getCachedApiResponse($url, $cacheDirectory, $cacheKey, $cacheDuration = 3600)
 {
     $cacheFile = $cacheDirectory . $cacheKey . '.json';
@@ -81,6 +87,7 @@ if (isset($_SESSION['user_id'])) {
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <title>CrunchTime</title>
+    <meta name="description" content="CrunchTime - Découvrez et gérez vos films et séries préférés">
 
     <!-- Lien favicons -->
     <link rel="icon" type="image/png" href="assets/images/favicon/favicon-96x96.png" sizes="96x96" />
@@ -93,61 +100,63 @@ if (isset($_SESSION['user_id'])) {
 </head>
 
 <body id="homePage">
-    <header>
-        <nav class="menu">
+    <header role="banner">
+        <nav class="menu" role="navigation" aria-label="Navigation principale">
             <div class="menuLeft">
-                <a href="index.php" class="logoAccueil"> <img src="assets/images/logo.png" alt=""></a>
-                <a href="index.php" class="linkAccueil" id="active">Accueil</a>
+                <a href="index.php" class="logoAccueil" aria-label="Retour à l'accueil"> 
+                    <img src="assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="index.php" class="linkAccueil" id="active" aria-current="page">Accueil</a>
                 <a
-                    href="<?php echo isset($_SESSION['user_id']) ? 'pages/swipe.php' : 'pages/login.php'; ?>">CrunchSwipe</a>
+                    href="<?php echo isset($_SESSION['user_id']) ? 'pages/swipe.php' : 'pages/login.php'; ?>" aria-label="Accéder à CrunchSwipe">CrunchSwipe</a>
             </div>
             <!-- BARRE DE RECHERCHE -->
-            <div class="searchBar">
-                <form action="pages/search.php" method="GET">
+            <div class="searchBar" role="search">
+                <form action="pages/search.php" method="GET" aria-label="Formulaire de recherche">
 
-                    <img src="assets/images/icon/search.svg" alt="Search">
+                    <img src="assets/images/icon/search.svg" alt="Icône de recherche" aria-hidden="true">
 
-                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
+                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required aria-label="Rechercher un film ou une série">
                 </form>
             </div>
             <div class="menuRight">
 
-                <!-- Si un utilisateur est connecté, alors ... -->
+                <!-- Si un utilisateur est connecté -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="profile">
-                        <img src="assets/images/profile.png" alt="Profil" class="profile-img">
-                        <div class="dropdown-menu">
-                            <img src="assets/images/profile.png" alt="">
+                    <div class="profile" role="menu" aria-label="Menu utilisateur">
+                        <img src="assets/images/profile.png" alt="Photo de profil" class="profile-img">
+                        <div class="dropdown-menu" role="menu" aria-label="Options utilisateur">
+                            <img src="assets/images/profile.png" alt="Photo de profil utilisateur" aria-hidden="true">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="pages/profile.php">Mon profil</a>
-                            <a href="pages/watchlist.php">Ma watchlist</a>
-                            <a href="pages/logout.php" id="logout">Déconnexion</a>
+                            <a href="pages/profile.php" aria-label="Accéder à mon profil">Mon profil</a>
+                            <a href="pages/watchlist.php" aria-label="Accéder à ma watchlist">Ma watchlist</a>
+                            <a href="pages/logout.php" id="logout" aria-label="Se déconnecter">Déconnexion</a>
                         </div>
                     </div>
-                    <!-- ... Sinon ... -->
                 <?php else: ?>
-                    <a href="pages/login.php" class="btnLogin">
+                    <a href="pages/login.php" class="btnLogin" aria-label="Se connecter">
                         Connexion
                     </a>
                 <?php endif; ?>
             </div>
         </nav>
-        <div class="headerContent">
+        <div class="headerContent" role="region" aria-label="En-tête principal">
             <h1>Crunchtime</h1>
             <p>Swipez, découvrez, partagez</p>
         </div>
     </header>
 
-    <main>
+    <main role="main">
         <!-----------------
             CARROUSEL DES
             FILMS TENDANCES
                     ----------------->
-        <section class="filmsRecents">
+        <section class="filmsRecents" aria-label="Films tendances">
             <div class="catFilmsRecents navTitleArrow">
                 <h3 class="catTitle">Films tendances</h3>
-                <div class="buttonNav">
-                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- BOUTON DE NAVIGATION DANS UN CAROUSSEL -->
+                <div class="buttonNav" role="group" aria-label="Navigation du carrousel">
+                    <svg class="prev" viewBox="0 0 24 24" aria-label="Précédent" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -156,7 +165,7 @@ if (isset($_SESSION['user_id'])) {
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="next" viewBox="0 0 24 24" aria-label="Suivant" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -167,7 +176,7 @@ if (isset($_SESSION['user_id'])) {
                     </svg>
                 </div>
             </div>
-            <div class="carousel-container">
+            <div class="carousel-container" role="region" aria-label="Carrousel de films tendances">
                 <div class="carousel">
                     <?php
                     // Vérifier si la réponse contient des films
@@ -215,15 +224,15 @@ if (isset($_SESSION['user_id'])) {
                                 }
                             }
                             ?>
-                    <!-- Affichage HTML des films -->
-                            <div class="movie-card">
+                            <!-- Affichage HTML des films -->
+                            <div class="movie-card" role="group" aria-label="Carte du film <?= $movieTitle ?>">
                                 <div class="movie-poster">
-                                    <a href="pages/details.php?id=<?= $movieId ?>&type=movie">
+                                    <a href="pages/details.php?id=<?= $movieId ?>&type=movie" aria-label="Voir les détails de <?= $movieTitle ?>">
                                         <?php if (!empty($movie['poster_path'])): ?>
                                             <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>"
-                                                alt="<?= $movieTitle ?>" loading="lazy">
+                                                alt="Affiche du film <?= $movieTitle ?>" loading="lazy">
                                         <?php else: ?>
-                                            <img src="../assets/images/placeholder_movie.png" alt="<?= $movieTitle ?>"
+                                            <img src="../assets/images/placeholder_movie.png" alt="Affiche du film <?= $movieTitle ?>"
                                                 loading="lazy" class="placeholder-poster">
                                         <?php endif; ?>
                                     </a>
@@ -249,10 +258,9 @@ if (isset($_SESSION['user_id'])) {
                                         <!-- Bouton pour ajouter le média (avec AJAX) -->
                                         <div class="btnWatchlist btnWatchlistAdd">
                                             <button class="button toggle-watchlist" data-id="<?= htmlspecialchars($movieId); ?>"
-                                                data-action="add" data-type="movie">
+                                                data-action="add" data-type="movie" aria-label="Ajouter <?= $movieTitle ?> à la watchlist">
                                                 <!-- Icône "+" -->
-                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" width="200"
-                                                    height="200" viewBox="0 0 14 14">
+                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
                                                     <path fill="currentColor" fill-rule="evenodd"
                                                         d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z"
                                                         clip-rule="evenodd" />
@@ -281,11 +289,12 @@ if (isset($_SESSION['user_id'])) {
             CARROUSEL DES
             FILMS D'ACTION
                     ----------------->
-        <section class="filmsAction">
+        <section class="filmsAction" aria-label="Films d'action">
             <div class="catFilmsAction navTitleArrow">
                 <h3 class="catTitle">Films d'action</h3>
-                <div class="buttonNav">
-                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- BOUTON DE NAVIGATION DANS UN CAROUSSEL -->
+                <div class="buttonNav" role="group" aria-label="Navigation du carrousel">
+                    <svg class="prev" viewBox="0 0 24 24" aria-label="Précédent" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -294,7 +303,7 @@ if (isset($_SESSION['user_id'])) {
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="next" viewBox="0 0 24 24" aria-label="Suivant" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -305,7 +314,7 @@ if (isset($_SESSION['user_id'])) {
                     </svg>
                 </div>
             </div>
-            <div class="carousel-container">
+            <div class="carousel-container" role="region" aria-label="Carrousel de films d'action">
                 <div class="carousel">
                     <?php
                     if (isset($actionMovies['results'])) {
@@ -347,26 +356,26 @@ if (isset($_SESSION['user_id'])) {
                                 }
                             }
                             ?>
-                    <div class="movie-card">
-                        <div class="movie-poster">
-                            <a href="pages/details.php?id=<?= $movieId ?>&type=movie">
-                                <?php if (!empty($movie['poster_path'])): ?>
-                                <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>"
-                                    alt="<?= $movieTitle ?>" loading="lazy">
-                                <?php else: ?>
-                                <img src="../assets/images/placeholder_movie.png" alt="<?= $movieTitle ?>"
-                                    loading="lazy" class="placeholder-poster">
-                                <?php endif; ?>
-                            </a>
-                        </div>
-                        <h4>
-                            <?= $movieTitle ?>
-                        </h4>
-                        <p>
-                            <?= $releaseYear ?>
-                        </p>
+                            <div class="movie-card" role="group" aria-label="Carte du film <?= $movieTitle ?>">
+                                <div class="movie-poster">
+                                    <a href="pages/details.php?id=<?= $movieId ?>&type=movie" aria-label="Voir les détails de <?= $movieTitle ?>">
+                                        <?php if (!empty($movie['poster_path'])): ?>
+                                            <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>"
+                                                alt="Affiche du film <?= $movieTitle ?>" loading="lazy">
+                                        <?php else: ?>
+                                            <img src="../assets/images/placeholder_movie.png" alt="Affiche du film <?= $movieTitle ?>"
+                                                loading="lazy" class="placeholder-poster">
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <h4>
+                                    <?= $movieTitle ?>
+                                </h4>
+                                <p>
+                                    <?= $releaseYear ?>
+                                </p>
 
-                        <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
+                                <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                                 <?php if (isset($_SESSION['user_id'])): ?>
                                     <?php if (isset($watchlistMediaIds[$movieId . '_movie'])): ?>
                                         <!-- Bouton qui valide la présence du média dans la watchlist -->
@@ -384,10 +393,9 @@ if (isset($_SESSION['user_id'])) {
                                         <!-- Bouton pour ajouter le média (avec AJAX) -->
                                         <div class="btnWatchlist btnWatchlistAdd">
                                             <button class="button toggle-watchlist" data-id="<?= htmlspecialchars($movieId); ?>"
-                                                data-action="add" data-type="movie">
+                                                data-action="add" data-type="movie" aria-label="Ajouter <?= $movieTitle ?> à la watchlist">
                                                 <!-- Icône "+" -->
-                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" width="200"
-                                                    height="200" viewBox="0 0 14 14">
+                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
                                                     <path fill="currentColor" fill-rule="evenodd"
                                                         d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z"
                                                         clip-rule="evenodd" />
@@ -410,7 +418,9 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </section>
 
-        <section class="cta">
+
+        <!-- BANDEAU CALL TO ACTION -->
+        <section class="cta" role="complementary" aria-label="Découvrir CrunchSwipe">
             <div class="ctaText">
                 <p> Vous hésitez ?</p>
                 <p>Swipez !</p>
@@ -424,11 +434,12 @@ if (isset($_SESSION['user_id'])) {
             CARROUSEL DES
             SERIES TENDANCES
                     ----------------->
-        <section class="seriesTendances">
+        <section class="seriesTendances" aria-label="Séries tendances">
             <div class="catSeriesTendances navTitleArrow">
                 <h3 class="catTitle">Séries tendances</h3>
-                <div class="buttonNav">
-                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- BOUTON DE NAVIGATION DANS UN CAROUSSEL -->
+                <div class="buttonNav" role="group" aria-label="Navigation du carrousel">
+                    <svg class="prev" viewBox="0 0 24 24" aria-label="Précédent" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -437,7 +448,7 @@ if (isset($_SESSION['user_id'])) {
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="next" viewBox="0 0 24 24" aria-label="Suivant" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -448,7 +459,7 @@ if (isset($_SESSION['user_id'])) {
                     </svg>
                 </div>
             </div>
-            <div class="carousel-container">
+            <div class="carousel-container" role="region" aria-label="Carrousel de séries tendances">
                 <div class="carousel">
                     <?php
                     if (isset($series['results'])) {
@@ -476,26 +487,26 @@ if (isset($_SESSION['user_id'])) {
                             }
                             $categoriesList = !empty($categories) ? implode(', ', $categories) : 'Aucune catégorie';
                             ?>
-                    <div class="movie-card">
-                        <div class="movie-poster">
-                            <a href="pages/details.php?id=<?= $serieId ?>&type=tv">
-                                <?php if (!empty($serie['poster_path'])): ?>
-                                <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>"
-                                    alt="<?= $serieTitle ?>" loading="lazy">
-                                <?php else: ?>
-                                <img src="../assets/images/placeholder_movie.png" alt="<?= $serieTitle ?>"
-                                    loading="lazy" class="placeholder-poster">
-                                <?php endif; ?>
-                            </a>
-                        </div>
-                        <h4>
-                            <?= $serieTitle ?>
-                        </h4>
-                        <p>
-                            <?= $releaseYear ?>
-                        </p>
+                            <div class="movie-card" role="group" aria-label="Carte de la série <?= $serieTitle ?>">
+                                <div class="movie-poster">
+                                    <a href="pages/details.php?id=<?= $serieId ?>&type=tv" aria-label="Voir les détails de <?= $serieTitle ?>">
+                                        <?php if (!empty($serie['poster_path'])): ?>
+                                            <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>"
+                                                alt="Affiche de la série <?= $serieTitle ?>" loading="lazy">
+                                        <?php else: ?>
+                                            <img src="../assets/images/placeholder_movie.png" alt="Affiche de la série <?= $serieTitle ?>"
+                                                loading="lazy" class="placeholder-poster">
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <h4>
+                                    <?= $serieTitle ?>
+                                </h4>
+                                <p>
+                                    <?= $releaseYear ?>
+                                </p>
 
-                        <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
+                                <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                                 <?php if (isset($_SESSION['user_id'])): ?>
                                     <?php if (isset($watchlistMediaIds[$serieId . '_tv'])): ?>
                                         <!-- Bouton qui valide la présence du média dans la watchlist -->
@@ -513,10 +524,9 @@ if (isset($_SESSION['user_id'])) {
                                         <!-- Bouton pour ajouter le média (avec AJAX) -->
                                         <div class="btnWatchlist btnWatchlistAdd">
                                             <button class="button toggle-watchlist" data-id="<?= htmlspecialchars($serieId); ?>"
-                                                data-action="add" data-type="tv">
+                                                data-action="add" data-type="tv" aria-label="Ajouter <?= $serieTitle ?> à la watchlist">
                                                 <!-- Icône "+" -->
-                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" width="200"
-                                                    height="200" viewBox="0 0 14 14">
+                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
                                                     <path fill="currentColor" fill-rule="evenodd"
                                                         d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z"
                                                         clip-rule="evenodd" />
@@ -543,11 +553,12 @@ if (isset($_SESSION['user_id'])) {
             CARROUSEL DES
             SERIES LES MIEUX NOTEES 
                     ----------------->
-        <section class="seriesTopRated">
+        <section class="seriesTopRated" aria-label="Séries les mieux notées">
             <div class="catSeriesTopRated navTitleArrow">
                 <h3 class="catTitle">Séries les mieux notées</h3>
-                <div class="buttonNav">
-                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- BOUTON DE NAVIGATION DANS UN CAROUSSEL -->
+                <div class="buttonNav" role="group" aria-label="Navigation du carrousel">
+                    <svg class="prev" viewBox="0 0 24 24" aria-label="Précédent" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -556,7 +567,7 @@ if (isset($_SESSION['user_id'])) {
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="next" viewBox="0 0 24 24" aria-label="Suivant" role="button" tabindex="0" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -567,7 +578,7 @@ if (isset($_SESSION['user_id'])) {
                     </svg>
                 </div>
             </div>
-            <div class="carousel-container">
+            <div class="carousel-container" role="region" aria-label="Carrousel de séries les mieux notées">
                 <div class="carousel">
                     <?php
                     if (isset($topRatedSeries['results'])) {
@@ -595,26 +606,26 @@ if (isset($_SESSION['user_id'])) {
                             }
                             $categoriesList = !empty($categories) ? implode(', ', $categories) : 'Aucune catégorie';
                             ?>
-                    <div class="movie-card">
-                        <div class="movie-poster">
-                            <a href="pages/details.php?id=<?= $serieId ?>&type=tv">
-                                <?php if (!empty($serie['poster_path'])): ?>
-                                <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>"
-                                    alt="<?= $serieTitle ?>" loading="lazy">
-                                <?php else: ?>
-                                <img src="../assets/images/placeholder_movie.png" alt="<?= $serieTitle ?>"
-                                    loading="lazy" class="placeholder-poster">
-                                <?php endif; ?>
-                            </a>
-                        </div>
-                        <h4>
-                            <?= $serieTitle ?>
-                        </h4>
-                        <p>
-                            <?= $releaseYear ?>
-                        </p>
+                            <div class="movie-card" role="group" aria-label="Carte de la série <?= $serieTitle ?>">
+                                <div class="movie-poster">
+                                    <a href="pages/details.php?id=<?= $serieId ?>&type=tv" aria-label="Voir les détails de <?= $serieTitle ?>">
+                                        <?php if (!empty($serie['poster_path'])): ?>
+                                            <img src="https://image.tmdb.org/t/p/w500<?= $serie['poster_path'] ?>"
+                                                alt="Affiche de la série <?= $serieTitle ?>" loading="lazy">
+                                        <?php else: ?>
+                                            <img src="../assets/images/placeholder_movie.png" alt="Affiche de la série <?= $serieTitle ?>"
+                                                loading="lazy" class="placeholder-poster">
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <h4>
+                                    <?= $serieTitle ?>
+                                </h4>
+                                <p>
+                                    <?= $releaseYear ?>
+                                </p>
 
-                        <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
+                                <!-- Gestion des ajouts dans la watchlist si l'utilisateur est connecté -->
                                 <?php if (isset($_SESSION['user_id'])): ?>
                                     <?php if (isset($watchlistMediaIds[$serieId . '_tv'])): ?>
                                         <!-- Bouton qui valide la présence du média dans la watchlist -->
@@ -632,10 +643,9 @@ if (isset($_SESSION['user_id'])) {
                                         <!-- Bouton pour ajouter le média (avec AJAX) -->
                                         <div class="btnWatchlist btnWatchlistAdd">
                                             <button class="button toggle-watchlist" data-id="<?= htmlspecialchars($serieId); ?>"
-                                                data-action="add" data-type="tv">
+                                                data-action="add" data-type="tv" aria-label="Ajouter <?= $serieTitle ?> à la watchlist">
                                                 <!-- Icône "+" -->
-                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" width="200"
-                                                    height="200" viewBox="0 0 14 14">
+                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
                                                     <path fill="currentColor" fill-rule="evenodd"
                                                         d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z"
                                                         clip-rule="evenodd" />
@@ -658,11 +668,8 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </section>
     </main>
-
-    <footer>
-
-
-    </footer>
+    
+    <!-- LIEN VERS CODE JS -->
     <script src="assets/js/watchlist.js"></script>
     <script src="assets/js/script.js"></script>
 </body>

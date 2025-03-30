@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const watchlistButtons = document.querySelectorAll(".watchlist-btn");
 
     watchlistButtons.forEach(button => {
+        button.setAttribute("aria-label", button.dataset.action === "add" ? "Ajouter à la watchlist" : "Supprimer de la watchlist");
+
         button.addEventListener("click", function () {
             const mediaId = this.dataset.id; // Récupère l'ID du média
             const action = this.dataset.action; // Récupère l'action (add/remove)
@@ -46,9 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (action === "add") {
                             this.textContent = "Supprimer de la watchlist";
                             this.dataset.action = "remove";
+                            this.setAttribute("aria-label", "Supprimer de la watchlist"); 
                         } else {
                             this.textContent = "Ajouter à la watchlist";
                             this.dataset.action = "add";
+                            this.setAttribute("aria-label", "Ajouter à la watchlist");
                         }
                     } else {
                         alert(data.message); // Afficher un message en cas d'erreur
@@ -67,6 +71,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const deleteButtons = document.querySelectorAll(".delete-btn");
 
     deleteButtons.forEach(button => {
+        // Ajout d'un aria-label pour l'accessibilité
+        button.setAttribute("aria-label", "Supprimer ce média de la watchlist");
+
         button.addEventListener("click", function () {
             const mediaId = this.dataset.id;
             const mediaType = this.dataset.type; // Récupérer le type de média du bouton
@@ -116,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
      * (pour la page index.php)
      */
     document.querySelectorAll(".toggle-watchlist").forEach(button => {
+        // Ajout d'un aria-label pour l'accessibilité
+        button.setAttribute("aria-label", "Ajouter ce média à la watchlist");
+
         button.addEventListener("click", function () {
             let movieId = this.dataset.id;
             let action = this.dataset.action;
@@ -143,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             const successButton = document.createElement('button');
                             successButton.className = 'success-check';
                             successButton.disabled = true; // Non cliquable
+                            successButton.setAttribute("aria-label", "Ajouté à la watchlist");
                             successButton.innerHTML = `
                             <svg class="svgIconBtn checkIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>

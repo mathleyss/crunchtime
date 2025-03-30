@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Liste complète des genres
+// Liste complète des genres avec leurs identifiants
 $genres = [
     "28" => "Action",
     "12" => "Aventure",
@@ -24,20 +24,22 @@ $genres = [
     "37" => "Western"
 ];
 
-// Vérifier si une recherche a été faite
+// Initialisation des variables pour les films et la clé API
 $movies = null;
 $apiKey = "ad3586245e96a667f42a02c1b8708569";
 
-// Générer les étoiles de notation des médias
+// Fonction pour générer des étoiles en fonction de la note
 function generateStars($rating)
 {
     // Convertir la note sur 10 en note sur 5
     $rating = $rating / 2;
 
+    // Calculer le nombre d'étoiles pleines, demi-étoiles et étoiles vides
     $fullStars = floor($rating);
     $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
     $emptyStars = 5 - $fullStars - $halfStar;
 
+    // Générer les étoiles sous forme de chaîne de caractères
     $stars = str_repeat('★', $fullStars);
     if ($halfStar) {
         $stars .= '★'; // Utiliser une étoile pleine pour les demi-étoiles aussi
@@ -47,18 +49,21 @@ function generateStars($rating)
     return $stars;
 }
 
+// Vérifier si une recherche a été effectuée via les paramètres GET
 if (isset($_GET['query']) || isset($_GET['genre']) || isset($_GET['year'])) {
+    // Récupérer les paramètres de recherche
     $searchQuery = isset($_GET['query']) ? trim($_GET['query']) : '';
     $searchQuery = urlencode(strtolower($searchQuery));
 
     $genre = isset($_GET['genre']) ? $_GET['genre'] : '';
     $year = isset($_GET['year']) ? intval($_GET['year']) : '';
 
+    // Construire l'URL de l'API en fonction des paramètres
     if (!empty($searchQuery)) {
-        // Si une recherche par mot-clé est faite, utiliser search/movie
+        // Si une recherche par mot-clé est effectuée
         $apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=fr&query=$searchQuery";
     } else {
-        // Sinon, utiliser discover/movie pour les filtres de genre et d'année
+        // Sinon, utiliser les filtres de genre et d'année
         $apiUrl = "https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&language=fr";
 
         if (!empty($genre) && array_key_exists($genre, $genres)) {
@@ -69,10 +74,11 @@ if (isset($_GET['query']) || isset($_GET['genre']) || isset($_GET['year'])) {
         }
     }
 
+    // Récupérer les résultats de l'API
     $response = file_get_contents($apiUrl);
     $movies = json_decode($response, true);
 
-    // Si un genre est sélectionné et une recherche par mot-clé est faite
+    // Filtrer les résultats si un genre est sélectionné avec une recherche par mot-clé
     if (!empty($searchQuery) && !empty($genre)) {
         $filteredMovies = [];
         foreach ($movies['results'] as $movie) {
@@ -84,10 +90,13 @@ if (isset($_GET['query']) || isset($_GET['genre']) || isset($_GET['year'])) {
     }
 }
 
-// Connexion à SQLite
+// Connexion à la base de données SQLite
 $db = new SQLite3('../database/crunchtime.db');
 $user = null;
+
+// Vérifier si un utilisateur est connecté
 if (isset($_SESSION['user_id'])) {
+    // Préparer une requête pour récupérer les informations de l'utilisateur
     $stmt = $db->prepare("SELECT id, username, firstname, lastname, email, date FROM users WHERE id = :id");
     $stmt->bindValue(':id', $_SESSION['user_id'], SQLITE3_INTEGER);
     $result = $stmt->execute();
@@ -99,6 +108,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="fr">
 
 <head>
+    <!-- Métadonnées et liens CSS -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/styles.css">
@@ -116,31 +126,35 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
     <header>
-        <nav class="menu menuOther">
+        <nav class="menu menuOther" role="navigation" aria-label="Menu principal">
+            <!-- Menu de navigation -->
             <div class="menuLeft">
-                <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php" class="linkAccueil">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
-
+                <a href="../index.php" class="logoAccueil" aria-label="Retour à l'accueil">
+                    <img src="../assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="../index.php" class="linkAccueil" aria-label="Lien vers la page d'accueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>" aria-label="Lien vers CrunchSwipe">
+                    CrunchSwipe
+                </a>
             </div>
 
             <div class="menuRight">
-
-                <!-- Si un utilisateur est connecté, alors ... -->
+                <!-- Vérifier si un utilisateur est connecté -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profile" class="profile-img">
-                        <div class="dropdown-menu">
-                            <img src="../assets/images/profile.png" alt="">
+                    <!-- Afficher le menu utilisateur -->
+                    <div class="profile" role="menu" aria-label="Menu utilisateur">
+                        <img src="../assets/images/profile.png" alt="Image de profil" class="profile-img">
+                        <div class="dropdown-menu" role="menu" aria-label="Options utilisateur">
+                            <img src="../assets/images/profile.png" alt="Image de profil utilisateur">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="profile.php">Mon profil</a>
-                            <a href="watchlist.php">Ma watchlist</a>
-                            <a href="logout.php" id="logout">Déconnexion</a>
+                            <a href="profile.php" aria-label="Lien vers mon profil">Mon profil</a>
+                            <a href="watchlist.php" aria-label="Lien vers ma watchlist">Ma watchlist</a>
+                            <a href="logout.php" id="logout" aria-label="Déconnexion">Déconnexion</a>
                         </div>
                     </div>
-                    <!-- ... Sinon ... -->
                 <?php else: ?>
-                    <a href="login.php" class="btnLogin">
+                    <!-- Afficher le bouton de connexion -->
+                    <a href="login.php" class="btnLogin" aria-label="Lien vers la page de connexion">
                         Connexion
                     </a>
                 <?php endif; ?>
@@ -148,23 +162,27 @@ if (isset($_SESSION['user_id'])) {
         </nav>
     </header>
 
-    <main class="searchPage">
+    <main class="searchPage" role="main">
         <h1 class="titleSearch">Résultats de recherche</h1>
-        <form class="filters" action="search.php" method="GET">
-            <input type="text" name="query" placeholder="Rechercher..." class="searchInput">
-            <select name="genre">
+        <!-- Formulaire de recherche -->
+        <form class="filters" action="search.php" method="GET" role="search" aria-label="Formulaire de recherche">
+            <input type="text" name="query" placeholder="Rechercher..." class="searchInput" aria-label="Champ de recherche">
+            <select name="genre" aria-label="Filtrer par genre">
                 <option value="">Tous les genres</option>
                 <?php foreach ($genres as $id => $name): ?>
                     <option value="<?= $id ?>"><?= $name ?></option>
                 <?php endforeach; ?>
             </select>
-            <input class="yearInput" type="number" name="year" placeholder="Année" min="1900" max="<?= date('Y') ?>">
-            <button type="submit" class="searchPageBtn">Rechercher</button>
+            <input class="yearInput" type="number" name="year" placeholder="Année" min="1900" max="<?= date('Y') ?>" aria-label="Filtrer par année">
+            <button type="submit" class="searchPageBtn" aria-label="Lancer la recherche">Rechercher</button>
         </form>
+
+        <!-- Afficher les résultats de recherche -->
         <?php if ($movies && isset($movies['results']) && count($movies['results']) > 0): ?>
-            <div class="buttonNavSearch">
+            <!-- Navigation pour les résultats -->
+            <div class="buttonNavSearch" role="navigation" aria-label="Navigation des résultats">
                 <div class="buttonNav">
-                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Précédent">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -173,7 +191,7 @@ if (isset($_SESSION['user_id'])) {
                                 fill="#000000"></path>
                         </g>
                     </svg>
-                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Suivant">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                         <g id="SVGRepo_iconCarrier">
@@ -185,35 +203,39 @@ if (isset($_SESSION['user_id'])) {
                 </div>
             </div>
 
-            <div class="carousel-container">
+            <!-- Affichage des films sous forme de carousel -->
+            <div class="carousel-container" role="region" aria-label="Liste des films">
                 <div class="carousel">
                     <?php foreach ($movies['results'] as $movie): ?>
-                        <div class="movie-card">
+                        <div class="movie-card" role="article" aria-label="Carte du film <?= htmlspecialchars($movie['title']) ?>">
+                            <!-- Afficher l'affiche du film -->
                             <div class="movie-poster">
-                                <a href="details.php?id=<?= $movie['id'] ?>&type=movie">
+                                <a href="details.php?id=<?= $movie['id'] ?>&type=movie" aria-label="Voir les détails de <?= htmlspecialchars($movie['title']) ?>">
                                     <?php if (!empty($movie['poster_path'])): ?>
                                         <img src="https://image.tmdb.org/t/p/w500<?= $movie['poster_path'] ?>"
-                                            alt="<?= htmlspecialchars($movie['title']) ?>">
+                                            alt="Affiche du film <?= htmlspecialchars($movie['title']) ?>">
                                     <?php else: ?>
                                         <img src="../assets/images/placeholder_movie.png"
-                                            alt="<?= htmlspecialchars($movie['title']) ?>" class="placeholder-poster">
+                                            alt="Image de remplacement pour le film <?= htmlspecialchars($movie['title']) ?>" class="placeholder-poster">
                                     <?php endif; ?>
                                 </a>
                             </div>
+                            <!-- Afficher le titre, l'année et les genres -->
                             <h4><?= htmlspecialchars($movie['title']) ?> (<?= substr($movie['release_date'], 0, 4) ?>)</h4>
-
                             <p class="movie-genres">
                                 <?php foreach ($movie['genre_ids'] as $id): ?>
                                     <span><?= $genres[$id] ?? "" ?></span>
                                 <?php endforeach; ?>
                             </p>
+                            <!-- Afficher la note sous forme d'étoiles -->
                             <p class="note"><span class="star-rating"><?= generateStars($movie['vote_average']) ?></span></p>
                         </div>
                     <?php endforeach; ?>
                 </div>
             </div>
         <?php else: ?>
-            <p class="noResultsMessage">Aucun résultat trouvé. <br>Vous pouvez faire une nouvelle recherche.</p>
+            <!-- Message si aucun résultat n'est trouvé -->
+            <p class="noResultsMessage" role="alert">Aucun résultat trouvé. <br>Vous pouvez faire une nouvelle recherche.</p>
         <?php endif; ?>
     </main>
     <script src="../assets/js/script.js"></script>

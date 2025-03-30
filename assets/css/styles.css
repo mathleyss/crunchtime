@@ -1,3 +1,4 @@
+/* RESET CSS */
 *,
 *:after,
 *:before {
@@ -7,8 +8,9 @@
     font-family: var(--font-family)
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* POLICES ET COULEURS */
 :root {
     --primary-color: #c1121f;
     --secondary-color: #780000;
@@ -24,8 +26,11 @@
 body {
     background-color: var(--white-color);
 }
-
-/* header de la page d'accueil et de la page crunchswipe */
+/* Pour empecher le halo des boutons avec l'accessibilité */
+button, svg {
+    outline: none;
+}
+/* HEADER POUR LA PAGE D'ACCUEIL ET LA PAGE CRUNCHSWIPE */
 #homePage header,
 #swipePage header {
     margin: 0;
@@ -35,7 +40,6 @@ body {
 }
 
 /* Menu */
-/* Menu général */
 .menu {
     padding: 10px 20px;
     transition: background 0.3s ease;
@@ -75,7 +79,6 @@ body {
     position: absolute;
     left: 0;
     bottom: -3px;
-    /* Ajuste la position du soulignement */
     width: 100%;
     height: 2px;
     background-color: var(--blue-color);
@@ -297,9 +300,7 @@ body {
     font-size: 2rem;
 }
 
-
-
-/* Ligne de films sortis récemment */
+/* CAROUSSEL DE FILMS */
 .catTitle {
     margin-left: 2rem;
     font-size: 1.5rem;
@@ -368,11 +369,9 @@ body {
     line-height: normal !important;
 }
 
-/* Pour que le titre reste à la bonne taille */
 .media-title-container {
     display: flex;
     align-items: center;
-    /* Aligne verticalement tous les éléments */
     gap: 8px;
     margin-top: 10px;
 }
@@ -382,7 +381,6 @@ body {
     font-size: 1rem;
     flex: 1;
     line-height: 1.2;
-    /* Assure un espacement vertical cohérent */
 }
 
 .movie-card img {
@@ -415,7 +413,7 @@ body {
 
 
 
-/* Boutons de navigation */
+/* Boutons de navigation du caroussel */
 .next,
 .prev {
     width: 60px;
@@ -761,8 +759,6 @@ body {
 }
 
 
-
-
 /* ------ 
     Page de details des médias
         ------ */
@@ -834,7 +830,6 @@ body {
     margin: 5px 0;
 }
 
-/* Conteneur pour aligner l'icône et le bouton de la watchlist */
 .watchlist-action-container {
     display: flex;
     align-items: center;
@@ -1000,24 +995,18 @@ body {
     text-align: center;
 }
 
-/* Style pour l'icône en ligne à côté du titre */
 .media-type-icon.inline {
     position: static;
-    /* Annule le positionnement absolu */
     width: 16px;
     height: 16px;
     min-width: 16px;
-    /* Empêche l'icône de rétrécir */
     background-color: transparent;
     border-radius: 0;
     margin-right: 3px;
     display: inline-flex;
     align-items: center;
-    /* Aligne verticalement l'icône */
     vertical-align: middle;
-    /* Aide à l'alignement avec le texte */
     transform: translateY(-1px);
-    /* Ajustement fin pour aligner parfaitement */
 }
 
 .media-type-icon.inline svg {
@@ -1025,9 +1014,7 @@ body {
     height: 100%;
     margin-top: 0.7rem;
     fill: var(--primary-color);
-    /* Utiliser la couleur primaire de votre site */
 }
-
 
 /* ------ 
     Bouton ajout / suppression de la watchlist
@@ -1443,7 +1430,6 @@ body {
 
 #media-poster-container {
     flex: 2 1 150px;
-    /* Permet une réduction progressive */
     transition: all 0.3s ease;
 }
 
@@ -1470,7 +1456,6 @@ body {
 
 #media-title-container h2 {
     font-size: 1.3rem;
-    /* S’adapte à la largeur de l’écran */
 }
 
 #media-title-container p {

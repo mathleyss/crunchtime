@@ -13,7 +13,7 @@ if (isset($_SESSION['username'])) {
 }
 
 // Header permet de faire une redirection php ou http
-header("Location: logout_success.php");
+header("Location: logout_success.php"); // Redirection vers la page de succès après déconnexion
 
 // Ici, on peut utiliser die() ou exit() pour arrêter le code php (source : Hostinger)
 die();

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Vérifier si l'utilisateur est connecté
+// Vérifie si l'utilisateur est connecté, sinon redirige vers la page de connexion
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
@@ -9,24 +9,24 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Connexion à SQLite
+// Connexion à la base de données SQLite
 $db = new SQLite3('../database/crunchtime.db');
 
-// Clé API de TMDB
+// Clé API pour interagir avec l'API de TMDB
 $apiKey = 'ad3586245e96a667f42a02c1b8708569';
 
-// Récupération des informations de l'utilisateur
+// Récupère les informations de l'utilisateur connecté
 $stmt = $db->prepare("SELECT id, username, firstname, lastname, email, date FROM users WHERE id = :id");
 $stmt->bindValue(':id', $user_id, SQLITE3_INTEGER);
 $result = $stmt->execute();
 $user = $result->fetchArray(SQLITE3_ASSOC);
 
-// Récupération des médias dans la watchlist de l'utilisateur actuellement connecté
+// Récupère les médias présents dans la watchlist de l'utilisateur
 $stmt = $db->prepare("SELECT media_id, media_type, added_at FROM watchlist WHERE user_id = :user_id ORDER BY added_at DESC");
 $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 $result = $stmt->execute();
 
-// Collecter tous les IDs de médias avec leur type
+// Stocke les informations de base des médias (ID, type, date d'ajout)
 $mediaList = [];
 while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
     $mediaList[] = [
@@ -36,25 +36,28 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
     ];
 }
 
-// Tableau pour stocker les détails des médias
+// Tableau pour stocker les détails complets des médias récupérés via l'API
 $mediaDetails = [];
 
-// Pour chaque média, récupérer les détails depuis l'API en fonction de son type
+// Parcourt chaque média pour récupérer ses détails via l'API TMDB
 foreach ($mediaList as $media) {
     $media_id = $media['id'];
     $media_type = $media['type'];
 
-    // URL de l'API en fonction du type de média
+    // Construit l'URL de l'API en fonction du type de média (film ou série)
     $apiUrl = "https://api.themoviedb.org/3/{$media_type}/{$media_id}?api_key={$apiKey}&language=fr-FR&append_to_response=credits";
 
+    // Effectue une requête cURL pour récupérer les données du média
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $response = curl_exec($ch);
     curl_close($ch);
 
+    // Décode la réponse JSON en tableau PHP
     $details = json_decode($response, true);
 
+    // Si le média est un film, récupère les informations spécifiques aux films
     if ($media_type === 'movie' && isset($details['title'])) {
         $mediaDetails[] = [
             'id' => $media_id,
@@ -64,13 +67,14 @@ foreach ($mediaList as $media) {
             'vote_average' => $details['vote_average'],
             'overview' => $details['overview'],
             'media_type' => 'movie',
-            'director' => getDirector($details),
+            'director' => getDirector($details), // Appelle une fonction pour récupérer le réalisateur
             'runtime' => $details['runtime'],
             'added_at' => $media['added_at'],
             'genres' => implode(', ', array_map(function ($genre) {
-                return $genre['name']; }, $details['genres'] ?? []))
+                return $genre['name']; }, $details['genres'] ?? [])) // Formate les genres en chaîne de caractères
         ];
 
+    // Si le média est une série, récupère les informations spécifiques aux séries
     } elseif ($media_type === 'tv' && isset($details['name'])) {
         $mediaDetails[] = [
             'id' => $media_id,
@@ -83,12 +87,12 @@ foreach ($mediaList as $media) {
             'seasons' => $details['number_of_seasons'],
             'added_at' => $media['added_at'],
             'genres' => implode(', ', array_map(function ($genre) {
-                return $genre['name']; }, $details['genres'] ?? []))
+                return $genre['name']; }, $details['genres'] ?? [])) // Formate les genres en chaîne de caractères
         ];
     }
 }
 
-// Fonction pour extraire le réalisateur
+// Fonction pour récupérer le réalisateur d'un film
 function getDirector($details)
 {
     if (isset($details['credits']['crew'])) {
@@ -98,10 +102,10 @@ function getDirector($details)
             }
         }
     }
-    return 'Inconnu';
+    return 'Inconnu'; // Retourne "Inconnu" si aucun réalisateur n'est trouvé
 }
 
-// Fonction pour afficher une date relative (il y a X jours/heures...)
+// Fonction pour afficher une date relative (exemple : "il y a 2 jours")
 function timeAgo($timestamp)
 {
     $time_diff = time() - strtotime($timestamp);
@@ -147,60 +151,49 @@ function timeAgo($timestamp)
 
 <body class="page-watchlist">
     <header>
-        <nav class="menu menuOther">
+        <nav class="menu menuOther" role="navigation" aria-label="Menu principal">
             <div class="menuLeft">
-                <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php" class="linkAccueil">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
-
+                <a href="../index.php" class="logoAccueil" aria-label="Retour à l'accueil">
+                    <img src="../assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="../index.php" class="linkAccueil" aria-label="Lien vers la page d'accueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>" aria-label="Lien vers CrunchSwipe">CrunchSwipe</a>
             </div>
-            <!-- BARRE DE RECHERCHE À REFAIRE ET EN CSS AUSSI -->
-            <div class="searchBar">
-                <form action="search.php" method="GET">
-
-                    <img src="../assets/images/icon/search.svg" alt="Search">
-
-                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
+            <div class="searchBar" role="search">
+                <form action="search.php" method="GET" aria-label="Formulaire de recherche">
+                    <img src="../assets/images/icon/search.svg" alt="Icône de recherche">
+                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required aria-label="Champ de recherche">
                 </form>
             </div>
             <div class="menuRight">
-
-                <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
-                        <div class="dropdown-menu">
-                            <img src="../assets/images/profile.png" alt="">
+                    <div class="profile" role="menu" aria-label="Menu utilisateur">
+                        <img src="../assets/images/profile.png" alt="Image de profil" class="profile-img">
+                        <div class="dropdown-menu" role="menu" aria-label="Menu déroulant utilisateur">
+                            <img src="../assets/images/profile.png" alt="Image de profil">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="profile.php">Mon profil</a>
-                            <a href="watchlist.php">Ma watchlist</a>
-                            <a href="logout.php" id="logout">Déconnexion</a>
+                            <a href="profile.php" aria-label="Lien vers mon profil">Mon profil</a>
+                            <a href="watchlist.php" aria-label="Lien vers ma watchlist">Ma watchlist</a>
+                            <a href="logout.php" id="logout" aria-label="Déconnexion">Déconnexion</a>
                         </div>
                     </div>
-                    <!-- ... Sinon ... -->
                 <?php else: ?>
-                    <a href="login.php" class="btnLogin">
-                        Connexion
-                    </a>
+                    <a href="login.php" class="btnLogin" aria-label="Lien vers la page de connexion">Connexion</a>
                 <?php endif; ?>
             </div>
         </nav>
     </header>
     <main>
-        <!-- Affichage des films ajoutés à la watchlist de l'utilisateur -->
-        <section class="watchlist">
+        <section class="watchlist" role="region" aria-label="Section de la watchlist">
             <div class="watchlistTop">
                 <h2>Ma watchlist</h2>
-
-
                 <?php if (empty($mediaDetails)): ?>
-                    <!-- On affiche ce message si l'utilisateur n'a pas de films dans sa watchlist -->
-                    <p class="erreurWatchlist">Vous n'avez actuellement aucun film dans votre watchlist.</p>
+                    <p class="erreurWatchlist" role="alert">Vous n'avez actuellement aucun film dans votre watchlist.</p>
                 <?php else: ?>
                 </div>
-                <div class="buttonNavSearch">
+                <div class="buttonNavSearch" role="navigation" aria-label="Navigation dans la liste">
                     <div class="buttonNav">
-                        <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="prev" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Précédent">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -209,7 +202,7 @@ function timeAgo($timestamp)
                                     fill="#000000"></path>
                             </g>
                         </svg>
-                        <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="next" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Suivant">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                             <g id="SVGRepo_iconCarrier">
@@ -221,25 +214,25 @@ function timeAgo($timestamp)
                     </div>
                 </div>
 
-                <div class="carousel-container">
+                <div class="carousel-container" role="list" aria-label="Liste des médias">
                     <div class="carousel">
                         <?php foreach ($mediaDetails as $media): ?>
-                            <div class="movie-card">
+                            <div class="movie-card" role="listitem" aria-label="Carte média">
                                 <div class="movie-poster">
-                                    <a href="details.php?id=<?= $media['id'] ?>&type=<?= $media['media_type'] ?>">
+                                    <a href="details.php?id=<?= $media['id'] ?>&type=<?= $media['media_type'] ?>" aria-label="Voir les détails de <?= htmlspecialchars($media['title']) ?>">
                                         <?php if (!empty($media['poster_path'])): ?>
                                             <img src="https://image.tmdb.org/t/p/w500<?= $media['poster_path'] ?>"
-                                                alt="<?= htmlspecialchars($media['title']) ?>">
+                                                alt="Affiche de <?= htmlspecialchars($media['title']) ?>">
                                         <?php else: ?>
                                             <img src="../assets/images/placeholder_movie.png"
-                                                alt="<?= htmlspecialchars($media['title']) ?>" class="placeholder-poster">
+                                                alt="Aucune affiche disponible pour <?= htmlspecialchars($media['title']) ?>" class="placeholder-poster">
                                         <?php endif; ?>
                                     </a>
                                 </div>
                                 <!-- Titre avec icône à gauche -->
                                 <div class="media-title-container">
                                     <!-- Icône du type de média -->
-                                    <div class="media-type-icon inline">
+                                    <div class="media-type-icon inline" aria-hidden="true">
                                         <?php if ($media['media_type'] === 'movie'): ?>
                                             <!-- Icône de bobine pour les films -->
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="Film">
@@ -266,8 +259,8 @@ function timeAgo($timestamp)
                                 <!-- Bouton de suppression -->
                                 <div class="btnWatchlist btnWatchlistDel">
                                     <button class="button delete-btn" data-id="<?= $media['id'] ?>"
-                                        data-type="<?= $media['media_type'] ?>">
-                                        <svg viewBox="0 0 448 512" class="svgIconBtn">
+                                        data-type="<?= $media['media_type'] ?>" aria-label="Supprimer <?= htmlspecialchars($media['title']) ?> de la watchlist">
+                                        <svg viewBox="0 0 448 512" class="svgIconBtn" aria-hidden="true">
                                             <path
                                                 d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z">
                                             </path>

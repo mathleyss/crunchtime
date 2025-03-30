@@ -51,34 +51,38 @@ $date = $formatter->format(strtotime($user['date']));
 
 <body id="profilePage">
     <header>
-        <nav class="menu menuOther">
+        <nav class="menu menuOther" role="navigation" aria-label="Menu principal">
             <div class="menuLeft">
-                <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php" class="linkAccueil">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+                <a href="../index.php" class="logoAccueil" aria-label="Retour à l'accueil">
+                    <img src="../assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="../index.php" class="linkAccueil" aria-label="Lien vers la page d'accueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>" aria-label="Lien vers CrunchSwipe">
+                    CrunchSwipe
+                </a>
             </div>
             <div class="searchBar">
-                <form action="search.php" method="GET">
-                    <img src="../assets/images/icon/search.svg" alt="Search">
-                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
+                <form action="search.php" method="GET" role="search" aria-label="Barre de recherche">
+                    <img src="../assets/images/icon/search.svg" alt="Icône de recherche">
+                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required aria-label="Champ de recherche">
                 </form>
             </div>
             <div class="menuRight">
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
-                        <div class="dropdown-menu">
-                            <img src="../assets/images/profile.png" alt="">
+                    <div class="profile" role="menu" aria-label="Menu utilisateur">
+                        <img src="../assets/images/profile.png" alt="Image de profil" class="profile-img">
+                        <div class="dropdown-menu" role="menu" aria-label="Menu déroulant">
+                            <img src="../assets/images/profile.png" alt="Image de profil">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="profile.php">Mon profil</a>
-                            <a href="watchlist.php">Ma watchlist</a>
-                            <a href="logout.php" id="logout">Déconnexion</a>
+                            <a href="profile.php" aria-label="Lien vers mon profil">Mon profil</a>
+                            <a href="watchlist.php" aria-label="Lien vers ma watchlist">Ma watchlist</a>
+                            <a href="logout.php" id="logout" aria-label="Lien pour se déconnecter">Déconnexion</a>
                         </div>
                     </div>
                     <!-- ... Sinon ... -->
                 <?php else: ?>
-                    <a href="login.php" class="btnLogin">
+                    <a href="login.php" class="btnLogin" aria-label="Lien pour se connecter">
                         Connexion
                     </a>
                 <?php endif; ?>
@@ -87,9 +91,9 @@ $date = $formatter->format(strtotime($user['date']));
     </header>
     <main>
         <h2>Mon profil</h2>
-        <div class="profileContainer">
+        <div class="profileContainer" role="region" aria-label="Informations du profil">
             <div class="avatarContainer">
-                <img src="../assets/images/profile.png" />
+                <img src="../assets/images/profile.png" alt="Avatar de l'utilisateur">
             </div>
             <div class="userInfo">
                 <p class="userIdentity"><?= htmlspecialchars($user['firstname']) ?>

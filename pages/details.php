@@ -123,14 +123,16 @@ if (isset($_SESSION['user_id'])) {
     <header>
         <nav class="menu menuOther">
             <div class="menuLeft">
-                <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php" class="linkAccueil">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>">CrunchSwipe</a>
+                <a href="../index.php" class="logoAccueil"> 
+                    <img src="../assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="../index.php" class="linkAccueil" aria-label="Retour à l'accueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>" aria-label="Accéder à CrunchSwipe">CrunchSwipe</a>
 
             </div>
             <div class="searchBar">
                 <form action="search.php" method="GET">
-                    <img src="../assets/images/icon/search.svg" alt="Search">
+                    <img src="../assets/images/icon/search.svg" alt="Icône de recherche" aria-hidden="true">
                     <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
                 </form>
             </div>
@@ -138,9 +140,9 @@ if (isset($_SESSION['user_id'])) {
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
+                        <img src="../assets/images/profile.png" alt="Image de profil utilisateur" class="profile-img">
                         <div class="dropdown-menu">
-                            <img src="../assets/images/profile.png" alt="">
+                            <img src="../assets/images/profile.png" alt="Image de profil utilisateur dans le menu déroulant">
                             <p><?= htmlspecialchars($user['username']) ?></p>
                             <a href="profile.php">Mon profil</a>
                             <a href="watchlist.php">Ma watchlist</a>
@@ -161,10 +163,10 @@ if (isset($_SESSION['user_id'])) {
                 <div class="details-poster">
                     <?php if (!empty($details['poster_path'])): ?>
                         <img src="https://image.tmdb.org/t/p/w500<?= $details['poster_path'] ?>"
-                            alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>">
+                            alt="Affiche de <?= htmlspecialchars($details['title'] ?? $details['name']) ?>">
                     <?php else: ?>
                         <img src="../assets/images/placeholder_movie.png"
-                            alt="<?= htmlspecialchars($details['title'] ?? $details['name']) ?>" class="placeholder-poster">
+                            alt="Image de remplacement pour <?= htmlspecialchars($details['title'] ?? $details['name']) ?>" class="placeholder-poster">
                     <?php endif; ?>
                 </div>
                 <div class="details-content">
@@ -174,7 +176,7 @@ if (isset($_SESSION['user_id'])) {
                     <div class="mediaTypeContainer">
                         <?php if ($type === 'movie'): ?>
                             <!-- Icône pour les films -->
-                            <div class="mediaTypeIcon">
+                            <div class="mediaTypeIcon" role="img" aria-label="Icône de film">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                     <path
                                         d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416z" />
@@ -183,7 +185,7 @@ if (isset($_SESSION['user_id'])) {
                             </div>
                         <?php else: ?>
                             <!-- Icône pour les séries -->
-                            <div class="mediaTypeIcon">
+                            <div class="mediaTypeIcon" role="img" aria-label="Icône de série">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                                     <path
                                         d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z" />
@@ -204,13 +206,13 @@ if (isset($_SESSION['user_id'])) {
                             <?php if (isset($watchlistMediaIds[$id . '_' . $type])): ?>
                                 <!-- Bouton pour supprimer le média -->
                                 <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="remove"
-                                    data-type="<?= htmlspecialchars($type); ?>">
+                                    data-type="<?= htmlspecialchars($type); ?>" aria-label="Supprimer de la watchlist">
                                     Supprimer de la watchlist
                                 </button>
                             <?php else: ?>
                                 <!-- Bouton pour ajouter le média -->
                                 <button class="watchlist-btn" data-id="<?= htmlspecialchars($id); ?>" data-action="add"
-                                    data-type="<?= htmlspecialchars($type); ?>">
+                                    data-type="<?= htmlspecialchars($type); ?>" aria-label="Ajouter à la watchlist">
                                     Ajouter à la watchlist
                                 </button>
                             <?php endif; ?>
@@ -257,7 +259,7 @@ if (isset($_SESSION['user_id'])) {
                                             <?php foreach ($providers['abonnement'] as $provider): ?>
                                                 <div class="provider">
                                                     <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>"
-                                                        alt="<?= htmlspecialchars($provider['provider_name']) ?>"
+                                                        alt="Logo de <?= htmlspecialchars($provider['provider_name']) ?>"
                                                         title="<?= htmlspecialchars($provider['provider_name']) ?>">
                                                 </div>
                                             <?php endforeach; ?>
@@ -272,7 +274,7 @@ if (isset($_SESSION['user_id'])) {
                                             <?php foreach ($providers['location'] as $provider): ?>
                                                 <div class="provider">
                                                     <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>"
-                                                        alt="<?= htmlspecialchars($provider['provider_name']) ?>"
+                                                        alt="Logo de <?= htmlspecialchars($provider['provider_name']) ?>"
                                                         title="<?= htmlspecialchars($provider['provider_name']) ?>">
                                                 </div>
                                             <?php endforeach; ?>
@@ -287,7 +289,7 @@ if (isset($_SESSION['user_id'])) {
                                             <?php foreach ($providers['achat'] as $provider): ?>
                                                 <div class="provider">
                                                     <img src="https://image.tmdb.org/t/p/original<?= $provider['logo_path'] ?>"
-                                                        alt="<?= htmlspecialchars($provider['provider_name']) ?>"
+                                                        alt="Logo de <?= htmlspecialchars($provider['provider_name']) ?>"
                                                         title="<?= htmlspecialchars($provider['provider_name']) ?>">
                                                 </div>
                                             <?php endforeach; ?>
@@ -303,12 +305,12 @@ if (isset($_SESSION['user_id'])) {
                     <h2>Acteurs</h2>
                     <div class="actors-container">
                         <?php foreach (array_slice($details['credits']['cast'], 0, 10) as $actor): ?>
-                            <div class="actor">
+                            <div class="actor" role="group" aria-label="Acteur : <?= htmlspecialchars($actor['name']) ?>">
                                 <?php if (!empty($actor['profile_path'])): ?>
                                     <img src="https://image.tmdb.org/t/p/w200<?= $actor['profile_path'] ?>"
-                                        alt="<?= htmlspecialchars($actor['name']) ?>">
+                                        alt="Photo de <?= htmlspecialchars($actor['name']) ?>">
                                 <?php else: ?>
-                                    <img src="../assets/images/placeholder_actor.png" alt="<?= htmlspecialchars($actor['name']) ?>">
+                                    <img src="../assets/images/placeholder_actor.png" alt="Image de remplacement pour <?= htmlspecialchars($actor['name']) ?>">
                                 <?php endif; ?>
                                 <p><strong><?= htmlspecialchars($actor['name']) ?></strong></p>
                                 <p><?= htmlspecialchars($actor['character']) ?></p>

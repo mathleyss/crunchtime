@@ -1,3 +1,4 @@
+// Fonction pour le carrousel
 document.addEventListener("DOMContentLoaded", function () {
     const scrollAmount = 300; // Distance du défilement
 

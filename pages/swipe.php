@@ -1,30 +1,35 @@
 <?php
-session_start();
+session_start(); // Démarrer la session pour gérer les données utilisateur
 
-// Connexion à SQLite
+// Connexion à la base de données SQLite
 $db = new SQLite3('../database/crunchtime.db');
 
-$user = null; // Initialiser la variable utilisateur
+$user = null; // Initialiser la variable utilisateur à null
 
-// Vérifier si l'utilisateur est connecté
+// Vérifier si un utilisateur est connecté via la session
 if (isset($_SESSION['user_id'])) {
-    // Préparer et exécuter la requête pour récupérer les infos de l'utilisateur
+    // Préparer une requête pour récupérer les informations de l'utilisateur connecté
     $stmt = $db->prepare("SELECT id, username, firstname, lastname, email, date FROM users WHERE id = :id");
-    $stmt->bindValue(':id', $_SESSION['user_id'], SQLITE3_INTEGER);
-    $result = $stmt->execute();
+    $stmt->bindValue(':id', $_SESSION['user_id'], SQLITE3_INTEGER); // Associer l'ID utilisateur à la requête
+    $result = $stmt->execute(); // Exécuter la requête
 
-    $user = $result->fetchArray(SQLITE3_ASSOC);
+    $user = $result->fetchArray(SQLITE3_ASSOC); // Récupérer les données utilisateur sous forme de tableau associatif
 }
-// Récupération des médias dans la watchlist de l'utilisateur actuellement connecté
-$apiKey = 'ad3586245e96a667f42a02c1b8708569';
-$mediaDetails = [];
-if (isset($_SESSION['user_id'])) {
-    $stmt = $db->prepare("SELECT media_id, media_type, added_at FROM watchlist WHERE user_id = :user_id ORDER BY added_at DESC");
-    $stmt->bindValue(':user_id', $_SESSION['user_id'], SQLITE3_INTEGER);
-    $result = $stmt->execute();
 
-    $mediaList = [];
+// Clé API pour interagir avec l'API The Movie Database (TMDb)
+$apiKey = 'ad3586245e96a667f42a02c1b8708569';
+$mediaDetails = []; // Tableau pour stocker les détails des médias
+
+// Vérifier si un utilisateur est connecté pour récupérer sa watchlist
+if (isset($_SESSION['user_id'])) {
+    // Préparer une requête pour récupérer les médias de la watchlist de l'utilisateur
+    $stmt = $db->prepare("SELECT media_id, media_type, added_at FROM watchlist WHERE user_id = :user_id ORDER BY added_at DESC");
+    $stmt->bindValue(':user_id', $_SESSION['user_id'], SQLITE3_INTEGER); // Associer l'ID utilisateur à la requête
+    $result = $stmt->execute(); // Exécuter la requête
+
+    $mediaList = []; // Tableau pour stocker les médias de la watchlist
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        // Ajouter chaque média à la liste avec ses informations
         $mediaList[] = [
             'id' => $row['media_id'],
             'type' => $row['media_type'],
@@ -32,23 +37,24 @@ if (isset($_SESSION['user_id'])) {
         ];
     }
 
-    // Récupérer les détails des médias depuis l'API
+    // Parcourir la liste des médias pour récupérer leurs détails via l'API TMDb
     foreach ($mediaList as $media) {
-        $media_id = $media['id'];
-        $media_type = $media['type'];
+        $media_id = $media['id']; // ID du média
+        $media_type = $media['type']; // Type du média (film ou série)
 
+        // Construire l'URL de l'API pour récupérer les détails du média
         $apiUrl = "https://api.themoviedb.org/3/{$media_type}/{$media_id}?api_key={$apiKey}&language=fr-FR";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
+        $ch = curl_init(); // Initialiser une session cURL
+        curl_setopt($ch, CURLOPT_URL, $apiUrl); // Définir l'URL de l'API
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Retourner la réponse sous forme de chaîne
+        $response = curl_exec($ch); // Exécuter la requête API
+        curl_close($ch); // Fermer la session cURL
 
+        // Décoder la réponse JSON et l'ajouter au tableau des détails des médias
         $mediaDetails[] = json_decode($response, true);
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -73,58 +79,60 @@ if (isset($_SESSION['user_id'])) {
 
 <body id="swipePage">
     <header>
-        <nav class="menu">
+        <nav class="menu" role="navigation" aria-label="Menu principal">
+            <!-- Menu de navigation -->
             <div class="menuLeft">
-                <a href="../index.php" class="logoAccueil"> <img src="../assets/images/logo.png" alt=""></a>
-                <a href="../index.php" class="linkAccueil">Accueil</a>
-                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?> "
-                    id="active">CrunchSwipe</a>
-
+                <a href="../index.php" class="logoAccueil" aria-label="Retour à l'accueil">
+                    <img src="../assets/images/logo.png" alt="Logo CrunchTime">
+                </a>
+                <a href="../index.php" class="linkAccueil" aria-label="Lien vers la page d'accueil">Accueil</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'swipe.php' : 'login.php'; ?>" id="active"
+                    aria-label="Lien vers CrunchSwipe">CrunchSwipe</a>
             </div>
             <div class="searchBar">
-                <form action="search.php" method="GET">
-                    <img src="../assets/images/icon/search.svg" alt="Search">
-                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required>
+                <form action="search.php" method="GET" role="search" aria-label="Barre de recherche">
+                    <img src="../assets/images/icon/search.svg" alt="Icône de recherche">
+                    <input type="text" name="query" placeholder="Rechercher..." class="searchInput" required
+                        aria-label="Champ de recherche">
                 </form>
             </div>
             <div class="menuRight">
-
                 <!-- Si un utilisateur est connecté, alors ... -->
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <div class="profile">
-                        <img src="../assets/images/profile.png" alt="Profil" class="profile-img">
+                    <div class="profile" role="menu" aria-label="Menu utilisateur">
+                        <img src="../assets/images/profile.png" alt="Image de profil" class="profile-img">
                         <div class="dropdown-menu">
-                            <img src="../assets/images/profile.png" alt="">
+                            <img src="../assets/images/profile.png" alt="Image de profil utilisateur">
                             <p><?= htmlspecialchars($user['username']) ?></p>
-                            <a href="profile.php">Mon profil</a>
-                            <a href="watchlist.php">Ma watchlist</a>
-                            <a href="logout.php" id="logout">Déconnexion</a>
+                            <a href="profile.php" aria-label="Lien vers mon profil">Mon profil</a>
+                            <a href="watchlist.php" aria-label="Lien vers ma watchlist">Ma watchlist</a>
+                            <a href="logout.php" id="logout" aria-label="Déconnexion">Déconnexion</a>
                         </div>
                     </div>
-                    <!-- ... Sinon ... -->
                 <?php else: ?>
-                    <a href="login.php" class="btnLogin">
+                    <a href="login.php" class="btnLogin" aria-label="Lien vers la page de connexion">
                         Connexion
                     </a>
                 <?php endif; ?>
             </div>
         </nav>
         <div class="headerContent">
+            <!-- Contenu principal de l'en-tête -->
             <h1>CrunchSwipe</h1>
             <p>Vous souhaitez découvrir un film ou une série ?</p>
             <p>Swipez pour ajouter à votre watchlist !</p>
         </div>
     </header>
 
-    <main class="mainSwipe">
-        <section id="swipeInfo"></section>
+    <main class="mainSwipe" role="main">
+        <section id="swipeInfo" aria-label="Informations sur le swipe"></section>
 
-        <section id="swipeFeature">
-
-            <div id="swiper"></div>
-            <div class="swipeButtons">
-
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="dislike">
+        <section id="swipeFeature" aria-label="Fonctionnalité de swipe">
+            <!-- Section pour le swipe avec les boutons "like" et "dislike" -->
+            <div id="swiper" role="region" aria-label="Zone de swipe"></div>
+            <div class="swipeButtons" role="group" aria-label="Boutons de swipe">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="dislike" role="button"
+                    aria-label="Bouton dislike">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -133,7 +141,8 @@ if (isset($_SESSION['user_id'])) {
                             fill="#000000"></path>
                     </g>
                 </svg>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="like">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="like" role="button"
+                    aria-label="Bouton like">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                     <g id="SVGRepo_iconCarrier">
@@ -143,25 +152,21 @@ if (isset($_SESSION['user_id'])) {
                     </g>
                 </svg>
             </div>
-
-
         </section>
 
-
-
-
-        <section class="swipeWatchlist">
+        <section class="swipeWatchlist" aria-label="Watchlist récemment ajoutée">
             <h2>Récemment ajouté</h2>
-            <div class="watchlist-container" id="watchlist-container">
+            <div class="watchlist-container" id="watchlist-container" role="region" aria-label="Conteneur de watchlist">
                 <?php
+                // Inclure le fichier pour afficher la watchlist
                 include 'get_watchlist.php';
                 ?>
             </div>
-            <a href="watchlist.php" class="swipeBtnWatchlist">Voir ma watchlist</a>
+            <a href="watchlist.php" class="swipeBtnWatchlist" aria-label="Voir ma watchlist">Voir ma watchlist</a>
         </section>
-
     </main>
 
-    <script src="../assets/js/card.js"></script>
-    <script src="../assets/js/swipe.js"></script>
+    <script src="../assets/js/card.js"></script> <!-- Script pour gérer les cartes -->
+    <script src="../assets/js/swipe.js"></script> <!-- Script pour gérer le swipe -->
 </body>
+</html>

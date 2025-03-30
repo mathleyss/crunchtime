@@ -3,45 +3,46 @@ $message = ""; // Variable pour afficher les messages d'erreur
 $successMessage = ""; // Variable pour afficher les messages de succès
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Connexion à SQLite
+    // Connexion à la base de données SQLite
     $db = new SQLite3('../database/crunchtime.db');
 
-    // Vérification que toutes les données existent avant de les utiliser
-    $prenom = isset($_POST['firstname']) ? trim($_POST['firstname']) : null;
-    $nom = isset($_POST['lastname']) ? trim($_POST['lastname']) : null;
-    $username = isset($_POST['username']) ? trim($_POST['username']) : null;
-    $email = isset($_POST['email']) ? trim($_POST['email']) : null;
-    $password = isset($_POST['password']) ? $_POST['password'] : null;
+    // Récupération et nettoyage des données envoyées par le formulaire
+    $prenom = isset($_POST['firstname']) ? trim($_POST['firstname']) : null; // Prénom
+    $nom = isset($_POST['lastname']) ? trim($_POST['lastname']) : null; // Nom
+    $username = isset($_POST['username']) ? trim($_POST['username']) : null; // Nom d'utilisateur
+    $email = isset($_POST['email']) ? trim($_POST['email']) : null; // Email
+    $password = isset($_POST['password']) ? $_POST['password'] : null; // Mot de passe
 
-    // Vérifier qu'aucune donnée n'est vide
+    // Vérification que tous les champs sont remplis
     if (!$prenom || !$nom || !$username || !$email || !$password) {
-        $message = "Veuillez remplir tous les champs.";
+        $message = "Veuillez remplir tous les champs."; // Message d'erreur si un champ est vide
     } else {
-        // Vérification si l'utilisateur existe déjà
+        // Vérification si un utilisateur avec le même email ou nom d'utilisateur existe déjà
         $stmt = $db->prepare("SELECT id FROM users WHERE email = :email OR username = :username");
-        $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-        $stmt->bindValue(':username', $username, SQLITE3_TEXT);
+        $stmt->bindValue(':email', $email, SQLITE3_TEXT); // Liaison de l'email
+        $stmt->bindValue(':username', $username, SQLITE3_TEXT); // Liaison du nom d'utilisateur
         $result = $stmt->execute();
 
         if ($result->fetchArray()) {
-            $message = "Ce nom d'utilisateur ou cet email existe déjà.";
+            $message = "Ce nom d'utilisateur ou cet email existe déjà."; // Message d'erreur si l'utilisateur existe
         } else {
-            // Hachage du mot de passe
+            // Hachage du mot de passe pour plus de sécurité
             $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-            // Insertion dans la base de données
+            // Insertion des données de l'utilisateur dans la base de données
             $stmt = $db->prepare("INSERT INTO users (firstname, lastname, username, email, password) 
                                   VALUES (:firstname, :lastname, :username, :email, :password)");
-            $stmt->bindValue(':firstname', $prenom, SQLITE3_TEXT);
-            $stmt->bindValue(':lastname', $nom, SQLITE3_TEXT);
-            $stmt->bindValue(':username', $username, SQLITE3_TEXT);
-            $stmt->bindValue(':email', $email, SQLITE3_TEXT);
-            $stmt->bindValue(':password', $passwordHash, SQLITE3_TEXT);
+            $stmt->bindValue(':firstname', $prenom, SQLITE3_TEXT); // Liaison du prénom
+            $stmt->bindValue(':lastname', $nom, SQLITE3_TEXT); // Liaison du nom
+            $stmt->bindValue(':username', $username, SQLITE3_TEXT); // Liaison du nom d'utilisateur
+            $stmt->bindValue(':email', $email, SQLITE3_TEXT); // Liaison de l'email
+            $stmt->bindValue(':password', $passwordHash, SQLITE3_TEXT); // Liaison du mot de passe haché
 
             if ($stmt->execute()) {
+                // Message de succès si l'inscription est réussie
                 $successMessage = "Inscription réussie ! <a href='login.php' class='loginLink'>Connectez-vous ici</a>";
             } else {
-                $message = "Erreur lors de l'inscription.";
+                $message = "Erreur lors de l'inscription."; // Message d'erreur en cas de problème d'insertion
             }
         }
     }
@@ -68,52 +69,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="manifest" href="../assets/images/favicon/site.webmanifest" />
 </head>
 
-<body id="registerPage">
+<body id="registerPage" role="main">
     <main>
-        <div class="loginContainer">
+        <div class="loginContainer" role="form">
             <div class="logoContainer">
-                <a href="../index.php">
-                    <img src="../assets/images/logo.png" alt="CrunchTime">
+                <a href="../index.php" aria-label="Retour à la page d'accueil">
+                    <img src="../assets/images/logo.png" alt="Logo de CrunchTime">
                 </a>
                 <h1>CrunchTime</h1>
             </div>
 
             <!-- Affichage des différents messages d'erreur -->
             <?php if (!empty($message)): ?>
-                <p class='errorMessage'><?php echo $message; ?></p>
+                <p class='errorMessage' role="alert"><?php echo $message; ?></p>
             <?php endif; ?>
 
             <!-- Affichage des différents messages de succès -->
             <?php if (!empty($successMessage)): ?>
-                <p class='successMessage'><?php echo $successMessage; ?></p>
+                <p class='successMessage' role="status"><?php echo $successMessage; ?></p>
             <?php endif; ?>
 
-            <form action="" method="post" class="loginForm">
+            <form action="" method="post" class="loginForm" aria-label="Formulaire d'inscription">
                 <div class="formInput">
                     <label for="firstname">Prénom :</label>
-                    <input type="text" id="firstname" name="firstname" required>
+                    <input type="text" id="firstname" name="firstname" required aria-required="true" aria-label="Prénom">
                 </div>
                 <div class="formInput">
                     <label for="lastname">Nom :</label>
-                    <input type="text" id="lastname" name="lastname" required>
+                    <input type="text" id="lastname" name="lastname" required aria-required="true" aria-label="Nom">
                 </div>
                 <div class="formInput">
                     <label for="username">Nom d'utilisateur :</label>
-                    <input type="text" id="username" name="username" required>
+                    <input type="text" id="username" name="username" required aria-required="true" aria-label="Nom d'utilisateur">
                 </div>
                 <div class="formInput">
                     <label for="email">Email :</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required aria-required="true" aria-label="Adresse email">
                 </div>
                 <div class="formInput">
                     <label for="password">Mot de passe :</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required aria-required="true" aria-label="Mot de passe">
                 </div>
                 <div>
-                    <button type="submit" class="submitButton">S'inscrire</button>
+                    <button type="submit" class="submitButton" aria-label="S'inscrire">S'inscrire</button>
                 </div>
             </form>
-            <a href="login.php" class="registerLink">Déjà un compte ? Se connecter</a>
+            <a href="login.php" class="registerLink" aria-label="Lien vers la page de connexion">Déjà un compte ? Se connecter</a>
         </div>
     </main>
 </body>
