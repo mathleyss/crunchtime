@@ -1,7 +1,10 @@
+// CRÉDIT DE LA FONCTION DU SWIPE : 
+// https://github.com/CodeSteppe/card-swiper?tab=readme-ov-file
+
 class Card {
     constructor({
         imageUrl,
-        movieId, // Nouvel attribut pour identifier le film
+        movieId, // Attribut pour identifier le film
         onDismiss, // Callback appelé lors de la suppression de la carte
         onLike, // Callback appelé lors d'un "like"
         onDislike // Callback appelé lors d'un "dislike"

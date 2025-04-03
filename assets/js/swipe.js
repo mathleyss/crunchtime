@@ -1,3 +1,6 @@
+// CRÉDIT DE LA FONCTION DU SWIPE : 
+// https://github.com/CodeSteppe/card-swiper?tab=readme-ov-file
+
 // DOM : Récupération des éléments HTML nécessaires
 const swiper = document.querySelector('#swiper');
 const like = document.querySelector('#like');
