@@ -49,7 +49,7 @@ function getCachedApiResponse($url, $cacheDirectory, $cacheKey, $cacheDuration =
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $response = curl_exec($ch);
-    curl_close($ch);
+    //curl_close($ch);
 
     // Stocker la réponse en cache
     file_put_contents($cacheFile, $response);
