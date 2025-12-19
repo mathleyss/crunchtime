@@ -1,0 +1,52 @@
+{# templates/watchlist/toggle.stream.html.twig #}
+{% if context == 'watchlist' %}
+    {# Sur la page watchlist, on supprime carrément la carte du film #}
+    <turbo-stream action="remove" target="media_{{ type }}_{{ id }}"></turbo-stream>
+{% else %}
+<turbo-stream action="replace" target="watchlist_wrapper_{{ type }}_{{ id }}">
+    <template>
+        <div id="watchlist_wrapper_{{ type }}_{{ id }}" class="{{ context == 'details' ? 'watchlist-action-container' : '' }}">
+
+            {% if context == 'index' %}
+                {# --- VERSION ACCUEIL --- #}
+                {% if isInWatchlist %}
+                    <div class="watchlist-added-indicator">
+                        <button class="success-check" disabled aria-label="Déjà dans la watchlist">
+                            <svg class="svgIconBtn checkIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="btnWatchlist btnWatchlistAdd">
+                        <form action="{{ path('watchlist_toggle', {type: type, id: id, context: 'index'}) }}" method="post">
+                            <button type="submit" class="button" aria-label="Ajouter à la watchlist">
+                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
+                                    <path fill="currentColor" fill-rule="evenodd" d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+
+            {% elseif context == 'details' %}
+                {# --- VERSION DÉTAILS --- #}
+                {% if isInWatchlist %}
+                    <form action="{{ path('watchlist_toggle', {type: type, id: id, context: 'details'}) }}" method="post">
+                        <button type="submit" class="watchlist-btn">
+                            Supprimer de la watchlist
+                        </button>
+                    </form>
+                {% else %}
+                    <form action="{{ path('watchlist_toggle', {type: type, id: id, context: 'details'}) }}" method="post">
+                        <button type="submit" class="watchlist-btn">
+                            Ajouter à la watchlist
+                        </button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
+        </div>
+    </template>
+</turbo-stream>
+{% endif %}

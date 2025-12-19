@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - CrunchTime{% endblock %}
+
+{% block body_id %}loginPage{% endblock %}
+{% block header %}{% endblock %}
+
+{% block body %}
+    <main role="main">
+        <div class="loginContainer">
+            <div class="logoContainer">
+                <a href="{{ path('app_home') }}">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo CrunchTime">
+                </a>
+                <h1>CrunchTime</h1>
+            </div>
+
+            {% if error %}
+            <div class="errorMessage">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post" class="loginForm">
+                <div class="formInput">
+                    <label for="username">Email</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                </div>
+                <div class="formInput">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="submitButton" type="submit">Connexion</button>
+            </form>
+
+            <a href="{{ path('app_register') }}" class="registerLink">Créer un compte</a>
+        </div>
+    </main>
+{% endblock %}

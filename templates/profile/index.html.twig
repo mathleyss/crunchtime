@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil - CrunchTime{% endblock %}
+
+{% block body_id %}profilePage{% endblock %}
+{% block menu_class %}menuOther{% endblock %}
+
+{% block body %}
+<main>
+    <h2>Mon profil</h2>
+    <div class="profileContainer" role="region" aria-label="Informations du profil">
+        <div class="avatarContainer">
+            <img src="{{ asset('images/profile.png') }}" alt="Avatar de l'utilisateur">
+        </div>
+        <div class="userInfo">
+            <p class="userIdentity">{{ app.user.firstname }} {{ app.user.lastname }}</p>
+
+            <p class="userName"><strong>Nom d'utilisateur :</strong> {{ app.user.username }}</p>
+
+            <p class="userMail"><strong>Email :</strong> {{ app.user.email }}</p>
+
+            <p class="userRegisterDate">Tu es inscrit depuis le {{ app.user.registerAt|date('d F Y') }}</p>
+        </div>
+    </div>
+</main>
+{% endblock %}

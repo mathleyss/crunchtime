@@ -1,9 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block meta %}{% endblock %}
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+
+        {# Favicons #}
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon-96x96.png') }}" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon/favicon.svg') }}" />
+        <link rel="shortcut icon" href="{{ asset('images/favicon/favicon.ico') }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/favicon/apple-touch-icon.png') }}" />
+        <link rel="manifest" href="{{ asset('images/favicon/site.webmanifest') }}" />
+
         {% block stylesheets %}
         {% endblock %}
 
@@ -11,7 +20,41 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body id="{% block body_id %}{% endblock %}">
+        {% block header %}
+        <header role="banner">
+            <nav class="menu {% block menu_class %}{% endblock %}" role="navigation" aria-label="Navigation principale">
+                <div class="menuLeft">
+                    <a href="{{ path('app_home') }}" class="logoAccueil" aria-label="Retour à l'accueil">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo CrunchTime">
+                    </a>
+                    <a href="{{ path('app_home') }}" class="linkAccueil" {% if app.request.attributes.get('_route') == 'app_home' %}id="active" aria-current="page"{% endif %}>Accueil</a>
+                    <a href="#" aria-label="Accéder à CrunchSwipe">CrunchSwipe</a>
+                </div>
+                <div class="menuRight">
+                    <!-- Si un utilisateur est connecté -->
+                    {% if app.user %}
+                        <div class="profile" role="menu" aria-label="Menu utilisateur">
+                            <img src="{{ asset('images/profile.png') }}" alt="Photo de profil" class="profile-img">
+                            <div class="dropdown-menu" role="menu" aria-label="Options utilisateur">
+                                <img src="{{ asset('images/profile.png') }}" alt="Photo de profil utilisateur" aria-hidden="true">
+                                <p>{{ app.user.username }}</p>
+                                <a href="{{ path('app_profile') }}" aria-label="Accéder à mon profil">Mon profil</a>
+                                <a href="{{ path('app_watchlist') }}" aria-label="Accéder à ma watchlist">Ma watchlist</a>
+                                <a href="{{ path('app_logout') }}" id="logout" aria-label="Se déconnecter">Déconnexion</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{{ path('app_login') }}" class="btnLogin" aria-label="Se connecter">
+                            Connexion
+                        </a>
+                    {% endif %}
+                </div>
+            </nav>
+            {% block header_content %}{% endblock %}
+        </header>
+        {% endblock %}
+
         {% block body %}{% endblock %}
     </body>
 </html>

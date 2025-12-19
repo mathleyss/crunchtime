@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche - CrunchTime{% endblock %}
+
+{% block menu_class %}menuOther{% endblock %}
+
+{% block body %}
+    <main class="searchPage">
+        <h1 class="titleSearch">Résultats de recherche</h1>
+
+        <form class="filters" action="{{ path('app_search') }}" method="GET">
+            <input type="text" name="query" value="{{ currentQuery }}" placeholder="Rechercher..." class="searchInput">
+            <select name="genre">
+                <option value="">Tous les genres</option>
+                {% for id, name in genres %}
+                    <option value="{{ id }}" {% if currentGenre == id %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <input class="yearInput" type="number" name="year" value="{{ currentYear }}" placeholder="Année">
+            <button type="submit" class="searchPageBtn">Rechercher</button>
+        </form>
+
+        {% if movies.results is defined and movies.results|length > 0 %}
+            <div class="carousel-container">
+                <div class="carousel" style="flex-wrap: wrap; justify-content: center;">
+                    {% for movie in movies.results %}
+                        <div class="movie-card" style="width: 200px;">
+                            <div class="movie-poster">
+                                <a href="{{ path('app_media_details', {id: movie.id, type: 'movie'}) }}">
+                                    {% if movie.poster_path %}
+                                        <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}">
+                                    {% else %}
+                                        <img src="{{ asset('images/placeholder_movie.png') }}" class="placeholder-poster">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <h4>{{ movie.title }} ({{ movie.release_date|slice(0, 4) }})</h4>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p class="noResultsMessage">Aucun résultat trouvé.</p>
+        {% endif %}
+    </main>
+{% endblock %}

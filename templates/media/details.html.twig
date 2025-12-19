@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% set title = details.title ?? details.name %}
+{% block title %}{{ title }} - CrunchTime{% endblock %}
+
+{% block body_id %}detailsPage{% endblock %}
+{% block menu_class %}menuOther{% endblock %}
+
+{% block body %}
+    <main>
+        <div class="details-container">
+            <div class="details-poster">
+                {% if details.poster_path %}
+                    <img src="https://image.tmdb.org/t/p/w500{{ details.poster_path }}" alt="Affiche de {{ title }}">
+                {% else %}
+                    <img src="{{ asset('images/placeholder_movie.png') }}" alt="Image de remplacement" class="placeholder-poster">
+                {% endif %}
+            </div>
+
+            <div class="details-content">
+                <h1>{{ title }}</h1>
+
+                <div class="mediaTypeContainer">
+                    {% if type == 'movie' %}
+                        <div class="mediaTypeIcon"><p>Film</p></div>
+                    {% else %}
+                        <div class="mediaTypeIcon"><p>Série</p></div>
+                    {% endif %}
+                </div>
+
+                {% if app.user %}
+                    <div class="watchlist-action-container" id="watchlist_wrapper_{{ type }}_{{ details.id }}">
+                        {% if isInWatchlist %}
+                            <form action="{{ path('watchlist_toggle', {type: type, id: details.id, context: 'details'}) }}" method="post">
+                                <button type="submit" class="watchlist-btn">
+                                    Supprimer de la watchlist
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path('watchlist_toggle', {type: type, id: details.id, context: 'details'}) }}" method="post">
+                                <button type="submit" class="watchlist-btn">
+                                    Ajouter à la watchlist
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <p><strong>Date de sortie :</strong> {{ (details.release_date ?? details.first_air_date)|date('d M Y') }}</p>
+
+                {% if type == 'movie' and details.runtime %}
+                    <p><strong>Durée :</strong> {{ (details.runtime / 60)|round(0, 'floor') }}h {{ details.runtime % 60 }} min</p>
+                {% elseif type == 'tv' %}
+                    <p><strong>Saisons :</strong> {{ details.number_of_seasons }}</p>
+                {% endif %}
+
+                <p><strong>Note :</strong> <span class="star-rating">★ {{ (details.vote_average / 2)|number_format(1) }}/5</span></p>
+
+                <p><strong>Genres :</strong>
+                    {% for genre in details.genres %}{{ genre.name }}{% if not loop.last %}, {% endif %}{% endfor %}
+                </p>
+
+                <p class="details-resume">{{ details.overview }}</p>
+
+                {# Streaming Providers #}
+                {% if details['watch/providers']['results']['FR'] is defined %}
+                    {% set providers = details['watch/providers']['results']['FR'] %}
+                    <div class="streaming-providers">
+                        <h2>Où regarder :</h2>
+                        <div class="streaming-providers-container">
+                            {% if providers.flatrate is defined %}
+                                <div class="providers-section">
+                                    <h4>Streaming</h4>
+                                    <div class="providers-list">
+                                        {% for provider in providers.flatrate %}
+                                            <div class="provider">
+                                                <img src="https://image.tmdb.org/t/p/original{{ provider.logo_path }}" title="{{ provider.provider_name }}">
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {# Acteurs #}
+                <h2>Acteurs</h2>
+                <div class="actors-container">
+                    {% for actor in details.credits.cast|slice(0, 10) %}
+                        <div class="actor">
+                            {% if actor.profile_path %}
+                                <img src="https://image.tmdb.org/t/p/w200{{ actor.profile_path }}" alt="{{ actor.name }}">
+                            {% else %}
+                                <img src="{{ asset('images/placeholder_actor.png') }}" alt="Placeholder">
+                            {% endif %}
+                            <p><strong>{{ actor.name }}</strong></p>
+                            <p>{{ actor.character }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

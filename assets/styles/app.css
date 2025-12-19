@@ -1,15 +1,6 @@
-/* RESET CSS */
-*,
-*:after,
-*:before {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: var(--font-family)
-}
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap'); /* RESET CSS */
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
 
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 /* POLICES ET COULEURS */
 :root {
     --primary-color: #c1121f;
@@ -20,12 +11,32 @@
     --darkblue-color: #003049;
     --blue-color: #669bbc;
     --success-color: #28a745;
-    --font-family: 'Space Mono', serif;
+    --title-font: 'Space Mono', sans-serif;
+    --body-font: 'Google Sans Flex', sans-serif;
+}
+
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--body-font), sans-serif;
 }
 
 body {
     background-color: var(--white-color);
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--title-font), sans-serif;
+}
+
 /* Pour empecher le halo des boutons avec l'accessibilité */
 button, svg {
     outline: none;
@@ -35,8 +46,9 @@ button, svg {
 #swipePage header {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(253, 246, 246, 0.8)), url('../images/header.png') no-repeat center center/cover;
-    height: 80vh;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Menu */
@@ -49,6 +61,7 @@ button, svg {
     top: 0;
     width: 100%;
     z-index: 1000;
+    background-color: var(--darkblue-color);
 }
 
 .menu:hover {
@@ -119,15 +132,12 @@ button, svg {
     display: flex;
     align-items: center;
     text-align: center;
-    background: var(--white-color);
+    background: var(--blue-color);
     border-radius: 8px;
     padding: 8px 12px;
-    width: 30%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 50%;
     cursor: text;
-
+    margin-top: 20px;
 }
 
 .searchInput {
@@ -284,16 +294,16 @@ button, svg {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    height: 100%;
+    align-items: start;
+    flex: 1;
     color: var(--darkblue-color);
+    padding: 0 20px;
 }
 
 .headerContent h1 {
-    font-size: 5rem;
-    text-transform: uppercase;
+    font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 0, 5rem;
+    margin-bottom: 0;
 }
 
 .headerContent p {

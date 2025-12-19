@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ma watchlist - CrunchTime{% endblock %}
+
+{% block menu_class %}menuOther{% endblock %}
+
+{% block body %}
+    <main>
+        <section class="watchlist" role="region" aria-label="Section de la watchlist">
+            <div class="watchlistTop">
+                <h2>Ma watchlist</h2>
+                {% if mediaList is empty %}
+                <p class="erreurWatchlist" role="alert">Vous n'avez actuellement aucun film dans votre watchlist.</p>
+                {% else %}
+            </div>
+
+            <div class="carousel-container" role="list" aria-label="Liste des médias">
+                <div class="carousel">
+                    {% for media in mediaList %}
+                        {% set title = media.title ?? media.name %}
+                        {% set date = media.release_date ?? media.first_air_date %}
+
+                        <div class="movie-card" role="listitem" aria-label="Carte média" id="media_{{ media.media_type }}_{{ media.id }}">
+                            <div class="movie-poster">
+                                <a href="{{ path('app_media_details', {id: media.id, type: media.media_type}) }}" aria-label="Voir les détails de {{ title }}">
+                                    {% if media.poster_path %}
+                                        <img src="https://image.tmdb.org/t/p/w500{{ media.poster_path }}" alt="Affiche de {{ title }}">
+                                    {% else %}
+                                        <img src="{{ asset('images/placeholder_movie.png') }}" class="placeholder-poster" alt="Placeholder">
+                                    {% endif %}
+                                </a>
+                            </div>
+
+                            <div class="media-title-container">
+                                <div class="media-type-icon inline" aria-hidden="true">
+                                    {% if media.media_type == 'movie' %}
+                                        {# SVG Film #}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" title="Film"><path d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM48 368v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V368c0-8.8-7.2-16-16-16H416zM48 240v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V240c0-8.8-7.2-16-16-16H416zM48 112v32c0 8.8 7.2 16 16 16H96c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16zm368-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V112c0-8.8-7.2-16-16-16H416z"/></svg>
+                                    {% else %}
+                                        {# SVG TV #}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" title="Série"><path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
+                                    {% endif %}
+                                </div>
+                                <h4>{{ title }}</h4>
+                            </div>
+
+                            <p>{{ date|date('Y') }}</p>
+                            <p class="added-date">Ajouté le {{ media.added_at|date('d/m/Y') }}</p>
+
+                            <div class="btnWatchlist btnWatchlistDel">
+                                <form action="{{ path('watchlist_toggle', {type: media.media_type, id: media.id, context: 'watchlist'}) }}" method="post">
+                                    <button type="submit" class="button delete-btn" aria-label="Supprimer de la watchlist">
+                                        <svg viewBox="0 0 448 512" class="svgIconBtn" aria-hidden="true"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+{% endblock %}
