@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil - CrunchTime{% endblock %}
+{% block title %}CrunchTime{% endblock %}
 
 {# On dit à Turbo de ne pas garder cette page en mémoire cache.
    Cela force le rechargement des données (et donc des boutons) quand on revient dessus. #}
@@ -27,7 +27,7 @@
 {% block body %}
     {# Macro pour générer un carrousel #}
     {% macro carousel(title, items, type, userWatchlist) %}
-        <section class="filmsRecents" aria-label="{{ title }}">
+        <section class="carousel-section" aria-label="{{ title }}">
             <div class="catFilmsRecents navTitleArrow">
                 <h3 class="catTitle">{{ title }}</h3>
                 <div class="buttonNav" role="group" aria-label="Navigation">
@@ -52,36 +52,32 @@
                                         <img src="{{ asset('images/placeholder_movie.png') }}" alt="{{ title }}" class="placeholder-poster">
                                     {% endif %}
                                 </a>
+
+                                {# Bouton Plus d'infos #}
+                                <button class="btn-more-info" aria-label="Plus d'options">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                </button>
+
+                                {# Popup #}
+                                <div class="card-popup hidden">
+                                    <a href="{{ path('app_media_details', {id: item.id, type: type}) }}" class="popup-link">Plus de détails</a>
+                                    {% if app.user %}
+                                        <div class="popup-watchlist-action">
+                                            {% if userWatchlist[type ~ '_' ~ item.id] is defined %}
+                                                <form action="{{ path('watchlist_toggle', {type: type, id: item.id, context: 'index'}) }}" method="post">
+                                                    <button type="submit" class="btn-popup-watchlist remove">Retirer de la watchlist</button>
+                                                </form>
+                                            {% else %}
+                                                <form action="{{ path('watchlist_toggle', {type: type, id: item.id, context: 'index'}) }}" method="post">
+                                                    <button type="submit" class="btn-popup-watchlist add">Ajouter à la watchlist</button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <h4>{{ title }}</h4>
                             <p>{{ date|date('Y') }}</p>
-
-                            {# Bouton Watchlist (si connecté) #}
-                            {% if app.user %}
-                                <div id="watchlist_wrapper_{{ type }}_{{ item.id }}">
-                                {% if userWatchlist[type ~ '_' ~ item.id] is defined %}
-                                    {# DÉJÀ DANS LA LISTE : BOUTON VERT (cliquer retire) #}
-                                    <div class="watchlist-added-indicator">
-                                        <button class="success-check" disabled aria-label="Déjà dans la watchlist">
-                                            <svg class="svgIconBtn checkIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                {% else %}
-                                    {# PAS DANS LA LISTE : BOUTON PLUS (cliquer ajoute) #}
-                                    <div class="btnWatchlist btnWatchlistAdd">
-                                        <form action="{{ path('watchlist_toggle', {type: type, id: item.id, context: 'index'}) }}" method="post">
-                                            <button type="submit" class="button" aria-label="Ajouter à la watchlist">
-                                                <svg class="svgIconBtn plusIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14">
-                                                    <path fill="currentColor" fill-rule="evenodd" d="M8 1a1 1 0 0 0-2 0v5H1a1 1 0 0 0 0 2h5v5a1 1 0 1 0 2 0V8h5a1 1 0 1 0 0-2H8z" clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    </div>
-                                {% endif %}
-                                </div>
-                            {% endif %}
                         </div>
                     {% else %}
                         <p>Aucun contenu trouvé.</p>

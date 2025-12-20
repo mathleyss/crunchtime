@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap'); /* RESET CSS */
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-/* POLICES ET COULEURS */
+/* ==========================================================================
+   1. VARIABLES & RESET
+   ========================================================================== */
 :root {
     --primary-color: #c1121f;
     --secondary-color: #780000;
@@ -12,7 +14,7 @@
     --blue-color: #669bbc;
     --success-color: #28a745;
     --title-font: 'Space Mono', sans-serif;
-    --body-font: 'Google Sans Flex', sans-serif;
+    --body-font: 'Work Sans', sans-serif;
 }
 
 *,
@@ -28,22 +30,23 @@ body {
     background-color: var(--white-color);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--title-font), sans-serif;
 }
 
-/* Pour empecher le halo des boutons avec l'accessibilité */
 button, svg {
     outline: none;
 }
-/* HEADER POUR LA PAGE D'ACCUEIL ET LA PAGE CRUNCHSWIPE */
-#homePage header,
-#swipePage header {
+
+main {
+    padding: 0 5rem;
+}
+
+/* ==========================================================================
+   2. HEADER & NAVIGATION
+   ========================================================================== */
+/* Header Layout */
+#homePage header {
     margin: 0;
     padding: 0;
     height: 40vh;
@@ -51,14 +54,36 @@ button, svg {
     flex-direction: column;
 }
 
-/* Menu */
+.headerContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    flex: 1;
+    color: var(--darkblue-color);
+    padding: 0 5rem;
+}
+
+.headerContent h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.headerContent p {
+    font-size: 2rem;
+}
+
+/* Menu Principal */
 .menu {
-    padding: 10px 20px;
+    padding: 10px 50px;
     transition: background 0.3s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
     background-color: var(--darkblue-color);
@@ -66,6 +91,20 @@ button, svg {
 
 .menu:hover {
     background: rgba(0, 0, 0, 0.7);
+}
+
+.menuOther {
+    background-color: var(--darkblue-color);
+}
+
+.menuOther:hover {
+    background-color: var(--darkblue-color);
+}
+
+/* Logo & Liens Gauche */
+.menuLeft {
+    display: flex;
+    align-items: center;
 }
 
 .logoAccueil img {
@@ -104,6 +143,10 @@ button, svg {
     transform: scaleX(1);
 }
 
+.menuLeft a:hover {
+    color: var(--blue-color);
+}
+
 #active {
     color: var(--blue-color);
     font-weight: bold;
@@ -113,68 +156,10 @@ button, svg {
     color: var(--white-color);
 }
 
-.menuLeft a:hover {
-    color: var(--blue-color);
-}
-
-/* Menu pour les autres pages */
-.menuOther {
-    background-color: var(--darkblue-color);
-}
-
-.menuOther:hover {
-    background-color: var(--darkblue-color);
-}
-
-
-/* Barre de recherche */
-.searchBar {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    background: var(--blue-color);
-    border-radius: 8px;
-    padding: 8px 12px;
-    width: 50%;
-    cursor: text;
-    margin-top: 20px;
-}
-
-.searchInput {
-    border: none;
-    background: transparent;
-    font-size: 1rem;
-    color: var(--darkblue-color);
-    outline: none;
-}
-
-.searchInput::placeholder {
-    color: var(--gray-color);
-}
-
-.searchBar img {
-    width: 25px;
-    height: auto;
-    vertical-align: middle;
-    object-fit: contain;
-}
-
-/* Menu à gauche */
-.menuLeft {
-    display: flex;
-    align-items: center;
-}
-
-.menuLeft a {
-    margin-right: 20px;
-}
-
-/* Menu à droite (profil) */
+/* Menu Droite (Profil & Connexion) */
 .menuRight {
     position: relative;
 }
-
-/* bouton de connexion */
 
 .btnLogin {
     background-color: var(--primary-color);
@@ -190,10 +175,8 @@ button, svg {
 .btnLogin:hover {
     background-color: var(--secondary-color);
     transform: scale(1.1);
-
 }
 
-/* menu du profil */
 .profile {
     position: relative;
     display: inline-block;
@@ -224,16 +207,19 @@ button, svg {
     z-index: 1;
 }
 
+.profile:hover .dropdown-menu {
+    display: block;
+}
+
 .dropdown-menu img {
     width: 100px;
     height: 100px;
 }
 
 .dropdown-menu p {
-    margin: 0;
     color: var(--white-color);
     font-size: 1rem;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
 }
 
 .dropdown-menu a {
@@ -275,7 +261,6 @@ button, svg {
     padding: 10px;
     margin: 10px 0;
     transition: all 0.3s ease;
-
 }
 
 .dropdown-menu #logout:active {
@@ -286,66 +271,88 @@ button, svg {
     background-color: var(--secondary-color);
 }
 
-.profile:hover .dropdown-menu {
-    display: block;
+/* Barre de recherche (Header) */
+.searchBar {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background: var(--blue-color);
+    border-radius: 8px;
+    padding: 8px 12px;
+    width: 50%;
+    cursor: text;
+    margin-top: 20px;
 }
 
-.headerContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    flex: 1;
+.searchInput {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
     color: var(--darkblue-color);
-    padding: 0 20px;
+    outline: none;
 }
 
-.headerContent h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-bottom: 0;
+.searchInput::placeholder {
+    color: var(--gray-color);
 }
 
-.headerContent p {
-    font-size: 2rem;
+.searchBar img {
+    width: 25px;
+    height: auto;
+    vertical-align: middle;
+    object-fit: contain;
 }
 
-/* CAROUSSEL DE FILMS */
-.catTitle {
-    margin-left: 2rem;
-    font-size: 1.5rem;
-}
-
-.carousel-container {
-    position: relative;
-    max-width: 100%;
-    margin: auto;
-    overflow: hidden;
-}
-
-.carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    gap: 20px;
-    padding: 10px;
-    scrollbar-width: none;
-}
-
-.carousel::-webkit-scrollbar {
-    display: none;
-}
-
+/* ==========================================================================
+   3. COMPOSANTS UI GÉNÉRAUX
+   ========================================================================== */
+/* Cartes Films/Séries */
 .movie-card {
     flex: 0 0 auto;
-    width: 250px;
-    padding: 10px;
+    width: 175px;
     text-align: center;
     transition: transform 0.3s ease-in-out;
     position: relative;
+    border-radius: 15px;
 }
 
-/* Style pour la date d'ajout */
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-card:hover .movie-poster {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.movie-poster {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 15px;
+    display: block;
+}
+
+.movie-card h4,
+.movie-card p {
+    margin-top: 10px;
+    text-align: left;
+    padding: 0 5px; /* Petit padding pour pas coller au bord */
+}
+
+.movie-card h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .movie-card .added-date {
     font-size: 0.7rem;
     color: var(--gray-color);
@@ -353,65 +360,109 @@ button, svg {
     font-style: italic;
 }
 
-/* Style pour l'icône en ligne à côté du titre */
-.mediaTypeContainer {
-    margin-bottom: 1.5rem;
-}
-
-.mediaTypeIcon {
-    display: inline-flex;
+.placeholder-poster {
+    background-color: #253340;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-    background-color: transparent;
-    color: var(--secondary-color);
-    font-size: 0.9rem;
-    width: auto;
+    height: 262px; /* Hauteur approximative d'un poster */
+    width: 100%;
+    object-fit: cover;
 }
 
-.mediaTypeIcon svg {
-    width: 20px;
-    height: 20px;
-    fill: var(--secondary-color);
-}
-
-.mediaTypeIcon p {
-    margin: 0;
-    line-height: normal !important;
-}
-
-.media-title-container {
+/* Bouton "Plus d'infos" sur la card */
+.btn-more-info {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-top: 10px;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
 }
 
-.media-title-container h4 {
-    margin: 0;
-    font-size: 1rem;
-    flex: 1;
-    line-height: 1.2;
+.movie-card:hover .btn-more-info {
+    opacity: 1;
 }
 
-.movie-card img {
+.btn-more-info:hover {
+    background: var(--primary-color);
+}
+
+/* Popup sur la card */
+.card-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    background: rgba(0, 48, 73, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border-radius: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 1rem;
+    z-index: 20;
 }
 
-.movie-card:hover {
-    transform: scale(1.05);
+.card-popup.visible {
+    opacity: 1;
+    visibility: visible;
 }
 
-.movie-poster {
-    position: relative;
-    overflow: hidden;
-    border-radius: 15px;
+.card-popup.hidden {
+    display: none; /* Pour être sûr qu'il ne gêne pas quand caché */
 }
 
-.movie-card h4,
-.movie-card p {
-    margin-top: 10px;
-    text-align: left;
+.popup-link {
+    color: var(--white-color);
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--white-color);
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.popup-link:hover {
+    background: var(--white-color);
+    color: var(--darkblue-color);
+}
+
+.btn-popup-watchlist {
+    background: none;
+    border: none;
+    color: var(--white-color);
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    padding: 0.5rem;
+}
+
+.btn-popup-watchlist:hover {
+    color: var(--blue-color);
+}
+
+.btn-popup-watchlist.remove {
+    color: #ff6b6b;
+}
+
+/* Titres & Navigation Carousel */
+.catTitle {
+    font-size: 1.5rem;
 }
 
 .navTitleArrow {
@@ -421,110 +472,94 @@ button, svg {
     margin-top: 10px;
 }
 
-
-
-/* Boutons de navigation du caroussel */
-.next,
-.prev {
-    width: 60px;
-    height: auto;
-    border-radius: 50%;
-    transition-duration: .3s;
-}
-
-.next path,
-.prev path {
-    fill: var(--blue-color);
-}
-
-
-.next:hover path,
-.prev:hover path {
-    fill: var(--primary-color);
-    transition-duration: .3s;
-}
-
-.next:hover,
-.prev:hover {
-    transform: scale(1.1);
-}
-
-
 .buttonNav {
-    margin-right: 2rem;
     display: flex;
     gap: 5px;
 }
 
-.prev {
-    left: 10px;
+.next, .prev {
+    width: 40px; /* Un peu plus petit */
+    height: 40px;
+    border-radius: 50%;
+    transition-duration: .3s;
+    cursor: pointer;
+    background: rgba(0,0,0,0.05); /* Fond léger */
+    padding: 8px;
 }
 
-.next {
-    right: 10px;
+.next path, .prev path {
+    fill: var(--darkblue-color);
 }
 
+.next:hover path, .prev:hover path {
+    fill: var(--primary-color);
+}
 
-/* Boutons pour la navigation de la page de recherche */
-.buttonNavSearch {
+.next:hover, .prev:hover {
+    background: rgba(0,0,0,0.1);
+    transform: scale(1.1);
+}
+
+/* Carousel */
+.carousel-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    /* overflow: hidden;  On laisse visible pour les ombres */
+}
+
+.carousel {
     display: flex;
-    justify-content: flex-end;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    gap: 20px;
+    scrollbar-width: none;
+    padding: 20px 0 20px 0;
 }
 
-
-/* CSS de la section Call to action */
-.cta {
-    background: linear-gradient(to right, #DDEBF6 5%, var(--blue-color) 95%);
-    color: var(--white-color);
-    padding: 30px 0;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+.carousel::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+    /* Si on veut afficher la scrollbar quand les flèches ne marchent pas, on peut commenter ça ou le gérer en JS */
 }
 
-.cta p {
-    color: var(--darkblue-color);
-    text-align: left;
+/* Si on veut afficher la scrollbar horizontale comme demandé en fallback */
+/* .carousel.show-scrollbar {
+    scrollbar-width: auto;
+}
+.carousel.show-scrollbar::-webkit-scrollbar {
+    display: block;
+    height: 8px;
+}
+.carousel.show-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--blue-color);
+    border-radius: 4px;
+} */
+
+
+/* Messages Flash (Succès/Erreur) */
+.errorMessage {
+    color: var(--primary-color);
     font-weight: bold;
+    margin-bottom: 2rem;
 }
 
-.cta p:nth-of-type(1) {
-    font-size: 1.5rem;
+.successMessage {
+    color: var(--blue-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
 }
 
-.cta p:nth-of-type(2) {
-    font-size: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.cta a {
-    background-color: var(--primary-color);
-    color: var(--white-color);
-    padding: 10px 40px;
-    border-radius: 5px;
-    font-size: 1.5rem;
+.successMessage a {
+    color: var(--blue-color);
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.cta a:hover {
-    background-color: var(--secondary-color);
-}
-
-.cta a:active {
-    transform: scale(0.95);
-}
-
-
-
-/* ------
-    Page de connexion / inscription / déconnexion
-        ------ */
+/* ==========================================================================
+   4. PAGES : CONNEXION / INSCRIPTION
+   ========================================================================== */
 #loginPage,
-#registerPage,
-#logoutSuccess {
+#registerPage {
     background-color: var(--blue-color);
     min-height: 100vh;
     display: flex;
@@ -532,8 +567,7 @@ button, svg {
 }
 
 #loginPage main,
-#registerPage main,
-#logoutSuccess main {
+#registerPage main {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -566,10 +600,6 @@ button, svg {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.successMessage .loginLink {
-    text-decoration: underline;
 }
 
 .formInput {
@@ -618,75 +648,9 @@ button, svg {
     font-weight: 600;
 }
 
-/* Styles pour le message de déconnexion */
-.logout-message {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: var(--white-color);
-}
-
-.logout-message h2 {
-    font-size: 1.5rem;
-    text-transform: uppercase;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-
-.logout-message p {
-    font-size: 1rem;
-    color: var(--black-color);
-    font-weight: bold;
-    margin-bottom: 30px;
-}
-
-/* Roue de chargement de la page de déconnexion */
-.loader {
-    width: 50px;
-    padding: 8px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: var(--primary-color);
-    --_m:
-        conic-gradient(#0000 10%, #000),
-        linear-gradient(#000 0 0) content-box;
-    -webkit-mask: var(--_m);
-    mask: var(--_m);
-    -webkit-mask-composite: source-out;
-    mask-composite: subtract;
-    animation: l3 1s infinite linear;
-}
-
-@keyframes l3 {
-    to {
-        transform: rotate(1turn)
-    }
-}
-
-/* Gestion des messages d'erreurs et de succès */
-.errorMessage {
-    color: var(--primary-color);
-    font-weight: bold;
-    margin-bottom: 2rem;
-}
-
-.successMessage {
-    color: var(--blue-color);
-    font-weight: bold;
-    margin-bottom: 2rem;
-}
-
-.successMessage a {
-    color: var(--blue-color);
-    text-decoration: none;
-}
-
-/* ------
-    Page de profil
-        ------ */
-/* Styles spécifiques pour la page profil */
+/* ==========================================================================
+   5. PAGE : PROFIL
+   ========================================================================== */
 #profilePage main {
     display: flex;
     flex-direction: column;
@@ -768,10 +732,9 @@ button, svg {
     color: var(--blue-color) !important;
 }
 
-
-/* ------
-    Page de details des médias
-        ------ */
+/* ==========================================================================
+   6. PAGE : DÉTAILS MÉDIA
+   ========================================================================== */
 .details-container {
     display: flex;
     color: var(--darkblue-color);
@@ -818,6 +781,37 @@ button, svg {
     color: var(--blue-color);
 }
 
+.mediaTypeContainer {
+    margin-bottom: 1.5rem;
+}
+
+.mediaTypeIcon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: transparent;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    width: auto;
+}
+
+.mediaTypeIcon p {
+    margin: 0;
+    line-height: normal !important;
+}
+
+.watchlist-action-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3rem;
+}
+
+.watchlist-action-container .watchlist-btn {
+    margin-bottom: 0;
+}
+
+/* Acteurs */
 .actors-container {
     display: flex;
     flex-wrap: wrap;
@@ -840,665 +834,7 @@ button, svg {
     margin: 5px 0;
 }
 
-.watchlist-action-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 3rem;
-}
-
-/* Style pour l'icône dans la page de détails */
-.watchlist-action-container .media-type-icon.inline {
-    position: static;
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.watchlist-action-container .media-type-icon.inline svg {
-    width: 100%;
-    height: 100%;
-    fill: var(--secondary-color);
-    margin-bottom: 0.5rem;
-    transition-duration: .3s;
-}
-
-.watchlist-action-container .media-type-icon.inline:hover svg {
-    fill: var(--primary-color);
-    transition-duration: .3s;
-}
-
-/* Ajustement pour le bouton watchlist */
-.watchlist-action-container .watchlist-btn {
-    margin-bottom: 0;
-}
-
-/* ------
-    Page de recherche
-        ------ */
-.titleSearch {
-    text-align: center;
-    font-size: 2rem;
-    margin-top: 20px;
-    color: var(--darkblue-color);
-}
-
-.filters {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-    background: var(--white-color);
-    padding: 15px;
-}
-
-.filters select,
-.filters input {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background: white;
-    transition-duration: .3s;
-}
-
-.filters input:hover,
-.filters input:active,
-.filters select:hover {
-    border: 1px solid var(--darkblue-color);
-    transition-duration: .3s;
-}
-
-.yearInput {
-    width: 100px;
-}
-
-.searchPageBtn {
-    background-color: var(--secondary-color);
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition-duration: .3s;
-}
-
-.searchPageBtn:hover {
-    background-color: var(--primary-color);
-    transition-duration: .3s;
-}
-
-.rating-filter {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.rating-filter input {
-    display: none;
-}
-
-.rating-filter label {
-    cursor: pointer;
-    font-size: 2rem;
-    color: gray;
-    transition: color 0.2s;
-}
-
-.rating-filter label:hover,
-.rating-filter label:hover ~ label,
-.rating-filter input:checked ~ label {
-    color: gold;
-}
-
-.movie-genres span {
-    background: #f1f1f1;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.9em;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-.star-rating {
-    color: gold;
-    font-size: 1.2rem;
-}
-
-.noResultsMessage {
-    color: var(--primary-color);
-    font-weight: bold;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-
-
-/* ------
-    WATCHLIST
-        ------ */
-.watchlistTop {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.watchlist h2 {
-    text-align: center;
-    font-size: 2rem;
-    margin-top: 20px;
-    color: var(--darkblue-color);
-}
-
-.erreurWatchlist {
-    color: var(--primary-color);
-    font-weight: bold;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.media-type-icon.inline {
-    position: static;
-    width: 16px;
-    height: 16px;
-    min-width: 16px;
-    background-color: transparent;
-    border-radius: 0;
-    margin-right: 3px;
-    display: inline-flex;
-    align-items: center;
-    vertical-align: middle;
-    transform: translateY(-1px);
-}
-
-.media-type-icon.inline svg {
-    width: 100%;
-    height: 100%;
-    margin-top: 0.7rem;
-    fill: var(--primary-color);
-}
-
-/* ------
-    Bouton ajout / suppression de la watchlist
-    Crédits bouton : from Uiverse.io by vinodjangid07
-        ------ */
-.btnWatchlist {
-    position: absolute;
-}
-
-.btnWatchlistAdd,
-.btnWatchlistDelIndex {
-    top: 20px;
-    right: 20px;
-}
-
-.btnWatchlist .button {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: var(--gray-color);
-    border: none;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.534);
-    cursor: pointer;
-    transition-duration: .3s;
-    overflow: hidden;
-    position: relative;
-}
-
-.btnWatchlist .button:hover {
-    width: 140px;
-    border-radius: 50px;
-    transition-duration: .3s;
-    background-color: var(--secondary-color);
-    align-items: center;
-}
-
-.btnWatchlist .button:hover .svgIconBtn {
-    opacity: 0;
-}
-
-.btnWatchlist .button:hover::before {
-    font-size: 13px;
-    opacity: 1;
-    transform: translateY(30px);
-    transition-duration: .3s;
-}
-
-.btnWatchlist .button::before {
-    position: absolute;
-    top: -25px;
-    text-transform: uppercase;
-    color: var(--white-color);
-    transition-duration: .3s;
-    font-size: 2px;
-    font-weight: normal;
-    content: var(--button-text, "Ajouter");
-}
-
-.btnWatchlistAddDetails {
-    position: relative;
-}
-
-/* Style pour le conteneur de la coche verte */
-.watchlist-added-indicator {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-/* Style pour le bouton avec la coche */
-.watchlist-added-indicator .success-check {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: var(--success-color);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.534);
-    cursor: default;
-}
-
-.watchlist-added-indicator .checkIcon {
-    width: 20px;
-    height: 20px;
-    fill: white;
-}
-
-/* Variante du bouton sur la page de la watchlist */
-.btnWatchlistDel {
-    top: 20px;
-    right: 20px;
-}
-
-.btnWatchlistDel .button::before {
-    content: "Supprimer";
-}
-
-/* Variante du bouton sur la page de détails */
-.watchlist-btn {
-    min-width: 200px;
-    padding: 1rem;
-    width: auto;
-    height: 30px;
-    border-radius: 50px;
-    background-color: var(--secondary-color);
-    border: none;
-    display: flex;
-    align-items: center;
-    color: var(--white-color);
-    justify-content: center;
-    cursor: pointer;
-    transition-duration: .3s;
-    margin-bottom: 3rem;
-    white-space: nowrap;
-}
-
-.watchlist-btn:hover {
-    background-color: var(--primary-color);
-    transition-duration: .3s;
-}
-
-.watchlist-btn:active {
-    transform: scale(0.95);
-    box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.534);
-    transition-duration: .3s;
-}
-
-/* Icone du bouton de la watchlist */
-.svgIconBtn {
-    width: 10px;
-    transition-duration: .3s;
-}
-
-.svgIconBtn path {
-    fill: var(--white-color);
-}
-
-
-/* ------
-    MESSAGE WATCHLIST
-        ------ */
-.messagewatchlist {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 4px;
-    z-index: 100;
-    opacity: 1;
-    transition: opacity 1s ease-out;
-}
-
-/* Classe pour la disparition */
-.masque {
-    opacity: 0;
-}
-
-.supprime {
-    display: none;
-}
-
-
-/* ------
-    CRUNCHSWIPE
-        ------ */
-.mainSwipe {
-    overflow: hidden;
-    padding-top: 5rem;
-    display: flex;
-    color: var(--darkblue-color);
-;
-    padding-bottom: 3rem;
-}
-
-/* Infos du films  */
-
-#swipeInfo {
-    width: 27.5%;
-    background-color: #FFF;
-    border-radius: 0 50px 50px 0;
-    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2),
-    -5px 0 10px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-}
-
-#swipeInfo h2 {
-    font-size: 2rem;
-}
-
-#swipeInfo p {
-    font-size: 1.1rem;
-    margin-top: 0.5rem;
-}
-
-#swipeInfo .resume {
-    font-size: 1rem;
-    margin: 1rem 0;
-}
-
-#swipeInfo .actors {
-    margin-top: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-#swipeInfo .actor {
-    width: calc(25% - 1rem);
-    text-align: center;
-}
-
-#swipeInfo .actors img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: 50% 50%;
-    border-radius: 10%;
-}
-
-#swipeInfo .actors p {
-    font-size: 0.7rem;
-}
-
-#swipeInfo .star-rating {
-    font-size: 2rem;
-}
-
-.swipeBtnDetails {
-    display: flex;
-    justify-content: center;
-    background-color: var(--blue-color);
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 2rem;
-}
-
-.swipeBtnDetails:hover {
-    background-color: var(--darkblue-color);
-}
-
-.swipeBtnDetails:active {
-    transform: scale(0.95);
-}
-
-/* CSS pour le swipe */
-
-
-#swipeFeature {
-    margin-top: 10rem;
-    width: 45%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#swiper {
-    height: 65vh;
-    aspect-ratio: 2 / 3;
-    perspective: 1000px;
-    perspective-origin: center 50%;
-    transform-style: preserve-3d;
-    position: relative;
-}
-
-
-
-.card {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    border-radius: 20px;
-    overflow: hidden;
-    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
-    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.5s, opacity 0.5s;
-}
-
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 50% 50%;
-}
-
-.card.dismissing {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.swipeButtons {
-    margin-top: 2rem;
-    gap: 10rem;
-    justify-content: center;
-    display: flex;
-    width: 100%;
-}
-
-#like,
-#dislike {
-    width: 10%;
-    border-radius: 50%;
-    padding: 15px;
-    position: relative;
-    z-index: 1;
-}
-
-#like path,
-#dislike path {
-    fill: var(--white-color);
-}
-
-#like {
-    animation: animation1 1.4s ease-in-out both paused;
-}
-
-#like.trigger {
-    animation: animation2 1.4s ease-in-out both;
-}
-
-#dislike {
-    animation: animation3 1.4s ease-in-out both paused;
-}
-
-#dislike.trigger {
-    animation: animation4 1.4s ease-in-out both;
-}
-
-#like {
-    background-color: var(--primary-color);
-}
-
-#dislike {
-    background-color: var(--blue-color);
-}
-
-
-@keyframes animation1 {
-    50% {
-        background-color: var(--success-color);
-        /* opacity: 0.8; */
-    }
-}
-
-@keyframes animation2 {
-    50% {
-        background-color: var(--success-color);
-    }
-}
-
-@keyframes animation3 {
-    50% {
-        opacity: 0.5;
-        background-color: var(--gray-color);
-    }
-}
-
-@keyframes animation4 {
-    50% {
-        opacity: 0.5;
-        background-color: var(--gray-color);
-    }
-}
-
-/* Info de la watchlist */
-.swipeWatchlist {
-
-    width: 27.5%;
-    background-color: #FFF;
-    border-radius: 50px 0 0 50px;
-    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2),
-    -5px 0 10px rgba(0, 0, 0, 0.2);
-}
-
-#watchlist-container {
-    margin-bottom: 3rem;
-}
-
-.swipeWatchlist h2 {
-    margin: 2rem 0 1rem 2rem;
-    font-size: 2rem;
-    color: var(--primary-color);
-}
-
-.swipeWatchlist .star-rating {
-    font-size: 2rem;
-}
-
-#media-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0.5rem 0 0.5rem 5rem;
-}
-
-#media-poster-container {
-    flex: 2 1 150px;
-    transition: all 0.3s ease;
-}
-
-#media-poster-container:hover {
-    transform: scale(1.05);
-}
-
-#media-poster-container img {
-    width: 100%;
-    object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 5px 0 10px rgba(0, 0, 0, 0.2),
-    -5px 0 10px rgba(0, 0, 0, 0.2);
-}
-
-#media-title-container {
-    flex: 1 1 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 10px;
-    text-align: left;
-}
-
-#media-title-container h2 {
-    font-size: 1.3rem;
-}
-
-#media-title-container p {
-    font-size: 1.1rem;
-}
-
-.swipeBtnWatchlist {
-    display: flex;
-    justify-content: center;
-    background-color: var(--primary-color);
-    color: var(--white-color);
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1rem;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    margin: 0 2rem 4rem 2rem;
-    transition: all 0.3s ease;
-}
-
-.swipeBtnWatchlist:hover {
-    background-color: var(--secondary-color);
-}
-
-.swipeBtnWatchlist:active {
-    transform: scale(0.95);
-}
-
-
-/*---------
-    Fournisseurs de streaming
-        ---------*/
+/* Streaming Providers */
 .streaming-providers {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -1564,31 +900,137 @@ button, svg {
     transition-duration: .3s;
 }
 
-/*------
-    Style pour les affiches et ac en placeholder
-        ------ */
-.placeholder-poster {
-    background-color: #253340;
+/* ==========================================================================
+   7. PAGE : RECHERCHE
+   ========================================================================== */
+.titleSearch {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: var(--darkblue-color);
+}
+
+.filters {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    background: var(--white-color);
+    padding: 15px;
 }
 
+.filters select,
+.filters input {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: white;
+    transition-duration: .3s;
+}
 
+.filters input:hover,
+.filters input:active,
+.filters select:hover {
+    border: 1px solid var(--darkblue-color);
+    transition-duration: .3s;
+}
 
-/* ------
+.yearInput {
+    width: 100px;
+}
 
+.searchPageBtn {
+    background-color: var(--secondary-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition-duration: .3s;
+}
 
-    RESPONSIVE
+.searchPageBtn:hover {
+    background-color: var(--primary-color);
+    transition-duration: .3s;
+}
 
+.noResultsMessage {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
 
-    ------ */
+/* ==========================================================================
+   8. PAGE : WATCHLIST
+   ========================================================================== */
+.watchlistTop {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-/* ---------- Menu ---------- */
+.watchlist h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 20px;
+    color: var(--darkblue-color);
+}
+
+.erreurWatchlist {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.media-title-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.media-title-container h4 {
+    margin: 0;
+    font-size: 1rem;
+    flex: 1;
+    line-height: 1.2;
+}
+
+.media-type-icon.inline {
+    position: static;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    background-color: transparent;
+    border-radius: 0;
+    margin-right: 3px;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    transform: translateY(-1px);
+}
+
+.media-type-icon.inline svg {
+    width: 100%;
+    height: 100%;
+    margin-top: 0.7rem;
+    fill: var(--primary-color);
+}
+
+/* ==========================================================================
+   9. RESPONSIVE
+   ========================================================================== */
+/* Tablette (max-width: 992px) */
 @media screen and (max-width: 992px) {
+    /* Menu */
     .menu {
         display: flex;
         flex-wrap: wrap;
@@ -1600,7 +1042,6 @@ button, svg {
     .searchBar {
         order: 3;
         width: 80%;
-        margin-top: 10px;
         position: static;
         transform: none;
         margin: 1rem auto;
@@ -1620,34 +1061,7 @@ button, svg {
         justify-content: flex-end;
     }
 
-}
-
-@media screen and (max-width: 768px) {
-
-
-    .logoAccueil img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .profile-img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .linkAccueil {
-        display: none;
-    }
-
-    .btnLogin {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
-
-
-/* ---------- PAGE ACCUEIL ---------- */
-@media screen and (max-width: 992px) {
+    /* Accueil */
     .headerContent {
         padding: 0 20px;
     }
@@ -1684,398 +1098,7 @@ button, svg {
         margin-left: 1rem;
     }
 
-    .cta {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-
-    .cta p {
-        text-align: center;
-    }
-
-    .cta a {
-        margin-top: 10px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .headerContent {
-        height: 60vh;
-    }
-
-    .headerContent h1 {
-        font-size: 3.2rem;
-        text-align: center;
-    }
-
-    .headerContent p {
-        font-size: 1.1rem;
-        text-align: center;
-    }
-
-    .movie-card {
-        width: 150px;
-        padding: 5px;
-    }
-
-    .movie-card:hover {
-        transform: none;
-    }
-
-    .movie-card h4 {
-        font-size: 0.9rem;
-        margin-top: 5px;
-    }
-
-    .movie-card p {
-        font-size: 0.8rem;
-        margin-top: 5px;
-    }
-
-    .btnWatchlist .button {
-        width: 30px;
-        height: 30px;
-    }
-
-    .btnWatchlist .button:hover {
-        width: 30px;
-        border-radius: 50%;
-        background-color: var(--gray-color);
-        transition-duration: 0s;
-    }
-
-    .btnWatchlist .button:hover .svgIconBtn {
-        opacity: 1;
-    }
-
-    .btnWatchlist .button:hover::before {
-        opacity: 0;
-        transform: none;
-    }
-
-    .btnWatchlist .button {
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .btnWatchlist,
-    .watchlist-added-indicator {
-        top: 10px;
-        right: 10px;
-    }
-
-    .filmsRecents,
-    .seriesTendances,
-    .filmsAction,
-    .seriesTopRated {
-        margin-bottom: 2rem;
-    }
-
-    .catTitle {
-        font-size: 1.2rem;
-    }
-
-    .cta p:nth-of-type(2) {
-        font-size: 1.5rem;
-    }
-
-    .cta a {
-        padding: 8px 20px;
-        font-size: 1.1rem;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .headerContent {
-        height: 50vh;
-    }
-
-    .headerContent h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .headerContent p {
-        font-size: 1rem;
-    }
-
-    .movie-card {
-        width: 130px;
-    }
-
-    .movie-card h4 {
-        font-size: 0.8rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .movie-card p {
-        font-size: 0.7rem;
-    }
-
-    .btnWatchlist .button {
-        width: 30px;
-        height: 30px;
-    }
-
-    .svgIconBtn {
-        width: 12px;
-    }
-
-    .catTitle {
-        font-size: 1.1rem;
-    }
-
-    .cta {
-        padding: 15px 10px;
-    }
-
-    .cta p:nth-of-type(1) {
-        font-size: 1.1rem;
-    }
-
-    .cta p:nth-of-type(2) {
-        font-size: 1.3rem;
-        letter-spacing: 1px;
-    }
-
-    .cta a {
-        padding: 8px 15px;
-        font-size: 1rem;
-    }
-
-    main section {
-        margin-bottom: 1.5rem;
-    }
-}
-
-/* ---------- PAGE SWIPE ---------- */
-
-
-@media screen and (max-width: 992px) {
-    .mainSwipe {
-        flex-direction: column;
-        align-items: center;
-        padding: 1rem;
-    }
-
-    #swiper {
-        height: 60vh;
-    }
-
-    #swipeFeature {
-        width: 100%;
-        margin-top: 5rem;
-    }
-
-    #swipeInfo {
-        width: 100%;
-        border-radius: 50px;
-        margin-top: 2rem;
-    }
-
-    #swipeInfo h2 {
-        font-size: 1.8rem;
-    }
-
-    #swipeInfo p {
-        font-size: 1rem;
-    }
-
-    #swipeInfo .resume,
-    #swipeInfo .actors {
-        display: none;
-    }
-
-    #swipeInfo .star-rating {
-        font-size: 1.5rem;
-    }
-
-    .swipeBtnDetails {
-        margin-top: 1rem;
-    }
-
-    .swipeWatchlist {
-        width: 100%;
-        border-radius: 50px;
-        margin-top: 2rem;
-    }
-
-    .swipeWatchlist h2 {
-        font-size: 1.8rem;
-    }
-
-    .swipeWatchlist .star-rating {
-        font-size: 1.5rem;
-    }
-
-    #watchlist-container {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-        padding: 0 1rem;
-    }
-
-    #media-poster-container {
-        width: 100%;
-    }
-
-    #media-poster-container img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
-
-    #media-title-container {
-        font-size: 0.9rem;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    #swipeInfo h2 {
-        font-size: 1.6rem;
-    }
-
-    #swiper {
-        height: 50vh;
-    }
-
-    #swipeInfo p {
-        font-size: 0.9rem;
-    }
-
-    .swipeWatchlist h2 {
-        font-size: 1.6rem;
-    }
-
-    #media-container {
-        grid-template-columns: 1fr;
-    }
-
-    #media-poster-container {
-        width: 40%;
-        flex: none;
-    }
-
-    #media-title-container {
-        gap: 5px;
-    }
-
-    #media-title-container h2 {
-        font-size: 0.9rem;
-    }
-
-    #media-title-container p {
-        font-size: 0.8rem;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    #swipeInfo h2 {
-        font-size: 1.4rem;
-    }
-
-    #swiper {
-        height: 45vh;
-    }
-
-    #swipeInfo p {
-        font-size: 0.8rem;
-    }
-
-    .swipeWatchlist h2 {
-        font-size: 1.4rem;
-    }
-
-    #media-container {
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-
-    }
-
-    #media-poster-container {
-        width: 70%;
-        max-width: 150px;
-        margin: 0;
-
-    }
-
-    #media-title-container {
-        width: 100%;
-        text-align: center;
-        flex: 1;
-    }
-
-    .swipeButtons {
-        gap: 6rem;
-    }
-
-    #like,
-    #dislike {
-        padding: 10px;
-    }
-
-}
-
-
-
-/* ---------- PAGE PROFIL ---------- */
-@media screen and (max-width: 768px) {
-    .profileContainer {
-        padding: 2rem;
-        max-width: 90%;
-    }
-
-    .userIdentity {
-        font-size: 1.5rem !important;
-    }
-
-    .userInfo p {
-        font-size: 1rem;
-    }
-
-    .avatarContainer:hover img {
-        transform: none;
-    }
-}
-
-@media screen and (max-width: 576px) {
-    .profileContainer {
-        padding: 1.5rem;
-        margin-top: 10px;
-        border-radius: 10px;
-    }
-
-    .avatarContainer img {
-        width: 80px;
-        height: 80px;
-    }
-
-    .userIdentity {
-        font-size: 1.3rem !important;
-    }
-
-    .userInfo p {
-        font-size: 0.9rem;
-        padding-bottom: 0.7rem;
-    }
-
-    #profilePage h2 {
-        font-size: 1.6rem;
-        margin-top: 15px;
-    }
-}
-
-
-
-/* ---------- WATCHLIST ---------- */
-@media screen and (max-width: 992px) {
-    .buttonNavSearch {
-        display: none;
-    }
-
+    /* Watchlist */
     .watchlist .carousel {
         display: flex;
         flex-wrap: wrap;
@@ -2089,26 +1112,6 @@ button, svg {
 
     .watchlist .movie-card:hover {
         transform: none;
-    }
-
-    .btnWatchlistDel .button:hover {
-        width: 30px;
-        border-radius: 50%;
-        background-color: var(--gray-color);
-        transition-duration: 0s;
-    }
-
-    .btnWatchlistDel .button:hover .svgIconBtn {
-        opacity: 1;
-    }
-
-    .btnWatchlistDel .button:hover::before {
-        opacity: 0;
-        transform: none;
-    }
-
-    .btnWatchlistDel .button {
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     }
 
     .watchlist .carousel::-webkit-scrollbar {
@@ -2127,60 +1130,8 @@ button, svg {
     .watchlist h2 {
         font-size: 1.8rem;
     }
-}
 
-@media screen and (max-width: 576px) {
-    .watchlist .carousel-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        padding: 0;
-    }
-
-    .watchlist .carousel {
-        flex-direction: column;
-        align-items: center;
-        width: auto;
-        max-width: 100%;
-    }
-
-    .watchlist .movie-card {
-        width: 250px;
-    }
-
-    .watchlist .movie-card .media-title-container {
-        margin-top: 5px;
-    }
-
-    .watchlist .movie-card h4 {
-        font-size: 1rem;
-    }
-
-    .watchlist .movie-card .added-date {
-        font-size: 0.65rem;
-        margin: 3px 0;
-    }
-
-    .watchlist .btnWatchlistDel {
-        top: 20px;
-        right: 20px;
-    }
-
-    .watchlist .btnWatchlistDel .button {
-        width: 30px;
-        height: 30px;
-    }
-
-    .watchlist .btnWatchlistDel .svgIconBtn {
-        width: 12px;
-    }
-}
-
-
-
-
-/* ---------- PAGE DETAILS ---------- */
-@media screen and (max-width: 992px) {
+    /* Détails */
     .details-container {
         flex-direction: column;
         align-items: center;
@@ -2230,7 +1181,85 @@ button, svg {
     }
 }
 
+/* Mobile (max-width: 768px) */
 @media screen and (max-width: 768px) {
+    /* Menu */
+    .logoAccueil img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .profile-img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .linkAccueil {
+        display: none;
+    }
+
+    .btnLogin {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    /* Accueil */
+    .headerContent {
+        height: 60vh;
+    }
+
+    .headerContent h1 {
+        font-size: 3.2rem;
+        text-align: center;
+    }
+
+    .headerContent p {
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .movie-card {
+        width: 150px;
+        padding: 5px;
+    }
+
+    .movie-card:hover {
+        transform: none;
+    }
+
+    .movie-card h4 {
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+
+    .movie-card p {
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+
+    .catTitle {
+        font-size: 1.2rem;
+    }
+
+    /* Profil */
+    .profileContainer {
+        padding: 2rem;
+        max-width: 90%;
+    }
+
+    .userIdentity {
+        font-size: 1.5rem !important;
+    }
+
+    .userInfo p {
+        font-size: 1rem;
+    }
+
+    .avatarContainer:hover img {
+        transform: none;
+    }
+
+    /* Détails */
     .details-container {
         margin: 1rem 0.5rem;
     }
@@ -2291,7 +1320,104 @@ button, svg {
     }
 }
 
+/* Petit Mobile (max-width: 576px) */
 @media screen and (max-width: 576px) {
+    /* Accueil */
+    .headerContent {
+        height: 50vh;
+    }
+
+    .headerContent h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .headerContent p {
+        font-size: 1rem;
+    }
+
+    .movie-card {
+        width: 130px;
+    }
+
+    .movie-card h4 {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .movie-card p {
+        font-size: 0.7rem;
+    }
+
+    .catTitle {
+        font-size: 1.1rem;
+    }
+
+    main section {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Profil */
+    .profileContainer {
+        padding: 1.5rem;
+        margin-top: 10px;
+        border-radius: 10px;
+    }
+
+    .avatarContainer img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .userIdentity {
+        font-size: 1.3rem !important;
+    }
+
+    .userInfo p {
+        font-size: 0.9rem;
+        padding-bottom: 0.7rem;
+    }
+
+    #profilePage h2 {
+        font-size: 1.6rem;
+        margin-top: 15px;
+    }
+
+    /* Watchlist */
+    .watchlist .carousel-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .watchlist .carousel {
+        flex-direction: column;
+        align-items: center;
+        width: auto;
+        max-width: 100%;
+    }
+
+    .watchlist .movie-card {
+        width: 250px;
+    }
+
+    .watchlist .movie-card .media-title-container {
+        margin-top: 5px;
+    }
+
+    .watchlist .movie-card h4 {
+        font-size: 1rem;
+    }
+
+    .watchlist .movie-card .added-date {
+        font-size: 0.65rem;
+        margin: 3px 0;
+    }
+
+    /* Détails */
     .details-poster {
         width: 90%;
     }

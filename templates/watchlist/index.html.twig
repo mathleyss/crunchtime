@@ -29,6 +29,21 @@
                                         <img src="{{ asset('images/placeholder_movie.png') }}" class="placeholder-poster" alt="Placeholder">
                                     {% endif %}
                                 </a>
+
+                                {# Bouton Plus d'infos #}
+                                <button class="btn-more-info" aria-label="Plus d'options">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                </button>
+
+                                {# Popup #}
+                                <div class="card-popup hidden">
+                                    <a href="{{ path('app_media_details', {id: media.id, type: media.media_type}) }}" class="popup-link">Plus de détails</a>
+                                    <div class="popup-watchlist-action">
+                                        <form action="{{ path('watchlist_toggle', {type: media.media_type, id: media.id, context: 'watchlist'}) }}" method="post">
+                                            <button type="submit" class="btn-popup-watchlist remove">Retirer de la watchlist</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="media-title-container">
@@ -46,14 +61,6 @@
 
                             <p>{{ date|date('Y') }}</p>
                             <p class="added-date">Ajouté le {{ media.added_at|date('d/m/Y') }}</p>
-
-                            <div class="btnWatchlist btnWatchlistDel">
-                                <form action="{{ path('watchlist_toggle', {type: media.media_type, id: media.id, context: 'watchlist'}) }}" method="post">
-                                    <button type="submit" class="button delete-btn" aria-label="Supprimer de la watchlist">
-                                        <svg viewBox="0 0 448 512" class="svgIconBtn" aria-hidden="true"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path></svg>
-                                    </button>
-                                </form>
-                            </div>
                         </div>
                     {% endfor %}
                 </div>

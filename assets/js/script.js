@@ -3,38 +3,68 @@ document.addEventListener("turbo:load", function () {
     const scrollAmount = 300; // Distance du défilement
 
     function initCarousel(containerSelector) {
-        const container = document.querySelector(`${containerSelector} .carousel`);
-        const prevBtn = document.querySelector(`${containerSelector} .prev`);
-        const nextBtn = document.querySelector(`${containerSelector} .next`);
+        // On cherche le conteneur parent qui a la classe passée en paramètre
+        // Mais attention, dans le nouveau template, la classe est sur <section class="carousel-section">
+        // et on a aussi <div class="catFilmsRecents"> pour les boutons
 
-        if (container && prevBtn && nextBtn) {
-            prevBtn.addEventListener("click", () => {
-                container.scrollBy({
-                    left: -scrollAmount,
-                    behavior: "smooth"
-                });
-            });
+        // On va plutôt chercher par section
+        const sections = document.querySelectorAll('section.carousel-section');
 
-            nextBtn.addEventListener("click", () => {
-                container.scrollBy({
-                    left: scrollAmount,
-                    behavior: "smooth"
+        sections.forEach(section => {
+            const container = section.querySelector('.carousel');
+            const prevBtn = section.querySelector('.prev');
+            const nextBtn = section.querySelector('.next');
+
+            if (container && prevBtn && nextBtn) {
+                prevBtn.addEventListener("click", () => {
+                    container.scrollBy({
+                        left: -scrollAmount,
+                        behavior: "smooth"
+                    });
                 });
-            });
-        }
+
+                nextBtn.addEventListener("click", () => {
+                    container.scrollBy({
+                        left: scrollAmount,
+                        behavior: "smooth"
+                    });
+                });
+            }
+        });
+
+        // Gestion des anciens sélecteurs si encore utilisés ailleurs (ex: watchlist)
+        const oldCarousels = [
+            ".watchlist",
+            ".searchPage"
+        ];
+
+        oldCarousels.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                const container = el.querySelector('.carousel');
+                const prevBtn = el.querySelector('.prev');
+                const nextBtn = el.querySelector('.next');
+
+                if (container && prevBtn && nextBtn) {
+                    prevBtn.addEventListener("click", () => {
+                        container.scrollBy({
+                            left: -scrollAmount,
+                            behavior: "smooth"
+                        });
+                    });
+
+                    nextBtn.addEventListener("click", () => {
+                        container.scrollBy({
+                            left: scrollAmount,
+                            behavior: "smooth"
+                        });
+                    });
+                }
+            }
+        });
     }
 
-    // Initialiser les carrousels présents sur la page
-    const carousels = [
-        ".filmsRecents",
-        ".seriesTendances",
-        ".filmsAction",
-        ".seriesTopRated",
-        ".watchlist",
-        ".searchPage"
-    ];
-
-    carousels.forEach(initCarousel);
+    initCarousel();
 
 
     // Pop-up de message pour le site

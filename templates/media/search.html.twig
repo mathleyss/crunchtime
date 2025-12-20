@@ -33,6 +33,25 @@
                                         <img src="{{ asset('images/placeholder_movie.png') }}" class="placeholder-poster">
                                     {% endif %}
                                 </a>
+
+                                {# Bouton Plus d'infos #}
+                                <button class="btn-more-info" aria-label="Plus d'options">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                                </button>
+
+                                {# Popup #}
+                                <div class="card-popup hidden">
+                                    <a href="{{ path('app_media_details', {id: movie.id, type: 'movie'}) }}" class="popup-link">Plus de détails</a>
+                                    {% if app.user %}
+                                        <div class="popup-watchlist-action">
+                                            {# Note: Ici on ne sait pas facilement si c'est déjà dans la watchlist sans passer plus de données au template #}
+                                            {# On met juste le bouton d'ajout par défaut pour simplifier ou on l'enlève #}
+                                            <form action="{{ path('watchlist_toggle', {type: 'movie', id: movie.id, context: 'search'}) }}" method="post">
+                                                <button type="submit" class="btn-popup-watchlist add">Ajouter/Retirer Watchlist</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
                             <h4>{{ movie.title }} ({{ movie.release_date|slice(0, 4) }})</h4>
                         </div>
